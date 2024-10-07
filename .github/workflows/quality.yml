@@ -1,0 +1,29 @@
+name: Terraform Linting
+
+on:
+  merge_group:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  terraform-format-check:
+    name: Check Terraform Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.x
+
+      - name: Verify Terraform formatting
+        run: terraform fmt -check -recursive pillarbox-monitoring-terraform
+
+      - name: Fail if any files need formatting
+        if: failure()
+        run: |
+          echo "::error::Some Terraform files are not formatted correctly."
+          exit 1

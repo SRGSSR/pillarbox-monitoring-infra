@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Define color codes
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Check Terraform formatting in all subfolders
+echo -e "${YELLOW}Checking Terraform formatting in all subfolders...${NC}"
+unformatted_files=$(terraform fmt -recursive -check pillarbox-monitoring-terraform)
+
+if [ -n "$unformatted_files" ]; then
+    echo -e "${RED}The following Terraform files are not properly formatted:${NC}"
+    echo "$unformatted_files"
+    echo -e "${RED}Please run 'terraform fmt -recursive pillarbox-monitoring-terraform' to format these files.${NC}"
+    exit 1
+else
+    echo -e "${GREEN}All Terraform files are properly formatted ✔${NC}"
+fi
+
+exit 0

@@ -1,0 +1,6 @@
+[submodule "pillarbox-monitoring-transfer"]
+	path = pillarbox-monitoring-transfer
+	url = https://github.com/SRGSSR/pillarbox-monitoring-transfer/
+[submodule "pillarbox-event-dispatcher"]
+	path = pillarbox-event-dispatcher
+	url = https://github.com/SRGSSR/pillarbox-event-dispatcher

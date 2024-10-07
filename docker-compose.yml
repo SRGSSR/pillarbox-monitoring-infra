@@ -1,0 +1,43 @@
+services:
+  pillarbox-event-dispatcher:
+    build: ./pillarbox-event-dispatcher
+    image: srgssr/pillarbox-event-dispatcher:1.0.0
+    container_name: pillarbox-event-dispatcher
+    ports:
+      - "8080:8080"
+
+  pillarbox-monitoring-transfer:
+    build: ./pillarbox-monitoring-transfer
+    image: srgssr/pillarbox-monitoring-transfer:1.0.0
+    container_name: pillarbox-monitoring-transfer
+    ports:
+      - "8081:8081"
+    environment:
+      - PILLARBOX_MONITORING_OPENSEARCH_URI=http://opensearch:9200
+      - PILLARBOX_MONITORING_SSE_URI=http://pillarbox-event-dispatcher:8080/events
+
+  opensearch:
+    image: opensearchproject/opensearch:2.15.0
+    container_name: opensearch
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+      - DISABLE_SECURITY_PLUGIN=true
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+        reservations:
+          memory: 512m
+
+  pillarbox-monitoring-grafana:
+    build: ./pillarbox-monitoring-grafana
+    image: srgssr/pillarbox-monitoring-grafana:1.0.0
+    container_name: pillarbox-monitoring-grafana
+    ports:
+      - '3000:3000'

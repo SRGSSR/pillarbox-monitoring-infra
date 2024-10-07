@@ -1,0 +1,24 @@
+apiVersion: 1
+datasources:
+  - name: opensearch
+    type: grafana-opensearch-datasource
+    typeName: OpenSearch
+    typeLogoUrl: public/img/icn-datasource.svg
+    access: proxy
+    url: http://opensearch:9200
+    user: ''
+    database: ''
+    basicAuth: false
+    isDefault: true
+    jsonData:
+      database: actions
+      flavor: opensearch
+      logLevelField: ''
+      logMessageField: ''
+      maxConcurrentShardRequests: 5
+      pplEnabled: true
+      timeField: "@timestamp"
+      version: 2.17.0
+      versionLabel: OpenSearch 2.17.0
+
+    readOnly: false

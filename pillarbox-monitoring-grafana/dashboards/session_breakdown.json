@@ -23,7 +23,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -94,7 +94,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -219,7 +219,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -316,7 +316,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -366,7 +366,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -496,7 +496,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -584,7 +584,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -718,7 +718,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -809,7 +809,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -940,7 +940,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -1012,7 +1012,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -1135,7 +1135,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -1162,7 +1162,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "hide": false,
           "metrics": [
@@ -1183,7 +1183,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "gridPos": {
         "h": 7,
@@ -1208,7 +1208,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {

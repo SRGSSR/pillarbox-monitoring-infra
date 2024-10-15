@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "transfer_task" {
   container_definitions = jsonencode([
     {
       name                   = "pillarbox-monitoring-transfer"
-      image                  = "${local.ecr_repository}/pillarbox-monitoring-transfer:latest"
+      image                  = "${local.ecr_repository}/pillarbox-monitoring-transfer:${local.ecr_image_tag}"
       readonlyRootFilesystem = true
 
       # Port mapping for the container

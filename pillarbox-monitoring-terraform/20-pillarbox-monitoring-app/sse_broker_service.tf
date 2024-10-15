@@ -275,7 +275,7 @@ resource "aws_ecs_task_definition" "dispatch_task" {
   container_definitions = jsonencode([
     {
       name                   = "pillarbox-event-dispatcher"
-      image                  = "${local.ecr_repository}/pillarbox-event-dispatcher:latest"
+      image                  = "${local.ecr_repository}/pillarbox-event-dispatcher:${local.ecr_image_tag}"
       readonlyRootFilesystem = true
 
       portMappings = [

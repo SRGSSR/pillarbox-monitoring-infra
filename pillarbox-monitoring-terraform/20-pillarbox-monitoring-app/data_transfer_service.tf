@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "transfer_task" {
       # Environment variables for connecting to SSE and OpenSearch services
       environment = [
         {
-          name  = "PILLARBOX_MONITORING_SSE_URI"
+          name  = "PILLARBOX_MONITORING_DISPATCH_URI"
           value = "http://${aws_service_discovery_service.dispatch_service_discovery.name}.${aws_service_discovery_private_dns_namespace.service_discovery_namespace.name}:8080/events"
         },
         {

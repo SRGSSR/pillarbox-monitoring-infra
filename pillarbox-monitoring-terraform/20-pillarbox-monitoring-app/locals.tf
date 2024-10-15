@@ -4,7 +4,7 @@ locals {
   ecs_cluster_name = "${var.application_name}-cluster"
   is_prod          = terraform.workspace == "prod"
   ecr_repository   = "${var.account_ids["prod"]}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
-
+  ecr_image_tag    = local.is_prod ? "stable" : "latest"
 
   opensearch = {
     domain_name   = "${var.application_name}-search"

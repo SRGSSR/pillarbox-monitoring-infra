@@ -23,7 +23,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "fieldConfig": {
         "defaults": {
@@ -172,7 +172,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -215,7 +215,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "hide": false,
           "metrics": [

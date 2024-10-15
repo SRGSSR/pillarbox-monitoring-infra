@@ -23,7 +23,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "description": "",
       "fieldConfig": {
@@ -205,7 +205,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -224,7 +224,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "description": "",
       "fieldConfig": {
@@ -447,7 +447,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "hide": false,
           "metrics": [
@@ -467,7 +467,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "description": "Usage by platform for the selected time range.",
       "fieldConfig": {
@@ -667,7 +667,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "metrics": [
             {
@@ -686,7 +686,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "bdyokg8kq4c1sa"
+        "uid": "de0gi09a14ow0e"
       },
       "description": "",
       "fieldConfig": {
@@ -836,7 +836,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "bdyokg8kq4c1sa"
+            "uid": "de0gi09a14ow0e"
           },
           "hide": false,
           "metrics": [
@@ -867,7 +867,7 @@
         },
         "datasource": {
           "type": "opensearch",
-          "uid": "bdyokg8kq4c1sa"
+          "uid": "de0gi09a14ow0e"
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
         "description": "Filter by player platform.",

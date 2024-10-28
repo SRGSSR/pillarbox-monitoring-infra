@@ -119,6 +119,10 @@ The project is split into four main Terraform configurations:
   Monitoring infrastructure. **This applies to both dev and prod environments**. You can switch
   between workspaces (as mentioned earlier) to deploy infrastructure in either the dev or prod
   account.
+- [21-continuous-delivery][cd]: This configuration contains the definition of the IAM roles that
+  allow access to GitHub Action for specific repositories and operations. **This applies to both
+  dev and prod environments**. You can switch between workspaces (as mentioned earlier) to deploy
+  infrastructure in either the dev or prod account.
 
 ### System Flow Overview
 
@@ -170,3 +174,4 @@ This project is licensed under the [MIT License](LICENSE).
 [route-53]: /pillarbox-monitoring-terraform/10-pillarbox-monitoring-route-53
 [ecr]: /pillarbox-monitoring-terraform/11-pillarbox-monitoring-ecr
 [app]: /pillarbox-monitoring-terraform/20-pillarbox-monitoring-app
+[cd]: /pillarbox-monitoring-terraform/21-continuous-delivery

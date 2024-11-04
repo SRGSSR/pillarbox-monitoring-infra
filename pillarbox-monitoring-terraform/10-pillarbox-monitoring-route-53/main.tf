@@ -108,3 +108,17 @@ resource "aws_iam_role" "route53_access_role" {
     Name = "Route53AccessRole"
   }
 }
+
+# -----------------------------------
+# Route 53 Github Configuration
+# -----------------------------------
+
+# Define a new Route 53 CNAME Record for GitHub Pages
+resource "aws_route53_record" "github_pages_cname" {
+  for_each = var.github_sub_domains
+  zone_id  = aws_route53_zone.main_zone.zone_id
+  name     = "${each.key}.${var.domain_name}"
+  type     = "CNAME"
+  ttl      = 300
+  records  = ["srgssr.github.io"]
+}

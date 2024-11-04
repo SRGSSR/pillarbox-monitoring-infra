@@ -8,3 +8,8 @@ variable "allowed_account_ids" {
   description = "The ids allows to access the route 53 main zone resource"
   type        = list(string)
 }
+
+variable "github_sub_domains" {
+  type    = set(string)
+  default = ["demo", "www", "web", "android", "editor", "plugins"]
+}

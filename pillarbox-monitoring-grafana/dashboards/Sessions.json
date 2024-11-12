@@ -18,12 +18,28 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "links": [],
+  "id": 4,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "pillarbox"
+      ],
+      "targetBlank": false,
+      "title": "Pillarbox Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "panels": [
     {
       "datasource": {
-        "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "type": "grafana-opensearch-datasource",
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -155,7 +171,7 @@
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
-          "enablePagination": false,
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -172,7 +188,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -183,7 +199,7 @@
               "type": "raw_data"
             }
           ],
-          "query": "event_name:START",
+          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -215,7 +231,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -224,7 +240,7 @@
               "type": "count"
             }
           ],
-          "query": "NOT (event_name:START)",
+          "query": "NOT (event_name:START)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "C",
           "timeField": "@timestamp"
         }
@@ -434,19 +450,93 @@
   ],
   "refresh": "30s",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "pillarbox",
+    "sessions"
+  ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": "*",
+        "current": {
+          "selected": true,
+          "text": "Web",
+          "value": "Web"
+        },
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "description": "Filter by player platform.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Platform",
+        "multi": false,
+        "name": "platform",
+        "options": [],
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "current": {
+          "selected": true,
+          "text": "rts",
+          "value": "urn\\:rts\\:*"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Business Unit",
+        "multi": false,
+        "name": "bu",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "srf",
+            "value": "urn\\:srf\\:*"
+          },
+          {
+            "selected": true,
+            "text": "rts",
+            "value": "urn\\:rts\\:*"
+          },
+          {
+            "selected": false,
+            "text": "rsi",
+            "value": "urn\\:rsi\\:*"
+          },
+          {
+            "selected": false,
+            "text": "rtr",
+            "value": "urn\\:rtr\\:*"
+          },
+          {
+            "selected": false,
+            "text": "swi",
+            "value": "urn\\:swi\\:*"
+          }
+        ],
+        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
     "to": "now"
   },
-  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
   "title": "Sessions",
   "uid": "bdq5sq0nz5pmod",
-  "version": 1,
+  "version": 9,
   "weekStart": ""
 }

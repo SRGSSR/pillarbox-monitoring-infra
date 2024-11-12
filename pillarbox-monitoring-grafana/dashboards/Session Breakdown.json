@@ -18,12 +18,28 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "links": [],
+  "id": 6,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "sessions"
+      ],
+      "targetBlank": false,
+      "title": "Go back to session list",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "panels": [
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -94,7 +110,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -118,14 +134,14 @@
               "names": [
                 "data.device.model",
                 "data.device.type",
-                "data.screen.height",
                 "data.media.id",
-                "data.media.source",
                 "data.media.origin",
                 "data.os.name",
                 "data.os.version",
                 "data.player.platform",
-                "data.screen.width"
+                "data.screen.height",
+                "data.screen.width",
+                "user_ip"
               ]
             }
           }
@@ -155,7 +171,8 @@
               "data.media.source": "Media Source",
               "data.os.name": "",
               "data.player.name": "",
-              "data.player.platform": "Player Platform"
+              "data.player.platform": "Player Platform",
+              "user_ip": "IP"
             }
           }
         },
@@ -219,7 +236,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -316,7 +333,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -366,7 +383,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -496,7 +513,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -584,7 +601,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -718,7 +735,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -809,7 +826,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -940,7 +957,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -1012,7 +1029,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -1128,14 +1145,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -1155,14 +1172,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -1183,7 +1200,7 @@
     {
       "datasource": {
         "type": "opensearch",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "gridPos": {
         "h": 7,
@@ -1208,7 +1225,7 @@
           "bucketAggs": [],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -1232,11 +1249,10 @@
             "include": {
               "names": [
                 "@timestamp",
+                "data.log",
                 "data.message",
                 "data.name",
-                "data.severity",
-                "session_id",
-                "data.log"
+                "session_id"
               ]
             }
           }
@@ -1262,9 +1278,7 @@
                 "@timestamp",
                 "data.message",
                 "data.name",
-                "data.severity",
-                "session_id",
-                "Log"
+                "session_id"
               ]
             }
           }
@@ -1288,7 +1302,7 @@
               "data.log": "Logs",
               "data.message": "Message",
               "data.name": "Name",
-              "data.severity": "Severity",
+              "data.severity": "",
               "session_id": "Session"
             }
           }
@@ -1299,7 +1313,9 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "hidden"
+  ],
   "templating": {
     "list": [
       {
@@ -1322,6 +1338,79 @@
         "query": "",
         "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "30s",
+        "current": {
+          "selected": false,
+          "text": "auto",
+          "value": "$__auto_interval_interval"
+        },
+        "hide": 0,
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_interval"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
       }
     ]
   },
@@ -1329,11 +1418,10 @@
     "from": "now-30m",
     "to": "now"
   },
-  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 1,
+  "version": 9,
   "weekStart": ""
 }

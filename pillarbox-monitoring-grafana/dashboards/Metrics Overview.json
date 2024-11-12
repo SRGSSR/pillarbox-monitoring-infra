@@ -18,12 +18,28 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "links": [],
+  "id": 5,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "pillarbox"
+      ],
+      "targetBlank": false,
+      "title": "Navigate to",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "panels": [
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -139,14 +155,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10s"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -155,7 +171,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:${bu:raw} AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -166,14 +182,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -183,7 +199,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:urn\\:${bu}\\:* AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
           "refId": "B",
           "timeField": "@timestamp"
         }
@@ -194,7 +210,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "description": "Stall rate normalized to duration watched.",
       "fieldConfig": {
@@ -296,14 +312,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": true,
           "metrics": [
@@ -313,7 +329,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:${bu:raw} AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -324,14 +340,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": true,
           "metrics": [
@@ -341,7 +357,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:urn\\:${bu}\\:* AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -363,7 +379,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "description": "Stall duration duration to watched ratio,",
       "fieldConfig": {
@@ -465,14 +481,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": true,
           "metrics": [
@@ -482,7 +498,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND \nsession.player.platform:${platform} AND\nsession.media.id:${bu:raw} AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -493,14 +509,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": true,
           "metrics": [
@@ -510,7 +526,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:urn\\:${bu}\\:* AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -532,7 +548,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -622,7 +638,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto",
+                "interval": "$interval",
                 "min_doc_count": "0",
                 "timeZone": "utc",
                 "trimEdges": "0"
@@ -632,7 +648,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -642,7 +658,7 @@
               "type": "avg"
             }
           ],
-          "query": "event_name:START AND \ndata.player.platform:${platform} AND\ndata.media.id:${bu:raw} AND\ndata.media.id:${media_id} ",
+          "query": "event_name:START \nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}\nAND data.media.id:${media_id} ",
           "refId": "C",
           "timeField": "@timestamp"
         },
@@ -653,7 +669,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto",
+                "interval": "$interval",
                 "min_doc_count": "0",
                 "timeZone": "utc",
                 "trimEdges": "0"
@@ -663,7 +679,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -672,7 +688,7 @@
               "type": "avg"
             }
           ],
-          "query": "event_name:START AND\ndata.player.platform:${platform} AND\ndata.media.id:urn\\:${bu}\\:* AND\ndata.media.id:${media_id} ",
+          "query": "event_name:START \nAND data.player.platform:${platform}\nAND data.media.id:urn\\:${bu}\\:*\nAND data.media.id:${media_id} ",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -683,7 +699,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "description": "",
       "fieldConfig": {
@@ -831,14 +847,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10s"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -847,7 +863,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:${bu:raw} AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -858,14 +874,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10s"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -875,7 +891,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:urn\\:${bu}\\:* AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR) \nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -886,14 +902,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10s"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -903,7 +919,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) AND\nsession.player.platform:${platform} AND\nsession.media.id:urn\\:${bu}\\:* AND\nsession.media.id:${media_id} ",
+          "query": "NOT event_name:(START OR ERROR) \nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
           "refId": "C",
           "timeField": "@timestamp"
         }
@@ -913,10 +929,13 @@
   ],
   "refresh": "30s",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "pillarbox"
+  ],
   "templating": {
     "list": [
       {
+        "allValue": "*",
         "current": {
           "selected": false,
           "text": "All",
@@ -924,7 +943,7 @@
         },
         "datasource": {
           "type": "opensearch",
-          "uid": "de0gi09a14ow0e"
+          "uid": "PB728120E9B299770"
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
         "description": "Filter by player platform.",
@@ -935,7 +954,7 @@
         "name": "platform",
         "options": [],
         "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -991,6 +1010,79 @@
         "type": "custom"
       },
       {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "30s",
+        "current": {
+          "selected": false,
+          "text": "auto",
+          "value": "$__auto_interval_interval"
+        },
+        "hide": 0,
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_interval"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      },
+      {
         "current": {
           "selected": false,
           "text": "*",
@@ -1016,11 +1108,10 @@
     "from": "now-15m",
     "to": "now"
   },
-  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
   "title": "Metrics Overview",
   "uid": "cdrfq3ry8fw1sc",
-  "version": 1,
+  "version": 9,
   "weekStart": ""
 }

@@ -1,5 +1,5 @@
 # Dockerfile for grafana
-FROM grafana/grafana:11.0.0
+FROM grafana/grafana:10.4.1
 
 # Copy provisioning and dashboards
 COPY ./provisioning /etc/grafana/provisioning

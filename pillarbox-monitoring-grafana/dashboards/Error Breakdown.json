@@ -18,7 +18,23 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "links": [],
+  "id": 2,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "pillarbox"
+      ],
+      "targetBlank": false,
+      "title": "Navigate to",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "panels": [
     {
       "collapsed": true,
@@ -33,7 +49,7 @@
         {
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "gridPos": {
             "h": 7,
@@ -55,26 +71,32 @@
           "targets": [
             {
               "alias": "",
-              "bucketAggs": [],
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "1",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
               "datasource": {
                 "type": "opensearch",
-                "uid": "de0gi09a14ow0e"
+                "uid": "PB728120E9B299770"
               },
               "metrics": [
                 {
                   "id": "1",
-                  "settings": {
-                    "size": "500"
-                  },
-                  "type": "raw_data"
+                  "type": "logs"
                 }
               ],
-              "query": "event_name:ERROR AND\nsession.media.id:${bu:raw} AND\nsession.player.platform:${platform}",
+              "query": "event_name:ERROR \nAND session.media.id:${bu:raw} \nAND session.player.platform:${platform}",
               "refId": "A",
               "timeField": "@timestamp"
             }
           ],
-          "title": "Lates Errors",
+          "title": "Latest Errors",
           "transformations": [
             {
               "id": "filterFieldsByName",
@@ -82,11 +104,10 @@
                 "include": {
                   "names": [
                     "@timestamp",
+                    "data.log",
                     "data.message",
                     "data.name",
-                    "data.severity",
-                    "session_id",
-                    "data.log"
+                    "session_id"
                   ]
                 }
               }
@@ -112,9 +133,7 @@
                     "@timestamp",
                     "data.message",
                     "data.name",
-                    "data.severity",
-                    "session_id",
-                    "Log"
+                    "session_id"
                   ]
                 }
               }
@@ -138,7 +157,7 @@
                   "data.log": "Logs",
                   "data.message": "Message",
                   "data.name": "Name",
-                  "data.severity": "Severity",
+                  "data.severity": "",
                   "session_id": "Session"
                 }
               }
@@ -166,7 +185,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -293,14 +312,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "1m"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -321,14 +340,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -349,14 +368,14 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "hide": false,
           "metrics": [
@@ -377,7 +396,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -458,7 +477,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.device.model.keyword",
+              "field": "session.device.model.keyword",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -471,7 +490,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -479,7 +498,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START AND \ndata.player.platform:${platform} AND\ndata.media.id:${bu:raw}",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -490,7 +509,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -639,7 +658,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -647,7 +666,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.severity:Fatal\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -684,7 +703,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "de0gi09a14ow0e"
+        "uid": "PB728120E9B299770"
       },
       "fieldConfig": {
         "defaults": {
@@ -889,7 +908,7 @@
           ],
           "datasource": {
             "type": "opensearch",
-            "uid": "de0gi09a14ow0e"
+            "uid": "PB728120E9B299770"
           },
           "metrics": [
             {
@@ -897,20 +916,62 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR AND \nsession.player.platform:${platform} AND\nsession.media.id:${bu:raw}",
+          "query": "event_name:ERROR \nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
       "title": "Error Breakdown",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "data.name.keyword"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
       "type": "piechart"
     }
   ],
-  "refresh": "30s",
+  "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "pillarbox"
+  ],
   "templating": {
     "list": [
+      {
+        "allValue": "*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "opensearch",
+          "uid": "PB728120E9B299770"
+        },
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "description": "Filter by player platform.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Player Platform",
+        "multi": false,
+        "name": "platform",
+        "options": [],
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
       {
         "allValue": "*",
         "current": {
@@ -961,30 +1022,78 @@
         "type": "custom"
       },
       {
-        "allValue": "",
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "30s",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "auto",
+          "value": "$__auto_interval_interval"
         },
-        "datasource": {
-          "type": "opensearch",
-          "uid": "de0gi09a14ow0e"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
-        "description": "Filter by player platform.",
         "hide": 0,
-        "includeAll": true,
-        "label": "Player Platform",
-        "multi": false,
-        "name": "platform",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
-        "refresh": 1,
-        "regex": "",
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_interval"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "queryValue": "",
+        "refresh": 2,
         "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
+        "type": "interval"
       }
     ]
   },
@@ -992,11 +1101,10 @@
     "from": "now-30m",
     "to": "now"
   },
-  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown",
   "uid": "adrbls4g373eod",
-  "version": 1,
+  "version": 12,
   "weekStart": ""
 }

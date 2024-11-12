@@ -166,6 +166,11 @@ git config core.hooksPath .githooks/
 
 Refer to our [Contribution Guide](docs/CONTRIBUTING.md) for more detailed information.
 
+### Exporting Dashboards from production
+
+See the [Grafana Dashboard Export Guide](./docs/DASHBOARD_EXPORT_GUIDE.md) for information on how
+to export and backup the dashboards in production.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

@@ -12,3 +12,8 @@ output "dispatch_dns_name" {
   description = "The DNS name of the Dispatch Service Load Balancer"
   value       = aws_alb.dispatch_alb.dns_name
 }
+
+output "grafana_alert_topic" {
+  description = "The ARN of the topic for grafana alerts"
+  value       = aws_sns_topic.grafana_alerts.arn
+}

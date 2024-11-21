@@ -128,7 +128,7 @@ resource "aws_security_group" "vpc_endpoints_sg" {
     to_port     = 443
     security_groups = [
       aws_security_group.dispatch_task_sg.id,
-      aws_security_group.transfer_task_sg.id
+      aws_security_group.transfer_task_sg.id,
     ]
   }
 
@@ -189,5 +189,40 @@ resource "aws_vpc_endpoint" "cloudwatch_logs" {
 
   tags = {
     Name = "vpc-cloudwatch-logs-endpoint"
+  }
+}
+
+
+# Security Group for the SNS VPC Endpoint
+resource "aws_security_group" "sns_vpc_endpoint_sg" {
+  name        = "sns-vpc-endpoint-sg"
+  description = "Associated to SNS Endpoint"
+  vpc_id      = local.vpc_id
+
+  # Ingress rule to allow access to VPC endpoints
+  ingress {
+    description     = "Allow Grafana to publish to SNS topics"
+    protocol        = "tcp"
+    from_port       = 443
+    to_port         = 443
+    security_groups = [aws_security_group.grafana_sg.id]
+  }
+
+  tags = {
+    Name = "sns-vpc-endpoint-sg"
+  }
+}
+
+# VPC Endpoint for SNS
+resource "aws_vpc_endpoint" "sns" {
+  vpc_id              = data.aws_vpc.main_vpc.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.sns"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = data.aws_subnets.private_subnets.ids
+  security_group_ids  = [aws_security_group.sns_vpc_endpoint_sg.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "vpc-sns-endpoint"
   }
 }

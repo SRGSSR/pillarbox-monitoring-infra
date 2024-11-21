@@ -26,7 +26,7 @@ resource "aws_security_group" "transfer_task_sg" {
 
 resource "aws_cloudwatch_log_group" "transfer_log_group" {
   name              = "/ecs/pillarbox-monitoring-transfer"
-  retention_in_days = 7 # Adjust the retention period as necessary
+  retention_in_days = 7
 
   tags = {
     Name = "data-transfer-log-group"

@@ -24,5 +24,9 @@ variable "pillarbox_domain_name" {
   description = "The public domain name of the service"
   type        = string
   default     = "pillarbox.ch"
+}
 
+variable "alert_emails" {
+  description = "List of email addresses to subscribe to SNS topic for Grafana alerts"
+  type        = list(string)
 }

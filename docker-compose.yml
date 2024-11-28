@@ -17,7 +17,7 @@ services:
       - PILLARBOX_MONITORING_DISPATCH_URI=http://pillarbox-event-dispatcher:8080/events
 
   opensearch:
-    image: opensearchproject/opensearch:2.15.0
+    image: opensearchproject/opensearch:2.17.0
     container_name: opensearch
     ports:
       - '9200:9200'
@@ -34,6 +34,17 @@ services:
           memory: 1g
         reservations:
           memory: 512m
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.17.0
+    container_name: opensearch-dashboards
+    ports:
+      - '5601:5601'
+    environment:
+      - OPENSEARCH_HOSTS=http://opensearch:9200
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true
+    depends_on:
+      - opensearch
 
   pillarbox-monitoring-grafana:
     build: ./pillarbox-monitoring-grafana

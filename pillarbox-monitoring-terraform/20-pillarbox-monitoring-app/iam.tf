@@ -167,7 +167,7 @@ data "aws_iam_policy_document" "opensearch_policy" {
 
     actions = ["es:*"]
     resources = [
-      "arn:aws:es:${data.aws_region.current.name}:${local.accout_id}:domain/${local.opensearch.domain_name}/*"
+      "arn:aws:es:${data.aws_region.current.name}:${local.account_id}:domain/${local.opensearch.domain_name}/*"
     ]
   }
 }

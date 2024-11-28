@@ -1,5 +1,5 @@
 locals {
-  accout_id        = var.account_ids[terraform.workspace]
+  account_id       = var.account_ids[terraform.workspace]
   vpc_id           = var.vpc_ids[terraform.workspace]
   ecs_cluster_name = "${var.application_name}-cluster"
   is_prod          = terraform.workspace == "prod"

@@ -4,7 +4,7 @@
 
 resource "aws_opensearch_domain" "opensearch_domain" {
   domain_name    = local.opensearch.domain_name
-  engine_version = "OpenSearch_2.15"
+  engine_version = "OpenSearch_2.17"
 
   # Cluster configuration including instance type and count
   cluster_config {

@@ -26,7 +26,7 @@ terraform {
 # -----------------------------------
 
 provider "aws" {
-  allowed_account_ids = [local.accout_id]
+  allowed_account_ids = [local.account_id]
 
   # Apply default tags to all AWS resources
   default_tags {

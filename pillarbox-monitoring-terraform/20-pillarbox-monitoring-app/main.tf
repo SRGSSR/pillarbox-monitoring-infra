@@ -6,10 +6,10 @@ terraform {
   # Backend configuration for storing the Terraform state in S3 with DynamoDB table for state locking
   backend "s3" {
     encrypt        = true
-    bucket         = "pillarbox-monitoring-tfstate"
-    key            = "terraform/20-pillarbox-monitoring-app/terraform.tfstate"
-    dynamodb_table = "pillarbox-monitoring-terraform-statelock"
-    profile        = "prod"
+    bucket         = "rts-digital-terraform-backends-53a0d15f"
+    key            = "pillarbox-monitoring-infra/20-pillarbox-monitoring-app.tfstate"
+    dynamodb_table = "rts-digital-terraform-statelocks"
+    profile        = "services-prd"
   }
 
   # Specify required providers and their versions

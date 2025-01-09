@@ -9,5 +9,6 @@ locals {
     "srg-owner"         = "pillarbox-team@rts.ch"
     "srg-businessowner" = "pillarbox"
     "srg-environment"   = terraform.workspace
+    "srg-repository"    = "SRGSSR/pillarbox-monitoring-infra"
   }
 }

@@ -17,13 +17,14 @@ locals {
   domain_name = local.is_prod ? "monitoring.pillarbox.ch" : "dev.monitoring.pillarbox.ch"
 
   transfer_task = {
-    cpu    = 512
-    memory = 1024
+    cpu       = local.is_prod ? 2048 : 512
+    memory    = local.is_prod ? 16384 : 1024
+    java_opts = local.is_prod ? "-Xms14G -Xmx14G" : "-Xms1G -Xmx1G"
   }
 
   dispatch_task = {
-    cpu    = 256
-    memory = 512
+    cpu    = local.is_prod ? 1024 : 256
+    memory = local.is_prod ? 2048 : 512
   }
 
   default_tags = {

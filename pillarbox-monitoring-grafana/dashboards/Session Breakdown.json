@@ -23,6 +23,18 @@
     {
       "asDropdown": false,
       "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Live view",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/bdrf82ou9416ob/session-breakdown?to=now&refresh=30s"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
       "includeVars": false,
       "keepTime": false,
       "tags": [
@@ -250,7 +262,7 @@
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": 30000,
+            "insertNulls": false,
             "lineWidth": 0,
             "spanNulls": false
           },
@@ -502,7 +514,10 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {},
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -724,7 +739,10 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {},
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
         "textMode": "value_and_name",
         "wideLayout": true
       },
@@ -939,7 +957,7 @@
       "options": {
         "colorMode": "background",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [],
@@ -947,6 +965,10 @@
           "values": true
         },
         "showPercentChange": false,
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
         "textMode": "auto",
         "wideLayout": true
       },
@@ -1161,7 +1183,7 @@
               "type": "avg"
             }
           ],
-          "query": "(NOT event_name:START) AND session_id:\"${session_id}\"",
+          "query": "event_name:(HEARTBEAT OR STOP) AND session_id:\"${session_id}\"",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -1189,7 +1211,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:START AND session_id:\"${session_id}\"",
+          "query": "event_name:(HEARTBEAT OR STOP) AND session_id:\"${session_id}\"",
           "refId": "B",
           "timeField": "@timestamp"
         }
@@ -1422,6 +1444,6 @@
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 9,
+  "version": 13,
   "weekStart": ""
 }

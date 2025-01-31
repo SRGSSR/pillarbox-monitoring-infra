@@ -33,48 +33,66 @@ monitoring solution for the Pillarbox player.
 
 ### Executing Terraform Scripts
 
-Before running the Terraform scripts, ensure your environment is correctly configured.
+Before executing Terraform scripts, ensure your environment is properly configured. Before
+proceeding ensure these 3 profile exists in your `~/.aws/credentials` or `~/.aws/config`:
 
-1. **AWS Region and Profiles**
+- `services-prd`: AWS account where the Terraform backend is stored.
+- `prod`: AWS account for the production environment.
+- `dev`: AWS account for the development environment.
 
-   Set the `AWS_REGION` and `AWS_PROFILE` environment variables:
+#### 1. Connect to the accounts
 
-   ```bash
-   export AWS_REGION=<your-region>
-   export AWS_PROFILE=<workspace>
-   ```
+If using SSO, authenticate like this:
 
-   - Replace `<your-region>` with your desired AWS region (e.g., `us-east-1`).
-   - Replace `<workspace>` with either `dev` or `prod`, matching the Terraform workspace you intend
-     to use.
+```bash
+aws sso login --profile services-prd
+aws sso login --profile prod
+aws sso login --profile dev
+```
 
-   **Note:** You must have AWS CLI profiles named `dev` and `prod` configured in your
-   `~/.aws/credentials` or `~/.aws/config` files. Each profile should correspond to the AWS account
-   for the respective environment.
+#### 2. Set AWS Region and Profile
 
-2. **Terraform Workspaces**
+Define the necessary environment variables:
 
-   The project utilizes two Terraform workspaces: `dev` and `prod`, corresponding to development and
-   production environments. Switch between workspaces using:
+```bash
+export AWS_REGION=<your-region>
+export AWS_PROFILE=<profile>
+```
 
-   ```bash
-   terraform workspace select dev   # Switch to the development environment
-   terraform workspace select prod  # Switch to the production environment
-   ```
+- `<your-region>`: Specify the AWS region (e.g., `us-east-1`).
+- `<profile>`: Use `dev` or `prod` based on the environment that you intend to change.
 
-   See the [Documentation](#documentation) for more information on which workspace to use for each
-   configuration.
+#### 3. Select the Terraform Workspace (If Applicable)
 
-3. **Running Terraform**
+Some configurations use Terraform workspaces (`dev` and `prod`), while others are production-only.
+If workspaces apply, switch using:
 
-   Initialize the Terraform working directory and apply the configuration:
+```bash
+terraform workspace select <workspace>
+# Change the profile accordingly
+export AWS_PROFILE=<profile>
+```
 
-   ```bash
-   terraform init
-   terraform apply
-   ```
+- `dev`: Development environment.
+- `prod`: Production environment.
 
-   Review the execution plan carefully before confirming the changes.
+If workspaces are not required, ensure `AWS_PROFILE=prod` is set for production-only configurations.
+
+See the [Documentation](#documentation) for more information on which workspace to use for each
+configuration.
+
+#### 4. Run Terraform
+
+Initialize and apply Terraform configuration:
+
+```bash
+# Synchronize with the backend
+terraform init
+# Execute the changes
+terraform apply
+```
+
+Carefully review the execution plan before confirming changes.
 
 ### Running Locally with Docker Compose
 
@@ -104,11 +122,8 @@ This command will build and run the following services:
 
 ## Documentation
 
-The project is split into four main Terraform configurations:
+The project is split into several Terraform configurations:
 
-- [01-terraform-backend][terraform-backend]: This configuration sets up the Terraform backend and is
-  **only applicable in the prod environment**. The backend is used to store Terraform state
-  remotely, ensuring that multiple users and systems can work on infrastructure collaboratively.
 - [10-pillarbox-monitoring-route-53][route-53]: This handles the creation of the Route 53 DNS setup
   for the project. **This is only executed in the prod environment**, as Route 53 is linked to the
   production domain.
@@ -179,7 +194,6 @@ to export and backup the dashboards in production.
 
 This project is licensed under the [MIT License](LICENSE).
 
-[terraform-backend]: /pillarbox-monitoring-terraform/01-terraform-backend
 [route-53]: /pillarbox-monitoring-terraform/10-pillarbox-monitoring-route-53
 [ecr]: /pillarbox-monitoring-terraform/11-pillarbox-monitoring-ecr
 [app]: /pillarbox-monitoring-terraform/20-pillarbox-monitoring-app

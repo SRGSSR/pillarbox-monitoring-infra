@@ -11,7 +11,7 @@ datasources:
     basicAuth: false
     isDefault: true
     jsonData:
-      database: filtered_actions
+      database: user_events
       flavor: opensearch
       logLevelField: ''
       logMessageField: ''

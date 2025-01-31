@@ -208,7 +208,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "event_name.keyword",
+              "field": "event_name",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -395,9 +395,7 @@
                 "names": [
                   "STOP",
                   "START",
-                  "STALL",
-                  "ERROR",
-                  "BUFFER"
+                  "ERROR"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -441,7 +439,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "event_name.keyword",
+              "field": "event_name",
               "id": "3",
               "settings": {
                 "min_doc_count": "1",
@@ -670,7 +668,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.player.platform.keyword",
+              "field": "data.player.platform",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -830,7 +828,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.player.platform.keyword",
+              "field": "data.player.platform",
               "id": "3",
               "settings": {
                 "min_doc_count": "1",
@@ -888,7 +886,7 @@
           "type": "opensearch",
           "uid": "PB728120E9B299770"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
@@ -896,7 +894,7 @@
         "multi": false,
         "name": "platform",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1036,6 +1034,6 @@
   "timezone": "browser",
   "title": "Event Breakdown",
   "uid": "bdrg12eb4dp1cf",
-  "version": 12,
+  "version": 13,
   "weekStart": ""
 }

@@ -56,203 +56,7 @@
           },
           "mappings": []
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Edge"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Internet Explorer"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Chrome"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Safari"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Firefox"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Opera"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ios"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "windows"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "android"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ipados"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "tvos"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "linux"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "macos"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -286,12 +90,12 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.os.name.keyword",
+              "field": "data.os.name",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
+                "orderBy": "_count",
                 "size": "10"
               },
               "type": "terms"
@@ -335,203 +139,7 @@
           },
           "mappings": []
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Edge"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Internet Explorer"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Chrome"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Safari"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Firefox"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Opera"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "web"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "apple"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "android"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Phone"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Laptop"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Desktop"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Tablet"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -565,12 +173,12 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.device.type.keyword",
+              "field": "data.device.type",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
+                "orderBy": "_count",
                 "size": "10"
               },
               "type": "terms"
@@ -616,91 +224,25 @@
         },
         "overrides": [
           {
+            "__systemRef": "hideSeriesFrom",
             "matcher": {
-              "id": "byName",
-              "options": "Edge"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Count"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Internet Explorer"
             },
             "properties": [
               {
-                "id": "color",
+                "id": "custom.hideFrom",
                 "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Chrome"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Safari"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Firefox"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Opera"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
                 }
               }
             ]
@@ -739,12 +281,12 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.browser.name.keyword",
+              "field": "data.browser.name",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
+                "orderBy": "_count",
                 "size": "10"
               },
               "type": "terms"
@@ -848,7 +390,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.os.name.keyword",
+              "field": "data.os.name",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -859,7 +401,7 @@
               "type": "terms"
             },
             {
-              "field": "data.os.version.keyword",
+              "field": "data.os.version",
               "id": "3",
               "settings": {
                 "min_doc_count": "1",
@@ -894,8 +436,8 @@
             "mode": "reduceRow",
             "reduce": {
               "include": [
-                "data.os.name.keyword",
-                "data.os.version.keyword"
+                "data.os.name",
+                "data.os.version"
               ],
               "reducer": "allValues"
             }
@@ -905,7 +447,11 @@
           "id": "organize",
           "options": {
             "excludeByName": {
+              "Count": false,
+              "OS": false,
+              "data.os.name": true,
               "data.os.name.keyword": true,
+              "data.os.version": true,
               "data.os.version.keyword": true
             },
             "includeByName": {},
@@ -916,7 +462,9 @@
               "data.os.version.keyword": 1
             },
             "renameByName": {
-              "All values": "OS"
+              "All values": "OS",
+              "Count": "Number of sessions",
+              "OS": ""
             }
           }
         },
@@ -927,7 +475,7 @@
             "sort": [
               {
                 "desc": true,
-                "field": "Count"
+                "field": "Number of sessions"
               }
             ]
           }
@@ -1036,7 +584,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.device.model.keyword",
+              "field": "data.device.model",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -1145,7 +693,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.browser.name.keyword",
+              "field": "data.browser.name",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -1156,12 +704,12 @@
               "type": "terms"
             },
             {
-              "field": "data.browser.version.keyword",
+              "field": "data.browser.version",
               "id": "3",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
+                "orderBy": "_count",
                 "size": "10"
               },
               "type": "terms"
@@ -1187,12 +735,12 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "OS",
+            "alias": "Browser",
             "mode": "reduceRow",
             "reduce": {
               "include": [
-                "data.browser.name.keyword",
-                "data.browser.version.keyword"
+                "data.browser.name",
+                "data.browser.version"
               ],
               "reducer": "allValues"
             }
@@ -1202,6 +750,8 @@
           "id": "organize",
           "options": {
             "excludeByName": {
+              "data.browser.name": true,
+              "data.browser.version": true,
               "data.os.name.keyword": true,
               "data.os.version.keyword": true
             },
@@ -1213,7 +763,8 @@
               "data.os.version.keyword": 1
             },
             "renameByName": {
-              "All values": "OS"
+              "All values": "OS",
+              "Count": "Number of sessions"
             }
           }
         },
@@ -1224,7 +775,7 @@
             "sort": [
               {
                 "desc": true,
-                "field": "Count"
+                "field": "Number of sessions"
               }
             ]
           }
@@ -1235,7 +786,7 @@
             "conversions": [
               {
                 "destinationType": "string",
-                "targetField": "OS"
+                "targetField": "Browser"
               }
             ],
             "fields": {}
@@ -1267,7 +818,7 @@
           "type": "opensearch",
           "uid": "PB728120E9B299770"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
@@ -1275,7 +826,7 @@
         "multi": false,
         "name": "platform",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1341,6 +892,6 @@
   "timezone": "browser",
   "title": "Device Breakdown",
   "uid": "cdrj6qnc10veoe",
-  "version": 9,
+  "version": 12,
   "weekStart": ""
 }

@@ -71,6 +71,14 @@ resource "aws_ecs_task_definition" "transfer_task" {
         {
           name  = "PILLARBOX_MONITORING_OPENSEARCH_URI"
           value = "https://${aws_opensearch_domain.opensearch_domain.endpoint}:443"
+        },
+        {
+          name  = "JAVA_OPTS"
+          value = local.transfer_task.java_opts
+        },
+        {
+          name  = "SPRING_PROFILES_ACTIVE"
+          value = local.is_prod ? "prod" : "local"
         }
       ]
 

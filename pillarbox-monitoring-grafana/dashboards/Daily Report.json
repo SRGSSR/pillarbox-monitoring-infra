@@ -7,10 +7,16 @@
           "type": "grafana",
           "uid": "-- Grafana --"
         },
-        "enable": true,
-        "hide": true,
+        "enable": false,
+        "hide": false,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -20,6 +26,30 @@
   "graphTooltip": 0,
   "id": 30,
   "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Now",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/fe3wlaan74740b/daily-report?from=now-30m&to=now"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Today",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/fe3wlaan74740b/daily-report?from=now/d&to=now"
+    },
     {
       "asDropdown": false,
       "icon": "external link",
@@ -55,42 +85,6 @@
       "tooltip": "",
       "type": "link",
       "url": "/d/fe3wlaan74740b/daily-report?from=now-3d/d&to=now-3d/d"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "4 Days Ago",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-4d/d&to=now-4d/d"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "5 Days Ago",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-5d/d&to=now-5d/d"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "6 Days Ago",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-6d/d&to=now-6d/d"
     },
     {
       "asDropdown": true,
@@ -161,13 +155,13 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "alias": "",
+          "alias": "playing",
           "bucketAggs": [
             {
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto",
+                "interval": "$interval",
                 "min_doc_count": "0",
                 "trimEdges": "0"
               },
@@ -183,8 +177,12 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "field": "session_id.keyword",
+              "field": "session_id",
+              "hide": false,
               "id": "3",
+              "settings": {
+                "precision_threshold": "1000"
+              },
               "type": "cardinality"
             }
           ],
@@ -194,13 +192,15 @@
           "timeField": "@timestamp"
         },
         {
-          "alias": "",
+          "alias": "error",
           "bucketAggs": [
             {
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto"
+                "interval": "$interval",
+                "min_doc_count": "0",
+                "trimEdges": "0"
               },
               "type": "date_histogram"
             }
@@ -213,9 +213,8 @@
           "hide": false,
           "metrics": [
             {
-              "field": "session_id.keyword",
               "id": "1",
-              "type": "cardinality"
+              "type": "count"
             }
           ],
           "query": "event_name:ERROR\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
@@ -224,18 +223,8 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Total Success Rate",
+      "title": "Total success rate",
       "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "Unique Count session_id.keyword"
-              ]
-            }
-          }
-        },
         {
           "id": "reduce",
           "options": {
@@ -249,17 +238,16 @@
         },
         {
           "id": "rowsToFields",
-          "options": {
-            "mappings": []
-          }
+          "options": {}
         },
         {
           "id": "calculateField",
           "options": {
+            "alias": "errorRate",
             "binary": {
-              "left": "Unique Count session_id.keyword 2",
+              "left": "error",
               "operator": "/",
-              "right": "Unique Count session_id.keyword 1"
+              "right": "playing"
             },
             "mode": "binary",
             "reduce": {
@@ -268,25 +256,13 @@
           }
         },
         {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Unique Count session_id.keyword 1": true,
-              "Unique Count session_id.keyword 2": true,
-              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": false
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {}
-          }
-        },
-        {
           "id": "calculateField",
           "options": {
+            "alias": "successRate",
             "binary": {
               "left": "1",
               "operator": "-",
-              "right": "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1"
+              "right": "errorRate"
             },
             "mode": "binary",
             "reduce": {
@@ -295,15 +271,12 @@
           }
         },
         {
-          "id": "organize",
+          "id": "filterFieldsByName",
           "options": {
-            "excludeByName": {
-              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": true
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "1 - Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": "Success"
+            "include": {
+              "names": [
+                "successRate"
+              ]
             }
           }
         }
@@ -384,7 +357,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -416,8 +389,11 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "field": "session_id.keyword",
+              "field": "session_id",
               "id": "3",
+              "settings": {
+                "precision_threshold": "1000"
+              },
               "type": "cardinality"
             }
           ],
@@ -446,9 +422,8 @@
           "hide": true,
           "metrics": [
             {
-              "field": "session_id.keyword",
               "id": "1",
-              "type": "cardinality"
+              "type": "count"
             }
           ],
           "query": "event_name:ERROR\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
@@ -464,7 +439,7 @@
           },
           "expression": "1 - ($error / $playing)",
           "hide": false,
-          "refId": "Error",
+          "refId": "Success rate",
           "type": "math"
         }
       ],
@@ -476,89 +451,24 @@
         "type": "grafana-opensearch-datasource",
         "uid": "PB728120E9B299770"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
+          "color": {
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "blue",
                 "value": null
               }
             ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": " "
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 20
-                    },
-                    {
-                      "color": "red",
-                      "value": 100
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 60
-              }
-            ]
           },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Media ID"
-            },
-            "properties": [
-              {
-                "id": "filterable",
-                "value": true
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "",
-                    "url": "https://demo.pillarbox.ch/examples?src=${__value.text}&type=srgssr%2Furn"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          "unit": "short"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -566,82 +476,56 @@
         "x": 0,
         "y": 8
       },
-      "id": 3,
+      "id": 5,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
             "sum"
           ],
-          "show": false
+          "fields": "",
+          "values": false
         },
-        "showHeader": true,
-        "sortBy": []
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "alias": "",
+          "alias": "Sessions",
           "bucketAggs": [
             {
-              "field": "session.media.id.keyword",
+              "field": "@timestamp",
               "id": "2",
               "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
+                "interval": "$interval"
               },
-              "type": "terms"
+              "type": "date_histogram"
             }
           ],
           "datasource": {
-            "type": "opensearch",
+            "type": "grafana-opensearch-datasource",
             "uid": "PB728120E9B299770"
           },
+          "format": "table",
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND data.media.id:${bu:raw}\nAND data.player.platform:${platform}",
+          "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Most conflicting medias",
-      "transformations": [
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Count"
-              }
-            ]
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Count": " ",
-              "data.name.keyword": "Error name",
-              "session.media.id.keyword": "Media ID"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      "title": "Total number of sessions",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -737,25 +621,331 @@
           "format": "table",
           "metrics": [
             {
-              "field": "session_id.keyword",
               "id": "1",
-              "type": "cardinality"
+              "type": "count"
             }
           ],
-          "query": "session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND data.media.id:${bu:raw}\nAND data.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Number of Sessions",
+      "title": "Number of sessions over time",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "PB728120E9B299770"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 20
+                    },
+                    {
+                      "color": "red",
+                      "value": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 60
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.media.id"
+            },
+            "properties": [
+              {
+                "id": "filterable",
+                "value": true
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}\n"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 374
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Link"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "https://demo.pillarbox.ch/?src=${__value.raw}&type=srgssr/urn"
+                  }
+                ]
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "pattern": ".*",
+                      "result": {
+                        "index": 0,
+                        "text": "Play media"
+                      }
+                    },
+                    "type": "regex"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": " "
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 116
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Media"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 253
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": " Error count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": " Demo"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "10.4.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.media.id",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "data.message",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "opensearch",
+            "uid": "PB728120E9B299770"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Most conflicting medias",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Count"
+              }
+            ]
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Link",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "session.media.id"
+              ],
+              "reducer": "lastNotNull"
+            },
+            "unary": {
+              "fieldName": "session.media.id.keyword",
+              "operator": "abs"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Count": 1,
+              "Link": 2,
+              "data.message": 3,
+              "session.media.id": 0
+            },
+            "renameByName": {
+              "Count": " Error count",
+              "Link": " Demo",
+              "data.message": "Message",
+              "data.message.keyword": "Error",
+              "data.name.keyword": "Error name",
+              "link": " ",
+              "session.media.id": "Media",
+              "session.media.id.keyword": "Media ID"
+            }
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
-  "refresh": "",
+  "refresh": "1m",
   "schemaVersion": 39,
   "tags": [
-    "pillarbox"
+    "pillarbox",
+    "daily_report"
   ],
   "templating": {
     "list": [
@@ -770,7 +960,7 @@
           "type": "grafana-opensearch-datasource",
           "uid": "PB728120E9B299770"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
@@ -778,7 +968,7 @@
         "multi": false,
         "name": "platform",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -911,13 +1101,13 @@
     ]
   },
   "time": {
-    "from": "now-1d/d",
-    "to": "now-1d/d"
+    "from": "now-30m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 13,
+  "version": 32,
   "weekStart": ""
 }

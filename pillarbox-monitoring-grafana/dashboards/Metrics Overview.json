@@ -171,7 +171,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -199,7 +199,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "B",
           "timeField": "@timestamp"
         }
@@ -274,7 +274,7 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "percent"
+                "value": "Stalls"
               },
               {
                 "id": "displayName",
@@ -329,7 +329,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -357,7 +357,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -443,7 +443,7 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "percent"
+                "value": "percentunit"
               },
               {
                 "id": "displayName",
@@ -498,7 +498,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -526,7 +526,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -658,7 +658,7 @@
               "type": "avg"
             }
           ],
-          "query": "event_name:START \nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}\nAND data.media.id:${media_id} ",
+          "query": "event_name:START \nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}",
           "refId": "C",
           "timeField": "@timestamp"
         },
@@ -688,7 +688,7 @@
               "type": "avg"
             }
           ],
-          "query": "event_name:START \nAND data.player.platform:${platform}\nAND data.media.id:urn\\:${bu}\\:*\nAND data.media.id:${media_id} ",
+          "query": "event_name:START \nAND data.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -757,7 +757,7 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "none"
+                "value": "Stalls"
               },
               {
                 "id": "thresholds",
@@ -863,7 +863,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR)\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         },
@@ -891,7 +891,7 @@
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) \nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -914,12 +914,12 @@
           "hide": false,
           "metrics": [
             {
-              "field": "data.buffer_duration",
+              "field": "data.buffered_duration",
               "id": "1",
               "type": "avg"
             }
           ],
-          "query": "NOT event_name:(START OR ERROR) \nAND session.player.platform:${platform}\nAND session.media.id:urn\\:${bu}\\:*\nAND session.media.id:${media_id} ",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "refId": "C",
           "timeField": "@timestamp"
         }
@@ -945,7 +945,7 @@
           "type": "opensearch",
           "uid": "PB728120E9B299770"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
@@ -953,7 +953,7 @@
         "multi": false,
         "name": "platform",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform.keyword\",\n  \"size\": 1000\n}",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1078,29 +1078,10 @@
           }
         ],
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "*",
-          "value": "*"
-        },
-        "hide": 0,
-        "label": "Media Id",
-        "name": "media_id",
-        "options": [
-          {
-            "selected": true,
-            "text": "*",
-            "value": "*"
-          }
-        ],
-        "query": "*",
-        "skipUrlSync": false,
-        "type": "textbox"
       }
     ]
   },
@@ -1112,6 +1093,6 @@
   "timezone": "browser",
   "title": "Metrics Overview",
   "uid": "cdrfq3ry8fw1sc",
-  "version": 9,
+  "version": 12,
   "weekStart": ""
 }

@@ -15,11 +15,11 @@
       }
     ]
   },
-  "description": "This dashboard provides a comprehensive analysis of errors filtered by Media ID. Use the Media ID filter to focus on specific media assets, examine error messages, and gain insights into platform-specific or device-specific error trends. ",
+  "description": "This dashboard provides a comprehensive analysis of block reasons filtered by Media ID. ",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 45,
+  "id": 38,
   "links": [
     {
       "asDropdown": false,
@@ -28,7 +28,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": true,
-      "title": "Play media",
+      "title": "Play Media",
       "tooltip": "",
       "type": "link",
       "url": "https://demo.pillarbox.ch/?src=${media_id}&type=srgssr/urn"
@@ -39,10 +39,10 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "daily_report"
+        "block_reason_report"
       ],
       "targetBlank": false,
-      "title": "Daily Report",
+      "title": "Block Reason Report",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -54,201 +54,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "PB728120E9B299770"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.95
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 5,
-        "x": 0,
-        "y": 0
-      },
-      "id": 15,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.4.1",
-      "targets": [
-        {
-          "alias": "playing",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "3",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${media_id}",
-          "queryType": "lucene",
-          "refId": "playing",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "error",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
-          },
-          "format": "table",
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
-          "queryType": "lucene",
-          "refId": "error",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Success rate",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "sum"
-            ]
-          }
-        },
-        {
-          "id": "rowsToFields",
-          "options": {
-            "mappings": []
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "errorRate",
-            "binary": {
-              "left": "error",
-              "operator": "/",
-              "right": "playing"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Unique Count session_id.keyword 1": true,
-              "Unique Count session_id.keyword 2": true,
-              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": false
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {}
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "successRate",
-            "binary": {
-              "left": "1",
-              "operator": "-",
-              "right": "errorRate"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": true
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "1 - Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": "Success",
-              "successRate": ""
-            }
-          }
-        }
-      ],
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
-      },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -269,12 +75,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 5,
-        "x": 5,
+        "x": 0,
         "y": 0
       },
-      "id": 18,
+      "id": 19,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -320,9 +126,37 @@
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
+        },
+        {
+          "alias": "Blocked",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "PB728120E9B299770"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
         }
       ],
-      "title": "Total number of sessions",
       "type": "stat"
     },
     {
@@ -330,10 +164,12 @@
         "type": "grafana-opensearch-datasource",
         "uid": "PB728120E9B299770"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -366,7 +202,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -376,10 +212,6 @@
               {
                 "color": "red",
                 "value": null
-              },
-              {
-                "color": "green",
-                "value": 0.95
               }
             ]
           },
@@ -388,12 +220,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 14,
-        "x": 10,
+        "h": 9,
+        "w": 10,
+        "x": 5,
         "y": 0
       },
-      "id": 16,
+      "id": 20,
       "options": {
         "legend": {
           "calcs": [],
@@ -435,13 +267,13 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.media.id:${media_id}\nAND data.player.platform:${platform}",
+          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${media_id}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
         },
         {
-          "alias": "",
+          "alias": "block",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -464,9 +296,9 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
-          "refId": "error",
+          "refId": "block",
           "timeField": "@timestamp"
         },
         {
@@ -475,13 +307,13 @@
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "1 - ($error / $playing)",
+          "expression": "$block / $playing",
           "hide": false,
-          "refId": "Success Rate",
+          "refId": "Block rate",
           "type": "math"
         }
       ],
-      "title": "Success rate over time",
+      "title": "Block rate over time",
       "type": "timeseries"
     },
     {
@@ -489,102 +321,51 @@
         "type": "grafana-opensearch-datasource",
         "uid": "PB728120E9B299770"
       },
+      "description": "The breakdown of blocking reasons for the selected period.",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "mappings": []
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 20
-                    },
-                    {
-                      "color": "red",
-                      "value": 100
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 60
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*/"
-            },
-            "properties": [
-              {
-                "id": "filterable"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 0,
-        "y": 8
+        "h": 9,
+        "w": 9,
+        "x": 15,
+        "y": 0
       },
-      "id": 1,
+      "id": 21,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
         },
-        "showHeader": true,
-        "sortBy": []
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "10.4.1",
       "targets": [
@@ -592,62 +373,161 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.message",
+              "field": "data.error_type",
               "id": "2",
               "settings": {
-                "min_doc_count": "1",
+                "min_doc_count": "0",
                 "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
+                "orderBy": "_term",
+                "size": "10"
               },
               "type": "terms"
             }
           ],
           "datasource": {
-            "type": "opensearch",
+            "type": "grafana-opensearch-datasource",
             "uid": "PB728120E9B299770"
           },
+          "format": "table",
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "transformations": [
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
+      "title": "Block Reason Breakdown",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "PB728120E9B299770"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1.1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "desc": true,
-                "field": "Count"
+                "color": "red",
+                "value": null
               }
             ]
-          }
+          },
+          "unit": "none"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 9
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.1",
+      "targets": [
         {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Count": " ",
-              "data.message": "Error Message",
-              "data.message.keyword": "Error",
-              "data.name.keyword": "Error name",
-              "session.media.id.keyword": "Media ID"
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "data.error_type",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
             }
-          }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "PB728120E9B299770"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "block",
+          "timeField": "@timestamp"
         }
       ],
-      "type": "table"
+      "title": "Block reason over time",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -709,7 +589,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 8
+        "y": 9
       },
       "id": 14,
       "options": {
@@ -754,7 +634,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.media.id:${media_id}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.player.platform:${platform}\nAND session.media.id:\"${media_id}\"",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -781,344 +661,11 @@
         "type": "grafana-opensearch-datasource",
         "uid": "PB728120E9B299770"
       },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*/"
-            },
-            "properties": [
-              {
-                "id": "filterable"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Platform"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Device"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 211
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 12,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "10.4.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "1",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "logs"
-            }
-          ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.media.id:${media_id}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Device Breakdown",
-      "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "session.browser.name",
-                "session.browser.version",
-                "session.device.model",
-                "session.os.name",
-                "session.os.version",
-                "session.player.name",
-                "session.player.platform",
-                "session.player.version"
-              ]
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "count",
-            "binary": {
-              "left": "0",
-              "right": "1"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "@timestamp": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
-                "operation": "aggregate"
-              },
-              "count": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "data.browser.name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.browser.version": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.device.model": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.os.name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.os.version": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.player.name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.player.platform": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "data.player.version": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "row": {
-                "aggregations": [],
-                "operation": "aggregate"
-              },
-              "session.browser.name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.browser.version": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.device.model": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.os.name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.os.version": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.player.name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.player.platform": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "session.player.version": {
-                "aggregations": [],
-                "operation": "groupby"
-              }
-            }
-          }
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "count (sum)"
-              }
-            ]
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Browser",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.browser.name",
-                "session.browser.version"
-              ],
-              "reducer": "allValues"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "OS",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.os.name",
-                "session.os.version"
-              ],
-              "reducer": "allValues"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Player",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.player.name",
-                "session.player.version"
-              ],
-              "reducer": "allValues"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "session.browser.name": true,
-              "session.browser.version": true,
-              "session.os.name": true,
-              "session.os.version": true,
-              "session.player.name": true,
-              "session.player.platform": false,
-              "session.player.version": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Browser": 10,
-              "OS": 9,
-              "Player": 7,
-              "count (sum)": 11,
-              "session.browser.name": 0,
-              "session.browser.version": 1,
-              "session.device.model": 8,
-              "session.os.name": 2,
-              "session.os.version": 3,
-              "session.player.name": 4,
-              "session.player.platform": 6,
-              "session.player.version": 5
-            },
-            "renameByName": {
-              "OS": "",
-              "count (sum)": "Count",
-              "session.device.model": "Device",
-              "session.player.platform": "Platform"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
-      },
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 17
       },
       "id": 7,
       "options": {
@@ -1154,7 +701,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR \nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR \nAND data.business_error:true\nAND session.media.id:\"${media_id}\"\nAND session.player.platform:${platform}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -1369,20 +916,20 @@
       {
         "current": {
           "selected": false,
-          "text": "*",
-          "value": "*"
+          "text": "urn:swisstxt:video:srf:1811521",
+          "value": "urn:swisstxt:video:srf:1811521"
         },
         "hide": 0,
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "*",
             "value": "*"
           }
         ],
-        "query": "*",
+        "query": "urn:swisstxt:video:srf:1811521",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -1394,8 +941,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Error Breakdown by media",
-  "uid": "ae4i3rgkvpdkwd",
-  "version": 5,
+  "title": "Block reason breakdown by media",
+  "uid": "bec87qxee87wgd",
+  "version": 7,
   "weekStart": ""
 }

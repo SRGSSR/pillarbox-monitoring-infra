@@ -29,7 +29,7 @@
         "pillarbox"
       ],
       "targetBlank": false,
-      "title": "Pillarbox Dashboards",
+      "title": "Navigate to",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -73,7 +73,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 328
+                "value": 340
               },
               {
                 "id": "links",
@@ -106,7 +106,74 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 163
+                "value": 166
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 138
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__data.fields.from}&to=now"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "match": "true",
+                      "result": {
+                        "index": 0,
+                        "text": "Yes"
+                      }
+                    },
+                    "type": "special"
+                  },
+                  {
+                    "options": {
+                      "match": "false",
+                      "result": {
+                        "index": 1,
+                        "text": "No"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 78
               }
             ]
           },
@@ -118,19 +185,31 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 83
+                "value": 86
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "from"
+              "options": "Device"
             },
             "properties": [
               {
-                "id": "custom.hidden",
-                "value": true
+                "id": "custom.width",
+                "value": 145
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Block Reason"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 130
               }
             ]
           }
@@ -142,7 +221,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 10,
+      "id": 11,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -161,7 +240,17 @@
       "targets": [
         {
           "alias": "",
-          "bucketAggs": [],
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "1",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
           "datasource": {
             "type": "opensearch",
             "uid": "PB728120E9B299770"
@@ -169,13 +258,10 @@
           "metrics": [
             {
               "id": "1",
-              "settings": {
-                "size": "100"
-              },
-              "type": "raw_data"
+              "type": "logs"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND data.business_error:${business_error}\nAND (data.error_type:${error_type:raw})",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -186,16 +272,14 @@
           "options": {
             "include": {
               "names": [
-                "data.browser.name",
-                "data.browser.version",
-                "data.device.model",
-                "data.device.type",
-                "data.media.origin",
-                "data.os.name",
-                "data.os.version",
-                "data.player.platform",
+                "@timestamp",
+                "data.business_error",
+                "data.error_type",
+                "session.device.model",
+                "session.player.platform",
                 "session_id",
-                "@timestamp"
+                "user_ip",
+                "session.media.id"
               ]
             }
           }
@@ -210,43 +294,6 @@
                 "field": "@timestamp"
               }
             ]
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "browser",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "data.browser.name",
-                "data.browser.version"
-              ],
-              "reducer": "allValues"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "os",
-            "binary": {
-              "left": "session.browser.name (lastNotNull)",
-              "operator": "+",
-              "right": "session.browser.version (lastNotNull)"
-            },
-            "index": {
-              "asPercentile": false
-            },
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "data.os.version",
-                "data.os.name"
-              ],
-              "reducer": "allValues"
-            },
-            "replaceFields": false
           }
         },
         {
@@ -269,12 +316,13 @@
           "id": "organize",
           "options": {
             "excludeByName": {
+              "@timestamp": true,
               "@timestamp 1": false,
-              "data.browser.name": true,
-              "data.browser.version": true,
-              "data.device.type": true,
+              "data.browser.name": false,
+              "data.browser.version": false,
+              "data.device.type": false,
               "data.os.name": true,
-              "data.os.version": true,
+              "data.os.version": false,
               "from": false,
               "session.browser.name (lastNotNull)": true,
               "session.browser.version (lastNotNull)": true,
@@ -283,21 +331,18 @@
             },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 1,
-              "browser": 6,
-              "data.browser.name": 7,
-              "data.browser.version": 8,
-              "data.device.model": 4,
-              "data.device.type": 9,
-              "data.media.origin": 5,
-              "data.os.name": 10,
-              "data.os.version": 11,
-              "data.player.platform": 2,
-              "os": 3,
-              "session_id": 0
+              "@timestamp": 2,
+              "data.business_error": 7,
+              "data.error_type": 8,
+              "from": 3,
+              "session.device.model": 6,
+              "session.media.id": 4,
+              "session.player.platform": 5,
+              "session_id": 0,
+              "user_ip": 1
             },
             "renameByName": {
-              "@timestamp": "Start time",
+              "@timestamp": "",
               "@timestamp (firstNotNull)": "Started",
               "@timestamp (lastNotNull)": "Last Updated",
               "@timestamp 1": "Start",
@@ -309,31 +354,50 @@
               "data.bitrate (lastNotNull)": "Last Bitrate",
               "data.browser.name": "",
               "data.browser.version": "",
+              "data.business_error": "Blocked",
               "data.device.model": "Device",
+              "data.error_type": "Block Reason",
               "data.media.origin": "Origin",
               "data.os.version": "",
               "data.playback_duration (firstNotNull)": "Playback Duration",
               "data.playback_duration (lastNotNull)": "Playback Duration",
               "data.player.platform": "Platform",
+              "from": "Start time",
               "os": "OS",
               "session.browser.name (lastNotNull)": "",
               "session.browser.name (lastNotNull) + session.browser.version (lastNotNull)": "Browser",
               "session.browser.version (lastNotNull)": "",
+              "session.device.model": "Device",
               "session.device.model (lastNotNull)": "Device Model",
               "session.device.type (lastNotNull)": "Device Type",
+              "session.media.id": "Media",
               "session.media.id (lastNotNull)": "Media Id",
               "session.media.origin (lastNotNull)": "Origin",
               "session.os.version (lastNotNull)": "",
+              "session.player.platform": "Platform",
               "session.player.platform (lastNotNull)": "Platform",
-              "session_id": "Session"
+              "session_id": "Session",
+              "user_ip": "IP"
             }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Start time"
+              }
+            ],
+            "fields": {}
           }
         }
       ],
       "type": "table"
     }
   ],
-  "refresh": "1m",
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [
     "pillarbox",
@@ -352,7 +416,7 @@
           "type": "grafana-opensearch-datasource",
           "uid": "PB728120E9B299770"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
@@ -360,7 +424,7 @@
         "multi": false,
         "name": "platform",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -415,6 +479,65 @@
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "allValue": "* OR (NOT _exists_:data.error_type)",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "grafana-opensearch-datasource",
+          "uid": "PB728120E9B299770"
+        },
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.error_type\",\n  \"query\": \"event_name:ERROR\",\n  \"size\": 10\n}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Block Reason",
+        "multi": false,
+        "name": "error_type",
+        "options": [],
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.error_type\",\n  \"query\": \"event_name:ERROR\",\n  \"size\": 10\n}",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Blocked",
+        "multi": false,
+        "name": "business_error",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Yes",
+            "value": "true"
+          },
+          {
+            "selected": false,
+            "text": "No",
+            "value": "false"
+          }
+        ],
+        "query": "Yes : true, No : false",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -424,8 +547,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Sessions",
+  "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 14,
+  "version": 23,
   "weekStart": ""
 }

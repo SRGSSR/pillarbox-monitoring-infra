@@ -945,7 +945,7 @@
           "type": "opensearch",
           "uid": "PB728120E9B299770"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
@@ -953,7 +953,7 @@
         "multi": false,
         "name": "platform",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"size\": 10\n}",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1093,6 +1093,6 @@
   "timezone": "browser",
   "title": "Metrics Overview",
   "uid": "cdrfq3ry8fw1sc",
-  "version": 12,
+  "version": 13,
   "weekStart": ""
 }

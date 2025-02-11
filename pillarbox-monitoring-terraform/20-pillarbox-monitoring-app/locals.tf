@@ -8,10 +8,10 @@ locals {
 
   opensearch = {
     domain_name   = "${var.application_name}-search"
-    volume_size   = local.is_prod ? 100 : 10
+    volume_size   = local.is_prod ? 300 : 10
     instance_type = local.is_prod ? "m7g.medium.search" : "t3.small.search"
     volume_type   = local.is_prod ? "gp3" : "gp2"
-    throughput    = local.is_prod ? 125 : null
+    throughput    = local.is_prod ? 250 : null
   }
 
   domain_name = local.is_prod ? "monitoring.pillarbox.ch" : "dev.monitoring.pillarbox.ch"

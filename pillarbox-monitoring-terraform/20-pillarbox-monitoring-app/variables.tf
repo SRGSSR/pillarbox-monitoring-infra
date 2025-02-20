@@ -30,3 +30,8 @@ variable "alert_emails" {
   description = "List of email addresses to subscribe to SNS topic for Grafana alerts"
   type        = list(string)
 }
+
+variable "il_proxy_api_key" {
+  description = "The API key to the IL proxy by terraform workspace"
+  type        = map(string)
+}

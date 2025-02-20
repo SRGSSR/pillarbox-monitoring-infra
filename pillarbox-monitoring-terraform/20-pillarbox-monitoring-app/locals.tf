@@ -14,6 +14,12 @@ locals {
     throughput    = local.is_prod ? 250 : null
   }
 
+  il_proxy = {
+    ami           = "ami-0d7c381edfc5ee30e"
+    instance_type = "t4g.nano"
+    api_key       = var.il_proxy_api_key[terraform.workspace]
+  }
+
   domain_name = local.is_prod ? "monitoring.pillarbox.ch" : "dev.monitoring.pillarbox.ch"
 
   transfer_task = {

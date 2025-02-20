@@ -251,7 +251,7 @@ resource "aws_security_group" "dispatch_task_sg" {
 
 resource "aws_cloudwatch_log_group" "dispatch_log_group" {
   name              = "/ecs/pillarbox-event-dispatcher"
-  retention_in_days = 7 # Adjust the retention as needed
+  retention_in_days = 7
 
   tags = {
     Name = "dispatch-log-group"

@@ -7,13 +7,13 @@ resource "aws_security_group" "grafana_sg" {
   name   = "grafana-sg"
   vpc_id = data.aws_vpc.main_vpc.id
 
-  # Ingress rule: Allow inbound traffic from OpenSearch on port 443
+  # Ingress rule: Allow all inbound traffic
   ingress {
-    description = "Allow all inbound traffic from OpenSearch"
+    description = "Allow all inbound traffic"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Adjust CIDR block to restrict access
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Egress rule: Allow all outbound traffic
@@ -31,7 +31,6 @@ resource "aws_security_group" "grafana_sg" {
 }
 
 ## Create a Grafana Workspace for monitoring with OpenSearch as the data source
-
 resource "aws_grafana_workspace" "grafana_workspace" {
   name                      = "${var.application_name}-grafana"
   account_access_type       = "CURRENT_ACCOUNT"                       # Restrict Grafana workspace to the current AWS account

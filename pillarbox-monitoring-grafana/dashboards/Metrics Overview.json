@@ -62,7 +62,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "stepAfter",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -109,7 +109,367 @@
                 }
               }
             ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Bandwidth",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "opensearch",
+            "uid": "PB728120E9B299770"
           },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "data.bandwidth",
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "refId": "B",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Average bandiwdth",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "PB728120E9B299770"
+      },
+      "description": "Stall duration duration to watched ratio,",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average stall duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "displayName",
+                "value": "Rate"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Average stall duration",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "opensearch",
+            "uid": "PB728120E9B299770"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "data.stall.duration",
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Stall Duration Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "PB728120E9B299770"
+      },
+      "description": "Average frame drops over time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Average frame drops",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "opensearch",
+            "uid": "PB728120E9B299770"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "data.frame_drops",
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Frame drops",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "PB728120E9B299770"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": [
           {
             "matcher": {
               "id": "byName",
@@ -129,9 +489,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 8,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 3,
       "options": {
@@ -171,36 +531,8 @@
               "type": "avg"
             }
           ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
+          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
           "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Bandwidth",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "field": "data.bandwidth",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "B",
           "timeField": "@timestamp"
         }
       ],
@@ -212,7 +544,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "PB728120E9B299770"
       },
-      "description": "Stall rate normalized to duration watched.",
+      "description": "Average number of stalls over time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -234,7 +566,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "stepAfter",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -265,30 +597,13 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "C 1"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Stalls"
-              },
-              {
-                "id": "displayName",
-                "value": "Rate"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
         "w": 8,
-        "x": 7,
-        "y": 0
+        "x": 8,
+        "y": 8
       },
       "id": 18,
       "options": {
@@ -321,568 +636,6 @@
             "type": "opensearch",
             "uid": "PB728120E9B299770"
           },
-          "hide": true,
-          "metrics": [
-            {
-              "field": "data.stall.count",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Average Duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "hide": true,
-          "metrics": [
-            {
-              "field": "data.playback_duration",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "datasource": {
-            "name": "Expression",
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
-          "expression": "$A / $B",
-          "hide": false,
-          "refId": "C",
-          "type": "math"
-        }
-      ],
-      "title": "Stall Rate",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
-      },
-      "description": "Stall duration duration to watched ratio,",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "C 1"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              },
-              {
-                "id": "displayName",
-                "value": "Rate"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 9,
-        "x": 15,
-        "y": 0
-      },
-      "id": 20,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "maxHeight": 600,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "Average stall duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "hide": true,
-          "metrics": [
-            {
-              "field": "data.stall.duration",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Average Duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "hide": true,
-          "metrics": [
-            {
-              "field": "data.playback_duration",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "datasource": {
-            "name": "Expression",
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
-          "expression": "$A / $B",
-          "hide": false,
-          "refId": "C",
-          "type": "math"
-        }
-      ],
-      "title": "Stall Duration Rate",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "stepBefore",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 3,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dtdurationms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 13,
-        "x": 0,
-        "y": 8
-      },
-      "id": 19,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "maxHeight": 600,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.0.0",
-      "targets": [
-        {
-          "alias": "Asset",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "timeZone": "utc",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "field": "data.qoe_timings.asset",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:START \nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}",
-          "refId": "C",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Metadata",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "timeZone": "utc",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "metrics": [
-            {
-              "field": "data.qoe_timings.metadata",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:START \nAND data.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Average Loading time",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Stall Duration"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dtdurationms"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "orange",
-                      "value": 1
-                    },
-                    {
-                      "color": "red",
-                      "value": 2
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Stall Count"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Stalls"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "orange",
-                      "value": 1
-                    },
-                    {
-                      "color": "red",
-                      "value": 1.5
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Buffer Duration"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dtdurationms"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "orange",
-                      "value": 1
-                    },
-                    {
-                      "color": "red",
-                      "value": 2
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 11,
-        "x": 13,
-        "y": 8
-      },
-      "id": 16,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.4.1",
-      "targets": [
-        {
-          "alias": "Stall Duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "metrics": [
-            {
-              "field": "data.stall.duration",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Stall Count",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
           "hide": false,
           "metrics": [
             {
@@ -891,40 +644,13 @@
               "type": "avg"
             }
           ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Buffer Duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "field": "data.buffered_duration",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "event_name:HEARTBEAT\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
-          "refId": "C",
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "type": "stat"
+      "title": "Stalls",
+      "type": "timeseries"
     }
   ],
   "refresh": "30s",
@@ -937,28 +663,42 @@
       {
         "allValue": "*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "opensearch",
-          "uid": "PB728120E9B299770"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
-        "refresh": 2,
-        "regex": "",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Android",
+            "value": "Android"
+          },
+          {
+            "selected": false,
+            "text": "Apple",
+            "value": "Apple"
+          },
+          {
+            "selected": false,
+            "text": "Web",
+            "value": "Web"
+          }
+        ],
+        "query": "Android, Apple, Web",
+        "queryValue": "",
         "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
+        "type": "custom"
       },
       {
         "allValue": "*",
@@ -981,30 +721,69 @@
           {
             "selected": false,
             "text": "srf",
-            "value": "urn\\:srf\\:*"
+            "value": "srf"
           },
           {
             "selected": false,
             "text": "rts",
-            "value": "urn\\:rts\\:*"
+            "value": "rts"
           },
           {
             "selected": false,
             "text": "rsi",
-            "value": "urn\\:rsi\\:*"
+            "value": "rsi"
           },
           {
             "selected": false,
             "text": "rtr",
-            "value": "urn\\:rtr\\:*"
+            "value": "rtr"
           },
           {
             "selected": false,
             "text": "swi",
-            "value": "urn\\:swi\\:*"
+            "value": "swi"
+          },
+          {
+            "selected": false,
+            "text": "rio",
+            "value": "rio"
           }
         ],
-        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
+        "query": "srf, rts, rsi, rtr, swi, rio",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "*$bu*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": false,
+        "name": "type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Audio",
+            "value": "*\\:*\\:audio\\:*"
+          },
+          {
+            "selected": false,
+            "text": "Video",
+            "value": "*\\:*\\:video\\:*"
+          }
+        ],
+        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -1086,13 +865,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Metrics Overview",
   "uid": "cdrfq3ry8fw1sc",
-  "version": 13,
+  "version": 16,
   "weekStart": ""
 }

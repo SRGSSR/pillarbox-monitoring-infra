@@ -229,7 +229,7 @@
               "type": "count"
             }
           ],
-          "query": "NOT event_name:HEARTBEAT\nAND (\n  (data.player.platform:${platform} AND data.media.id:${bu:raw})\n  OR \n  (session.player.platform:${platform} AND session.media.id:${bu:raw})\n)",
+          "query": "NOT event_name:HEARTBEAT\nAND (\n  (data.player.platform:${platform} AND data.media.id:${type:raw})\n  OR \n  (session.player.platform:${platform} AND session.media.id:${type:raw})\n)",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -394,8 +394,7 @@
                 "mode": "exclude",
                 "names": [
                   "STOP",
-                  "START",
-                  "ERROR"
+                  "START"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -470,7 +469,7 @@
               "type": "count"
             }
           ],
-          "query": "(session.player.platform:${platform}\nAND session.media.id:${bu:raw} ) OR \n(data.player.platform:${platform}\nAND data.media.id:${bu:raw} )",
+          "query": "(session.player.platform:${platform}\nAND session.media.id:${type:raw} ) OR \n(data.player.platform:${platform}\nAND data.media.id:${type:raw} )",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -689,7 +688,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}",
+          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${type:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -859,7 +858,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND (data.player.platform:${platform}\nAND data.media.id:${bu:raw} )",
+          "query": "event_name:START\nAND (data.player.platform:${platform}\nAND data.media.id:${type:raw} )",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -878,28 +877,42 @@
       {
         "allValue": "*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "opensearch",
-          "uid": "PB728120E9B299770"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
-        "refresh": 2,
-        "regex": "",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Android",
+            "value": "Android"
+          },
+          {
+            "selected": false,
+            "text": "Apple",
+            "value": "Apple"
+          },
+          {
+            "selected": false,
+            "text": "Web",
+            "value": "Web"
+          }
+        ],
+        "query": "Android, Apple, Web",
+        "queryValue": "",
         "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
+        "type": "custom"
       },
       {
         "allValue": "*",
@@ -922,30 +935,64 @@
           {
             "selected": false,
             "text": "srf",
-            "value": "urn\\:srf\\:*"
+            "value": "srf"
           },
           {
             "selected": false,
             "text": "rts",
-            "value": "urn\\:rts\\:*"
+            "value": "rts"
           },
           {
             "selected": false,
             "text": "rsi",
-            "value": "urn\\:rsi\\:*"
+            "value": "rsi"
           },
           {
             "selected": false,
             "text": "rtr",
-            "value": "urn\\:rtr\\:*"
+            "value": "rtr"
           },
           {
             "selected": false,
             "text": "swi",
-            "value": "urn\\:swi\\:*"
+            "value": "swi"
           }
         ],
-        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
+        "query": "srf, rts, rsi, rtr, swi, rio",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "*$bu*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": false,
+        "name": "type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Audio",
+            "value": "*\\:*\\:audio\\:*"
+          },
+          {
+            "selected": false,
+            "text": "Video",
+            "value": "*\\:*\\:video\\:*"
+          }
+        ],
+        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -955,7 +1002,7 @@
         "auto_count": 30,
         "auto_min": "30s",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_interval"
         },
@@ -1034,6 +1081,6 @@
   "timezone": "browser",
   "title": "Event Breakdown",
   "uid": "bdrg12eb4dp1cf",
-  "version": 14,
+  "version": 17,
   "weekStart": ""
 }

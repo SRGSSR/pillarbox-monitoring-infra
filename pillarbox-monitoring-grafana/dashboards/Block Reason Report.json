@@ -176,7 +176,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.media.id:${bu:raw}\nAND data.player.platform:${platform}",
+          "query": "event_name:START\nAND data.media.id:${type:raw}\nAND data.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -204,7 +204,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -321,7 +321,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:${platform} \nAND data.media.id:${bu:raw}",
+          "query": "event_name:START\nAND data.player.platform:${platform} \nAND data.media.id:${type:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -361,7 +361,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "block",
           "timeField": "@timestamp"
@@ -559,7 +559,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.media.id:${bu:raw}\nAND data.business_error:true",
+          "query": "event_name:ERROR\nAND session.media.id:${type:raw}\nAND data.business_error:true",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -589,7 +589,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${bu:raw}",
+          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${type:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -707,6 +707,24 @@
               "total_errors": "Blocked",
               "type": ""
             }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Blocked"
+              }
+            ],
+            "match": "any",
+            "type": "include"
           }
         }
       ],
@@ -881,7 +899,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND data.business_error:true\nAND data.error_type:GEOBLOCK",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:true\nAND data.error_type:GEOBLOCK",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -911,7 +929,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${bu:raw}",
+          "query": "event_name:START\nAND data.player.platform:${platform}\nAND data.media.id:${type:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1024,6 +1042,24 @@
               "user_ip": "IP"
             }
           }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Geoblocked"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
         }
       ],
       "type": "table"
@@ -1108,7 +1144,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${bu:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -1132,24 +1168,37 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "grafana-opensearch-datasource",
-          "uid": "PB728120E9B299770"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
-        "refresh": 2,
-        "regex": "",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Android",
+            "value": "Android"
+          },
+          {
+            "selected": false,
+            "text": "Apple",
+            "value": "Apple"
+          },
+          {
+            "selected": false,
+            "text": "Web",
+            "value": "Web"
+          }
+        ],
+        "query": "Android, Apple, Web",
         "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
+        "type": "custom"
       },
       {
         "allValue": "*",
@@ -1195,7 +1244,41 @@
             "value": "urn\\:swi\\:*"
           }
         ],
-        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
+        "query": "srf, rts, rsi, rtr, swi, rio",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "*$bu*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": false,
+        "name": "type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Audio",
+            "value": "*\\:*\\:audio\\:*"
+          },
+          {
+            "selected": false,
+            "text": "Video",
+            "value": "*\\:*\\:video\\:*"
+          }
+        ],
+        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -1284,6 +1367,6 @@
   "timezone": "browser",
   "title": "Block Reason Report",
   "uid": "cec4zkjaqmdj4e",
-  "version": 12,
+  "version": 15,
   "weekStart": ""
 }

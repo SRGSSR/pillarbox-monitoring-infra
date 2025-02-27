@@ -261,7 +261,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND data.business_error:${business_error}\nAND (data.error_type:${error_type:raw})",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:${business_error}\nAND (data.error_type:${error_type:raw})",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -412,24 +412,38 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "grafana-opensearch-datasource",
-          "uid": "PB728120E9B299770"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
         "hide": 0,
         "includeAll": true,
         "label": "Platform",
         "multi": false,
         "name": "platform",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
-        "refresh": 1,
-        "regex": "",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Android",
+            "value": "Android"
+          },
+          {
+            "selected": false,
+            "text": "Apple",
+            "value": "Apple"
+          },
+          {
+            "selected": false,
+            "text": "Web",
+            "value": "Web"
+          }
+        ],
+        "query": "Android, Apple, Web",
+        "queryValue": "",
         "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
+        "type": "custom"
       },
       {
         "allValue": "*",
@@ -475,7 +489,41 @@
             "value": "urn\\:swi\\:*"
           }
         ],
-        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
+        "query": "srf, rts, rsi, rtr, swi, rio",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "*$bu*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": false,
+        "name": "type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Audio",
+            "value": "*\\:*\\:audio\\:*"
+          },
+          {
+            "selected": false,
+            "text": "Video",
+            "value": "*\\:*\\:video\\:*"
+          }
+        ],
+        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -538,6 +586,17 @@
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "datasource": {
+          "type": "grafana-opensearch-datasource",
+          "uid": "PB728120E9B299770"
+        },
+        "filters": [],
+        "hide": 0,
+        "name": "Filter",
+        "skipUrlSync": false,
+        "type": "adhoc"
       }
     ]
   },
@@ -549,6 +608,6 @@
   "timezone": "browser",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 23,
+  "version": 26,
   "weekStart": ""
 }

@@ -41,8 +41,8 @@ resource "aws_ecs_task_definition" "transfer_task" {
   family                   = "pillarbox-monitoring-transfer"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = local.transfer_task.cpu
-  memory                   = local.transfer_task.memory
+  cpu                      = local.transfer.task.cpu
+  memory                   = local.transfer.task.memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 
@@ -74,7 +74,7 @@ resource "aws_ecs_task_definition" "transfer_task" {
         },
         {
           name  = "JAVA_OPTS"
-          value = local.transfer_task.java_opts
+          value = local.transfer.task.java_opts
         },
         {
           name  = "SPRING_PROFILES_ACTIVE"

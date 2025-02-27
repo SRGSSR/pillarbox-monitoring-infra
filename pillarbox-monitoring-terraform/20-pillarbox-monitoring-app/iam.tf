@@ -90,68 +90,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_opensearch_policy_attachment
 }
 
 # -----------------------------------
-# IAM Role and Policies for Grafana
-# -----------------------------------
-
-# Grafana Assume Role Policy Document
-data "aws_iam_policy_document" "grafana_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["grafana.amazonaws.com"]
-    }
-  }
-}
-
-# IAM Role for Grafana Workspace
-resource "aws_iam_role" "grafana_workspace_role" {
-  name               = "grafana-assume"
-  assume_role_policy = data.aws_iam_policy_document.grafana_assume_role_policy.json
-}
-
-# OpenSearch Policy Document for Grafana
-data "aws_iam_policy_document" "grafana_opensearch_policy" {
-  statement {
-    actions   = ["es:ESHttp*"]
-    resources = ["${aws_opensearch_domain.opensearch_domain.arn}/*"]
-  }
-}
-
-# OpenSearch Policy for Grafana
-resource "aws_iam_policy" "grafana_opensearch_policy" {
-  name   = "grafana-opensearch-policy"
-  policy = data.aws_iam_policy_document.grafana_opensearch_policy.json
-}
-
-# Attach OpenSearch Policy to Grafana Role
-resource "aws_iam_role_policy_attachment" "grafana_opensearch_policy_attach" {
-  role       = aws_iam_role.grafana_workspace_role.name
-  policy_arn = aws_iam_policy.grafana_opensearch_policy.arn
-}
-
-# SNS Publish Policy Document for Grafana
-data "aws_iam_policy_document" "grafana_sns_publish_policy" {
-  statement {
-    actions   = ["sns:Publish", "sns:GetTopicAttributes"]
-    resources = [aws_sns_topic.grafana_alerts.arn]
-  }
-}
-
-# SNS Publish Policy for Grafana
-resource "aws_iam_policy" "grafana_sns_publish_policy" {
-  name   = "grafana-sns-publish-policy"
-  policy = data.aws_iam_policy_document.grafana_sns_publish_policy.json
-}
-
-# Attach SNS Publish Policy to Grafana Role
-resource "aws_iam_role_policy_attachment" "grafana_sns_publish_policy_attach" {
-  role       = aws_iam_role.grafana_workspace_role.name
-  policy_arn = aws_iam_policy.grafana_sns_publish_policy.arn
-}
-
-
-# -----------------------------------
 # OpenSearch Access Policies
 # -----------------------------------
 
@@ -200,4 +138,49 @@ data "aws_iam_policy_document" "opensearch_log_policy" {
 resource "aws_cloudwatch_log_resource_policy" "opensearch_log_policy" {
   policy_name     = "opensearch-logging-policy"
   policy_document = data.aws_iam_policy_document.opensearch_log_policy.json
+}
+
+# -----------------------------------
+# Grafana Host Policies
+# -----------------------------------
+
+resource "aws_iam_role" "grafana_ec2_role" {
+  name = "grafana-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "grafana_ssm_policy" {
+  name        = "grafana-ssm-policy"
+  description = "Allows EC2 to read Grafana admin password from SSM Parameter Store"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "ssm:GetParameter",
+        Resource = "arn:aws:ssm:${data.aws_region.current.name}:${local.account_id}:parameter/grafana/admin_password"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "grafana_ssm_policy_attach" {
+  role       = aws_iam_role.grafana_ec2_role.name
+  policy_arn = aws_iam_policy.grafana_ssm_policy.arn
+}
+
+resource "aws_iam_instance_profile" "grafana_instance_profile" {
+  name = "grafana-instance-profile"
+  role = aws_iam_role.grafana_ec2_role.name
 }

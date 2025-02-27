@@ -1,8 +1,9 @@
 locals {
-  account_id       = var.account_ids[terraform.workspace]
-  vpc_id           = var.vpc_ids[terraform.workspace]
+  account_id = var.account_ids[terraform.workspace]
+  vpc_id     = var.vpc_ids[terraform.workspace]
+  is_prod    = terraform.workspace == "prod"
+
   ecs_cluster_name = "${var.application_name}-cluster"
-  is_prod          = terraform.workspace == "prod"
   ecr_repository   = "${var.account_ids["prod"]}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
   ecr_image_tag    = local.is_prod ? "stable" : "latest"
 
@@ -14,23 +15,26 @@ locals {
     throughput    = local.is_prod ? 250 : null
   }
 
-  il_proxy = {
+  grafana = {
     ami           = "ami-0d7c381edfc5ee30e"
-    instance_type = "t4g.nano"
-    api_key       = var.il_proxy_api_key[terraform.workspace]
+    instance_type = "t4g.medium"
+    domain_name   = local.is_prod ? "grafana.${var.pillarbox_domain_name}" : "dev.grafana.${var.pillarbox_domain_name}"
   }
 
-  domain_name = local.is_prod ? "monitoring.pillarbox.ch" : "dev.monitoring.pillarbox.ch"
-
-  transfer_task = {
-    cpu       = local.is_prod ? 2048 : 512
-    memory    = local.is_prod ? 16384 : 1024
-    java_opts = local.is_prod ? "-Xms14G -Xmx14G" : "-Xms1G -Xmx1G"
+  transfer = {
+    task = {
+      cpu       = local.is_prod ? 2048 : 512
+      memory    = local.is_prod ? 16384 : 1024
+      java_opts = local.is_prod ? "-Xms14G -Xmx14G" : "-Xms1G -Xmx1G"
+    }
   }
 
-  dispatch_task = {
-    cpu    = local.is_prod ? 1024 : 256
-    memory = local.is_prod ? 2048 : 512
+  dispatch = {
+    domain_name = local.is_prod ? "monitoring.${var.pillarbox_domain_name}" : "dev.monitoring.${var.pillarbox_domain_name}"
+    task = {
+      cpu    = local.is_prod ? 1024 : 256
+      memory = local.is_prod ? 2048 : 512
+    }
   }
 
   default_tags = {

@@ -90,68 +90,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_opensearch_policy_attachment
 }
 
 # -----------------------------------
-# IAM Role and Policies for Grafana
-# -----------------------------------
-
-# Grafana Assume Role Policy Document
-data "aws_iam_policy_document" "grafana_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["grafana.amazonaws.com"]
-    }
-  }
-}
-
-# IAM Role for Grafana Workspace
-resource "aws_iam_role" "grafana_workspace_role" {
-  name               = "grafana-assume"
-  assume_role_policy = data.aws_iam_policy_document.grafana_assume_role_policy.json
-}
-
-# OpenSearch Policy Document for Grafana
-data "aws_iam_policy_document" "grafana_opensearch_policy" {
-  statement {
-    actions   = ["es:ESHttp*"]
-    resources = ["${aws_opensearch_domain.opensearch_domain.arn}/*"]
-  }
-}
-
-# OpenSearch Policy for Grafana
-resource "aws_iam_policy" "grafana_opensearch_policy" {
-  name   = "grafana-opensearch-policy"
-  policy = data.aws_iam_policy_document.grafana_opensearch_policy.json
-}
-
-# Attach OpenSearch Policy to Grafana Role
-resource "aws_iam_role_policy_attachment" "grafana_opensearch_policy_attach" {
-  role       = aws_iam_role.grafana_workspace_role.name
-  policy_arn = aws_iam_policy.grafana_opensearch_policy.arn
-}
-
-# SNS Publish Policy Document for Grafana
-data "aws_iam_policy_document" "grafana_sns_publish_policy" {
-  statement {
-    actions   = ["sns:Publish", "sns:GetTopicAttributes"]
-    resources = [aws_sns_topic.grafana_alerts.arn]
-  }
-}
-
-# SNS Publish Policy for Grafana
-resource "aws_iam_policy" "grafana_sns_publish_policy" {
-  name   = "grafana-sns-publish-policy"
-  policy = data.aws_iam_policy_document.grafana_sns_publish_policy.json
-}
-
-# Attach SNS Publish Policy to Grafana Role
-resource "aws_iam_role_policy_attachment" "grafana_sns_publish_policy_attach" {
-  role       = aws_iam_role.grafana_workspace_role.name
-  policy_arn = aws_iam_policy.grafana_sns_publish_policy.arn
-}
-
-
-# -----------------------------------
 # OpenSearch Access Policies
 # -----------------------------------
 

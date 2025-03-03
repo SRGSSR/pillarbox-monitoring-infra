@@ -26,12 +26,7 @@ variable "pillarbox_domain_name" {
   default     = "pillarbox.ch"
 }
 
-variable "alert_emails" {
-  description = "List of email addresses to subscribe to SNS topic for Grafana alerts"
-  type        = list(string)
-}
-
-variable "il_proxy_api_key" {
-  description = "The API key to the IL proxy by terraform workspace"
-  type        = map(string)
+variable "grafana_default_pwd" {
+  description = "Grafana default admin password"
+  type        = string
 }

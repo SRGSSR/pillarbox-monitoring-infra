@@ -88,7 +88,7 @@ resource "aws_alb_target_group" "dispatch_alb_tg" {
 
 # ACM Certificate for dispatch service, validated via DNS
 resource "aws_acm_certificate" "dispatch_certificate" {
-  domain_name       = local.domain_name
+  domain_name       = local.dispatch.domain_name
   validation_method = "DNS"
 
   tags = {
@@ -100,18 +100,11 @@ resource "aws_acm_certificate" "dispatch_certificate" {
 # Route 53 DNS Records for Dispatch ALB
 # -----------------------------------
 
-## Route 53 zone data lookup for DNS management
-
-data "aws_route53_zone" "main_zone" {
-  provider = aws.prod
-  name     = var.pillarbox_domain_name
-}
-
 # DNS record for dispatch ALB
 resource "aws_route53_record" "dispatch_alb_dns" {
   provider = aws.prod
   zone_id  = data.aws_route53_zone.main_zone.zone_id
-  name     = local.domain_name
+  name     = local.dispatch.domain_name
   type     = "A"
 
   alias {
@@ -266,8 +259,8 @@ resource "aws_ecs_task_definition" "dispatch_task" {
   family                   = "pillarbox-event-dispatcher"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = local.dispatch_task.cpu
-  memory                   = local.dispatch_task.memory
+  cpu                      = local.dispatch.task.cpu
+  memory                   = local.dispatch.task.memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 

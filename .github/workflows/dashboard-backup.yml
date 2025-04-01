@@ -1,0 +1,48 @@
+name: Grafana Dashboard Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Grafana Sync
+        uses: srgssr/grafana-sync-action@v1.2.0
+        with:
+          grafana-url: ${{ secrets.GRAFANA_URL }}
+          api-key: ${{ secrets.GRAFANA_API_KEY }}
+          dir: 'pillarbox-monitoring-grafana/dashboards'
+          clear: true
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: pillarbox-monitoring-grafana/dashboards
+          commit-message: "chore: automated grafana dashboard backup"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
+          signoff: false
+          draft: false
+          delete-branch: true
+          branch: "chore/update-grafana-dashboards"
+          title: "chore: automated backup of grafana dashboards"
+          body: |
+            ## Description
+
+            This pull request contains the latest backup of our Grafana dashboards, automatically synchronized from our
+            live environment. These updates ensure that the repository accurately reflects the current dashboard
+            configurations used for monitoring.

@@ -1,6 +1,6 @@
 apiVersion: 1
 datasources:
-  - name: opensearch
+  - name: user-events
     type: grafana-opensearch-datasource
     typeName: OpenSearch
     typeLogoUrl: public/img/icn-datasource.svg
@@ -20,5 +20,14 @@ datasources:
       timeField: "@timestamp"
       version: 2.17.0
       versionLabel: OpenSearch 2.17.0
+    readOnly: false
 
+  - name: integration-layer
+    type: yesoreyeram-infinity-datasource
+    typeName: Infinity
+    typeLogoUrl: public/img/icn-datasource.svg
+    access: proxy
+    jsonData:
+      dataSourceType: JSON
+      baseURL: https://il.srgssr.ch
     readOnly: false

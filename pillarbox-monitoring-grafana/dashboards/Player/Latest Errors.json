@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 24,
   "links": [
     {
       "asDropdown": true,
@@ -38,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -81,7 +81,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&refresh=5s&var-session_id=${__value.text}&from=${__data.fields.from}&to=now"
+                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&refresh=5s&var-session_id=${__value.text}﻿&from=﻿${__from}﻿&to=﻿${__to}"
                   }
                 ]
               }
@@ -134,7 +134,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__data.fields.from}&to=now"
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}﻿&from=﻿${__from}﻿&to=${__to}"
                   }
                 ]
               }
@@ -236,7 +236,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -252,8 +252,8 @@
             }
           ],
           "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "metrics": [
             {
@@ -261,11 +261,12 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}\nAND data.business_error:${business_error}\nAND (data.error_type:${error_type:raw})",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:${business_error}\nAND (data.error_type:${error_type:raw})",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -318,15 +319,15 @@
             "excludeByName": {
               "@timestamp": true,
               "@timestamp 1": false,
-              "data.browser.name": false,
-              "data.browser.version": false,
-              "data.device.type": false,
-              "data.os.name": true,
-              "data.os.version": false,
               "from": false,
+              "session.browser.name": false,
               "session.browser.name (lastNotNull)": true,
+              "session.browser.version": false,
               "session.browser.version (lastNotNull)": true,
+              "session.device.type": false,
+              "session.os.name": true,
               "session.os.name (lastNotNull)": true,
+              "session.os.version": false,
               "session.os.version (lastNotNull)": true
             },
             "includeByName": {},
@@ -352,27 +353,25 @@
               "browser": "Browser",
               "data.bandwidth (lastNotNull)": "Last Bandwidth",
               "data.bitrate (lastNotNull)": "Last Bitrate",
-              "data.browser.name": "",
-              "data.browser.version": "",
               "data.business_error": "Blocked",
-              "data.device.model": "Device",
               "data.error_type": "Block Reason",
-              "data.media.origin": "Origin",
-              "data.os.version": "",
               "data.playback_duration (firstNotNull)": "Playback Duration",
               "data.playback_duration (lastNotNull)": "Playback Duration",
-              "data.player.platform": "Platform",
               "from": "Start time",
               "os": "OS",
+              "session.browser.name": "",
               "session.browser.name (lastNotNull)": "",
               "session.browser.name (lastNotNull) + session.browser.version (lastNotNull)": "Browser",
+              "session.browser.version": "",
               "session.browser.version (lastNotNull)": "",
               "session.device.model": "Device",
               "session.device.model (lastNotNull)": "Device Model",
               "session.device.type (lastNotNull)": "Device Type",
               "session.media.id": "Media",
               "session.media.id (lastNotNull)": "Media Id",
+              "session.media.origin": "Origin",
               "session.media.origin (lastNotNull)": "Origin",
+              "session.os.version": "",
               "session.os.version (lastNotNull)": "",
               "session.player.platform": "Platform",
               "session.player.platform (lastNotNull)": "Platform",
@@ -397,8 +396,9 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "pillarbox",
     "sessions"
@@ -408,121 +408,132 @@
       {
         "allValue": "*",
         "current": {
-          "selected": true,
-          "text": "All",
+          "text": "$__all",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "grafana-opensearch-datasource",
-          "uid": "PB728120E9B299770"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
         "description": "Filter by player platform.",
-        "hide": 0,
         "includeAll": true,
         "label": "Platform",
-        "multi": false,
         "name": "platform",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.player.platform\",\n  \"query\": \"event_name:START\",\n  \"size\": 10\n}",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
+        "options": [
+          {
+            "selected": false,
+            "text": "Android",
+            "value": "Android"
+          },
+          {
+            "selected": false,
+            "text": "Apple",
+            "value": "Apple"
+          },
+          {
+            "selected": false,
+            "text": "Web",
+            "value": "Web"
+          }
+        ],
+        "query": "Android, Apple, Web",
+        "type": "custom"
       },
       {
         "allValue": "*",
         "current": {
-          "selected": true,
-          "text": "All",
+          "text": "$__all",
           "value": "$__all"
         },
-        "hide": 0,
         "includeAll": true,
         "label": "Business Unit",
-        "multi": false,
         "name": "bu",
         "options": [
           {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
             "selected": false,
             "text": "srf",
-            "value": "urn\\:srf\\:*"
+            "value": "srf"
           },
           {
             "selected": false,
             "text": "rts",
-            "value": "urn\\:rts\\:*"
+            "value": "rts"
           },
           {
             "selected": false,
             "text": "rsi",
-            "value": "urn\\:rsi\\:*"
+            "value": "rsi"
           },
           {
             "selected": false,
             "text": "rtr",
-            "value": "urn\\:rtr\\:*"
+            "value": "rtr"
           },
           {
             "selected": false,
             "text": "swi",
-            "value": "urn\\:swi\\:*"
+            "value": "swi"
+          },
+          {
+            "selected": false,
+            "text": "rio",
+            "value": "rio"
           }
         ],
-        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
-        "queryValue": "",
-        "skipUrlSync": false,
+        "query": "srf, rts, rsi, rtr, swi, rio",
+        "type": "custom"
+      },
+      {
+        "allValue": "*$bu*",
+        "current": {
+          "text": "$__all",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Type",
+        "name": "type",
+        "options": [
+          {
+            "selected": false,
+            "text": "Audio",
+            "value": "*\\:*\\:audio\\:*"
+          },
+          {
+            "selected": false,
+            "text": "Video",
+            "value": "*\\:*\\:video\\:*"
+          }
+        ],
+        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
         "type": "custom"
       },
       {
         "allValue": "* OR (NOT _exists_:data.error_type)",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
         "datasource": {
-          "type": "grafana-opensearch-datasource",
-          "uid": "PB728120E9B299770"
+          "name": "user-events",
+          "type": "grafana-opensearch-datasource"
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.error_type\",\n  \"query\": \"event_name:ERROR\",\n  \"size\": 10\n}",
-        "hide": 0,
         "includeAll": true,
         "label": "Block Reason",
-        "multi": false,
         "name": "error_type",
         "options": [],
         "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.error_type\",\n  \"query\": \"event_name:ERROR\",\n  \"size\": 10\n}",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "allValue": "*",
         "current": {
-          "selected": true,
-          "text": "All",
+          "text": "$__all",
           "value": "$__all"
         },
-        "hide": 0,
         "includeAll": true,
         "label": "Blocked",
-        "multi": false,
         "name": "business_error",
         "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
           {
             "selected": false,
             "text": "Yes",
@@ -535,9 +546,17 @@
           }
         ],
         "query": "Yes : true, No : false",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "baseFilters": [],
+        "datasource": {
+          "name": "user-events",
+          "type": "grafana-opensearch-datasource"
+        },
+        "filters": [],
+        "name": "Filter",
+        "type": "adhoc"
       }
     ]
   },
@@ -546,9 +565,9 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "browser",
+  "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 23,
+  "version": 2,
   "weekStart": ""
 }

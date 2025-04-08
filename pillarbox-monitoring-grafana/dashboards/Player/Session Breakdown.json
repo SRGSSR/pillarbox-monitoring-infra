@@ -1,0 +1,1879 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 27,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Live view",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/bdrf82ou9416ob/session-breakdown?to=now&refresh=30s"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "sessions"
+      ],
+      "targetBlank": false,
+      "title": "Go back to session list",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 15,
+          "valueSize": 15
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "event_name:START AND session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "session.device.model",
+                "session.device.type",
+                "session.os.name",
+                "session.os.version",
+                "session.player.name",
+                "session.player.platform",
+                "session.player.version",
+                "session.screen.height",
+                "session.screen.width",
+                "session.browser.version",
+                "session.browser.name"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "session.device.model": 1,
+              "session.device.type": 2,
+              "session.media.id": 5,
+              "session.media.origin": 7,
+              "session.media.source": 6,
+              "session.os.name": 8,
+              "session.os.version": 9,
+              "session.player.platform": 0,
+              "session.screen.height": 4,
+              "session.screen.width": 3
+            },
+            "renameByName": {
+              "session.device.model": "Device Model",
+              "session.device.type": "Device Type",
+              "session.media.id": "Media ID",
+              "session.media.origin": "Origin",
+              "session.media.source": "Media Source",
+              "session.os.name": "",
+              "session.player.name": "",
+              "session.player.platform": "",
+              "user_ip": "IP"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Screen Size",
+            "binary": {
+              "left": "session.screen.width",
+              "right": "session.screen.height"
+            },
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "session.screen.height",
+                "session.screen.width"
+              ],
+              "reducer": "allValues"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "OS",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "session.os.name",
+                "session.os.version"
+              ],
+              "reducer": "allValues"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Player",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "session.player.platform",
+                "session.player.name",
+                "session.player.version"
+              ],
+              "reducer": "allValues"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Browser",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "session.browser.name",
+                "session.browser.version"
+              ],
+              "reducer": "allValues"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "session.browser.name": true,
+              "session.browser.version": true,
+              "session.os.name": true,
+              "session.os.version": true,
+              "session.player.name": true,
+              "session.player.platform": true,
+              "session.player.version": true,
+              "session.screen.height": true,
+              "session.screen.width": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Device Model": 2,
+              "Device Type": 3,
+              "OS": 13,
+              "Player": 0,
+              "Screen Size": 12,
+              "session.browser.name": 8,
+              "session.browser.version": 9,
+              "session.os.name": 6,
+              "session.os.version": 7,
+              "session.player.name": 10,
+              "session.player.platform": 1,
+              "session.player.version": 11,
+              "session.screen.height": 5,
+              "session.screen.width": 4
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Metadata"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 500
+                    },
+                    {
+                      "color": "red",
+                      "value": 1000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Asset"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "red",
+                      "value": 1500
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1700
+                    },
+                    {
+                      "color": "red",
+                      "value": 2900
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 7,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/.*/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "event_name:START AND session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Load Time",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "session.qoe_timings.metadata",
+                "session.qoe_timings.asset",
+                "session.qoe_timings.total",
+                "session_id",
+                "@timestamp"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@timestamp": true,
+              "session_id": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "@timestamp": 1,
+              "session.player_position": 2,
+              "session_id": 0
+            },
+            "renameByName": {
+              "@timestamp": "Time",
+              "data.bitrate": "Bitrate",
+              "session.player_position": "Position",
+              "session.qoe_timings.asset": "Asset",
+              "session.qoe_timings.metadata": "Metadata",
+              "session.qoe_timings.total": "Total",
+              "session_id": "Session"
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "firstNotNull"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "START"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HEARTBEAT"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "STOP"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 13,
+        "x": 11,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "1",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Event timeline",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@timestamp": false
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "@timestamp": "",
+              "event_name": "Event"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__from}&to=${__to}"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Origin"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "${__value.text}"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Media ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Play media",
+                    "url": "https://demo.pillarbox.ch/?src=${__value.raw}&type=srgssr%2Furn"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 15,
+          "valueSize": 15
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "event_name:START AND session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "session.media.id",
+                "session.media.origin",
+                "user_ip"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "session.device.model": 1,
+              "session.device.type": 2,
+              "session.media.id": 5,
+              "session.media.origin": 7,
+              "session.media.source": 6,
+              "session.os.name": 8,
+              "session.os.version": 9,
+              "session.player.platform": 0,
+              "session.screen.height": 4,
+              "session.screen.width": 3
+            },
+            "renameByName": {
+              "session.device.model": "Device Model",
+              "session.device.type": "Device Type",
+              "session.media.id": "Media ID",
+              "session.media.origin": "Origin",
+              "session.media.source": "Media Source",
+              "session.os.name": "",
+              "session.player.name": "",
+              "session.player.platform": "Player Platform",
+              "user_ip": "IP"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "session.os.name": true,
+              "session.os.version": true,
+              "session.screen.height": true,
+              "session.screen.width": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurationms"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stall Duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurationms"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 10
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stall Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "red",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 11
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "NOT event_name:START AND NOT event_name:ERROR AND session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Last Metrics",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "@timestamp",
+                "data.playback_duration",
+                "data.stall.count",
+                "data.stall.duration",
+                "session_id"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@timestamp": false,
+              "@timestamp (lastNotNull)": true,
+              "session_id": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "@timestamp (lastNotNull)": 3,
+              "data.bandwidth (lastNotNull)": 2,
+              "data.bitrate (lastNotNull)": 1,
+              "data.buffer_duration (lastNotNull)": 4,
+              "data.playback_duration (lastNotNull)": 7,
+              "data.stall.count (lastNotNull)": 5,
+              "data.stall.duration (lastNotNull)": 6,
+              "session_id": 0
+            },
+            "renameByName": {
+              "@timestamp": "",
+              "@timestamp (firstNotNull)": "Started",
+              "@timestamp (lastNotNull)": "Last Updated",
+              "data.bandwidth": "Bandwidth",
+              "data.bandwidth (lastNotNull)": "Bandwidth",
+              "data.bitrate": "Bitrate",
+              "data.bitrate (lastNotNull)": "Bitrate",
+              "data.buffer_duration": "Buffer Duration",
+              "data.buffer_duration (lastNotNull)": "Buffer Duration",
+              "data.playback_duration": "Duration",
+              "data.playback_duration (firstNotNull)": "Playback Duration",
+              "data.playback_duration (lastNotNull)": "Playback Duration",
+              "data.stall.count": "Stall Count",
+              "data.stall.count (lastNotNull)": "Stall Count",
+              "data.stall.duration": "Stall Duration",
+              "data.stall.duration (lastNotNull)": "Stall Duration",
+              "session_id": "Session"
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "firstNotNull"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Buffer duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurationms"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 10000
+                    },
+                    {
+                      "color": "green",
+                      "value": 30000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Position"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurationms"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stall Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "red",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 4,
+        "y": 11
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 20,
+          "valueSize": 20
+        },
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "NOT event_name:START AND NOT event_name:ERROR AND session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Last Metrics",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "@timestamp",
+                "session_id",
+                "data.frame_drops",
+                "data.buffered_duration",
+                "data.position"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@timestamp": false,
+              "@timestamp (lastNotNull)": true,
+              "session_id": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "@timestamp (lastNotNull)": 3,
+              "data.bandwidth (lastNotNull)": 2,
+              "data.bitrate (lastNotNull)": 1,
+              "data.buffer_duration (lastNotNull)": 4,
+              "data.playback_duration (lastNotNull)": 7,
+              "data.stall.count (lastNotNull)": 5,
+              "data.stall.duration (lastNotNull)": 6,
+              "session_id": 0
+            },
+            "renameByName": {
+              "@timestamp": "",
+              "@timestamp (firstNotNull)": "Started",
+              "@timestamp (lastNotNull)": "Last Updated",
+              "data.bandwidth": "Bandwidth",
+              "data.bandwidth (lastNotNull)": "Bandwidth",
+              "data.bitrate": "Bitrate",
+              "data.bitrate (lastNotNull)": "Bitrate",
+              "data.buffer_duration": "Buffer Duration",
+              "data.buffer_duration (lastNotNull)": "Buffer Duration",
+              "data.buffered_duration": "Buffer duration",
+              "data.frame_drops": "Frame drops",
+              "data.playback_duration": "Duration",
+              "data.playback_duration (firstNotNull)": "Playback Duration",
+              "data.playback_duration (lastNotNull)": "Playback Duration",
+              "data.position": "Last Position",
+              "data.stall.count": "Stall Count",
+              "data.stall.count (lastNotNull)": "Stall Count",
+              "data.stall.duration": "Stall Duration",
+              "data.stall.duration (lastNotNull)": "Stall Duration",
+              "session_id": "Session"
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "reduceFields",
+            "reducers": [
+              "firstNotNull"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bitrate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 11
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "Bitrate",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "field": "data.bitrate",
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "event_name:(HEARTBEAT OR STOP) AND session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Average bitrate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bandwidth"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bitrate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "Bandwidth",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "data.bandwidth",
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "event_name:(HEARTBEAT OR STOP) AND session_id:\"${session_id}\"",
+          "refId": "B",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Average bandwidth",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 8,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Ascending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "session_id:\"${session_id}\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Event Log",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "@timestamp",
+                "data.business_error",
+                "data.error_type",
+                "data.log",
+                "data.message",
+                "data.name",
+                "data.position",
+                "data.url",
+                "event_name",
+                "session.browser.name",
+                "session.browser.user_agent",
+                "session.browser.version",
+                "session.device.id",
+                "session.device.model",
+                "session.device.type",
+                "session.media.asset_url",
+                "session.media.id",
+                "session.media.metadata_url",
+                "session.media.origin",
+                "session.os.name",
+                "session.os.version",
+                "session.player.name",
+                "session.player.platform",
+                "session.player.version",
+                "session.qoe_timings.asset",
+                "session.qoe_timings.metadata",
+                "session.qoe_timings.total",
+                "session.qos_timings.asset",
+                "session.qos_timings.metadata",
+                "session.robot",
+                "session.screen.height",
+                "session.screen.width",
+                "session_id",
+                "user_ip",
+                "version",
+                "data"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "@timestamp": 0,
+              "data.business_error": 2,
+              "data.error_type": 3,
+              "data.log": 4,
+              "data.message": 5,
+              "data.name": 6,
+              "data.position": 7,
+              "data.url": 8,
+              "event_name": 1,
+              "session.browser.name": 9,
+              "session.browser.user_agent": 10,
+              "session.browser.version": 11,
+              "session.device.id": 12,
+              "session.device.model": 13,
+              "session.device.type": 14,
+              "session.media.asset_url": 15,
+              "session.media.id": 16,
+              "session.media.metadata_url": 17,
+              "session.media.origin": 18,
+              "session.os.name": 19,
+              "session.os.version": 20,
+              "session.player.name": 21,
+              "session.player.platform": 22,
+              "session.player.version": 23,
+              "session.qoe_timings.asset": 24,
+              "session.qoe_timings.metadata": 25,
+              "session.qoe_timings.total": 26,
+              "session.qos_timings.asset": 27,
+              "session.qos_timings.metadata": 28,
+              "session.robot": 29,
+              "session.screen.height": 30,
+              "session.screen.width": 31,
+              "session_id": 32,
+              "user_ip": 33,
+              "version": 34
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "logs"
+    }
+  ],
+  "preload": false,
+  "refresh": "5s",
+  "schemaVersion": 40,
+  "tags": [
+    "hidden"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "2986d98d-3b4b-4639-b711-6cfc2dfb527e",
+          "value": "2986d98d-3b4b-4639-b711-6cfc2dfb527e"
+        },
+        "description": "The session id.",
+        "label": "Session",
+        "name": "session_id",
+        "options": [
+          {
+            "selected": true,
+            "text": "2986d98d-3b4b-4639-b711-6cfc2dfb527e",
+            "value": "2986d98d-3b4b-4639-b711-6cfc2dfb527e"
+          }
+        ],
+        "query": "2986d98d-3b4b-4639-b711-6cfc2dfb527e",
+        "type": "textbox"
+      },
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "30s",
+        "current": {
+          "text": "$__auto",
+          "value": "$__auto"
+        },
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "refresh": 2,
+        "type": "interval"
+      }
+    ]
+  },
+  "time": {
+    "from": "2025-03-27T13:27:28.793Z",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Session Breakdown",
+  "uid": "bdrf82ou9416ob",
+  "version": 4,
+  "weekStart": ""
+}

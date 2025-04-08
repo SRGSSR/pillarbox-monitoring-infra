@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 42,
+  "id": 19,
   "links": [
     {
       "asDropdown": true,
@@ -39,8 +39,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
       },
       "description": "The average error rate for the selected browser and time range.",
       "fieldConfig": {
@@ -101,8 +101,8 @@
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "format": "table",
           "hide": true,
@@ -112,7 +112,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${bu:raw}\nAND data.browser.name:${browser}\nAND data.os.name:${os_name}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -130,8 +130,8 @@
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "format": "table",
           "hide": true,
@@ -141,7 +141,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:Web\nAND session.media.id:${bu:raw}\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -163,8 +163,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
       },
       "description": "The percentage of sessions using the selected browser.",
       "fieldConfig": {
@@ -225,8 +225,8 @@
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "format": "table",
           "hide": true,
@@ -236,7 +236,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${bu:raw}\nAND data.browser.name:${browser}\nAND data.os.name:${os_name}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -254,8 +254,8 @@
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "format": "table",
           "hide": true,
@@ -265,7 +265,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${bu:raw}",
+          "query": "event_name:START\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "total",
           "timeField": "@timestamp"
@@ -287,8 +287,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
       },
       "description": "Adoption rates of different versions for the selected browser across the selected time range.",
       "fieldConfig": {
@@ -366,7 +366,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.browser.version",
+              "field": "session.browser.version",
               "id": "4",
               "settings": {
                 "min_doc_count": "1",
@@ -388,8 +388,8 @@
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "format": "table",
           "metrics": [
@@ -398,7 +398,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${bu:raw}\nAND data.browser.name:${browser}\nAND data.os.name:${os_name}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -409,8 +409,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
       },
       "description": "The top 5 operating systems for the selected browser and time range.",
       "fieldConfig": {
@@ -570,7 +570,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.os.name",
+              "field": "session.os.name",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -582,8 +582,8 @@
             }
           ],
           "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "metrics": [
             {
@@ -591,7 +591,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND data.player.platform:Web\nAND data.media.id:${bu:raw}\nAND data.browser.name:${browser}\nAND data.os.name:${os_name}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -601,8 +601,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "PB728120E9B299770"
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
       },
       "gridPos": {
         "h": 7,
@@ -635,8 +635,8 @@
             }
           ],
           "datasource": {
-            "type": "opensearch",
-            "uid": "PB728120E9B299770"
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
           },
           "metrics": [
             {
@@ -644,7 +644,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:Web\nAND session.media.id:${bu:raw}\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.os.name:${os_name}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -722,7 +722,6 @@
               "data.log": 5,
               "data.message": 1,
               "data.name": 3,
-              "data.severity": 2,
               "session_id": 4
             },
             "renameByName": {
@@ -732,7 +731,6 @@
               "data.message": "Message",
               "data.name": "Name",
               "data.position": "Position",
-              "data.severity": "",
               "session.browser.name": "Browser Name",
               "session.browser.version": "Browser Version",
               "session.device.model": "Device Model",
@@ -765,10 +763,10 @@
           "value": "Chrome"
         },
         "datasource": {
-          "type": "opensearch",
-          "uid": "PB728120E9B299770"
+          "name": "user-events",
+          "type": "grafana-opensearch-datasource"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.browser.name\",\n  \"query\": \"event_name:START AND data.player.platform:Web\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.browser.name\",\n  \"query\": \"event_name:START AND session.player.platform:Web\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by browser.",
         "hide": 0,
         "includeAll": false,
@@ -776,7 +774,7 @@
         "multi": false,
         "name": "browser",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.browser.name\",\n  \"query\": \"event_name:START AND data.player.platform:Web\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"session.browser.name\",\n  \"query\": \"event_name:START AND session.player.platform:Web\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -791,10 +789,10 @@
           "value": "$__all"
         },
         "datasource": {
-          "type": "opensearch",
-          "uid": "PB728120E9B299770"
+          "name": "user-events",
+          "type": "grafana-opensearch-datasource"
         },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.os.name\",\n  \"query\": \"event_name:START AND data.player.platform:Web AND data.browser.name:$browser\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
+        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.os.name\",\n  \"query\": \"event_name:START AND session.player.platform:Web AND session.browser.name:$browser\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by Operating System.",
         "hide": 0,
         "includeAll": true,
@@ -802,61 +800,12 @@
         "multi": false,
         "name": "os_name",
         "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.os.name\",\n  \"query\": \"event_name:START AND data.player.platform:Web AND data.browser.name:$browser\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
+        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"session.os.name\",\n  \"query\": \"event_name:START AND session.player.platform:Web AND session.browser.name:$browser\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "allValue": "*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "hide": 0,
-        "includeAll": true,
-        "label": "Business Unit",
-        "multi": false,
-        "name": "bu",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "srf",
-            "value": "urn\\:srf\\:*"
-          },
-          {
-            "selected": false,
-            "text": "rts",
-            "value": "urn\\:rts\\:*"
-          },
-          {
-            "selected": false,
-            "text": "rsi",
-            "value": "urn\\:rsi\\:*"
-          },
-          {
-            "selected": false,
-            "text": "rtr",
-            "value": "urn\\:rtr\\:*"
-          },
-          {
-            "selected": false,
-            "text": "swi",
-            "value": "urn\\:swi\\:*"
-          }
-        ],
-        "query": "srf : urn\\:srf\\:*, rts : urn\\:rts\\:*, rsi : urn\\:rsi\\:*, rtr : urn\\:rtr\\:*, swi : urn\\:swi\\:*",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
       },
       {
         "auto": true,
@@ -942,6 +891,6 @@
   "timezone": "browser",
   "title": "Browser Fragmentation",
   "uid": "fecn8fvwzzz7ka",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }

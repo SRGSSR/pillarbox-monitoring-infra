@@ -36,7 +36,7 @@ jobs:
           committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
           signoff: false
-          draft: false
+          draft: always-true
           delete-branch: true
           branch: "chore/update-grafana-dashboards"
           title: "chore: automated backup of grafana dashboards"

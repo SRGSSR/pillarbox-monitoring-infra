@@ -1,94 +1,38 @@
-# Grafana Dashboard Export Guide
+# Grafana Dashboard Backup Guide (Automated via GitHub Actions)
 
-This guide provides step-by-step instructions to export dashboards from Grafana. You can export
-either a single dashboard directly through the Grafana interface or all dashboards within a
-specified folder using a custom script.
+This guide outlines how we back up Grafana dashboards automatically using a GitHub Actions workflow.
 
-## Exporting a Single Dashboard
+## Overview
 
-To export an individual dashboard directly through the Grafana interface, follow these steps:
+Grafana dashboards are now backed up **daily** and whenever the workflow is triggered manually. The
+workflow is configured to:
 
-1. Open the dashboard you wish to export.
-2. Click the Share button (usually located at the top right).
-3. In the Share panel, navigate to the Export tab.
-4. Select Save to file. This will download a JSON file of the dashboard's configuration to your
-   computer.
+1. Sync dashboards from the live Grafana instance to the repo using the
+   [`grafana-sync-action`][grana-sync-action].
+2. Create a pull request containing the updated dashboards.
+3. Keep the PR in **draft** mode to support a quality control workflow that triggers only when the
+   PR is marked "Ready for review."
 
-## Exporting All Dashboards in a Folder
+## Why Draft PRs?
 
-The following steps outline a method to export all dashboards within a specified folder in Grafana
-as a single zip file containing individual JSON files for each dashboard.
+We use the `draft: always-true` option to intentionally keep the pull request in **draft mode**.
+This is a workaround to ensure that our quality workflow (e.g., linting, validation) runs only when
+someone explicitly clicks **"Ready for review"**.
 
-### 1. Open the Browser Console
+This approach is necessary because GitHub does **not** re-trigger `pull_request` workflows
+automatically when a PR is updated — unless using a **Personal Access Token (PAT)**, which we're
+avoiding for now.
 
-- Open your Grafana instance and log in if prompted by SSO.
-- Press <kbd>F12</kbd> (or right-click and select **Inspect**) to open Developer Tools.
-- Navigate to the **Console** tab.
+👉 See the workaround explanation here:
+[Triggering further workflow runs – peter-evans/create-pull-request][peter-evans-workaround]
 
-### 2. Load JSZip Library
+## Manual Backup
 
-- To manage multiple files in a zip, we’ll use the [JSZip library](https://stuk.github.io/jszip/).
-  Copy and paste the following code into the console and press <kbd>Enter</kbd>:
+To trigger the backup manually:
 
-  ```javascript
-  var script = document.createElement('script');
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-  document.head.appendChild(script);
-  ```
+1. Go to [**Actions -> Grafana Dashboard Backup**][backup-workflow] from the workflows list.
+2. Click **Run workflow** on the `main` branch.
 
-- Verify that JSZip is loaded by typing `JSZip` into the console and pressing <kbd>Enter</kbd>. You
-  should
-  see an object or function returned.
-
-### 3. Run the Export Script
-
-- Copy and paste the following code into the console and press <kbd>Enter</kbd>:
-
-  ```javascript
-  async function exportAllDashboardsWithFolders() {
-      const zip = new JSZip();
-
-      // Step 1: Get all folders
-      const folderResponse = await fetch(`/api/folders`);
-      const folders = await folderResponse.json();
-      const folderMap = {};
-      folders.forEach(folder => {
-          folderMap[folder.uid] = folder.title.replace(/[/\\?%*:|"<>]/g, ''); // Clean up folder names
-      });
-
-      // Step 2: Fetch all dashboards across folders
-      const response = await fetch(`/api/search?type=dash-db`);
-      const dashboards = await response.json();
-
-      for (const dashboard of dashboards) {
-          const uid = dashboard.uid;
-          const title = dashboard.title.replace(/[/\\?%*:|"<>]/g, ''); // Clean up filename
-          const folderName = folderMap[dashboard.folderUid] || 'General';
-
-          // Fetch each dashboard's JSON
-          const dashboardResponse = await fetch(`/api/dashboards/uid/${uid}`);
-          const dashboardData = await dashboardResponse.json();
-
-          // Add each dashboard JSON to the zip, organized by folder
-          zip.file(`${folderName}/${title}.json`, JSON.stringify(dashboardData.dashboard, null, 2));
-          console.log(`Added to zip: ${folderName}/${title}`);
-      }
-
-      // Step 3: Generate the zip and trigger download
-      zip.generateAsync({ type: 'blob' }).then(function (content) {
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(content);
-          link.download = 'grafana_dashboards.zip';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          console.log("Downloaded all dashboards as zip with folder structure.");
-      });
-  }
-
-  exportAllDashboardsWithFolders();
-  ```
-- The script will create a zip containing individual JSON files for each dashboard and will follow
-  Grafana folder structure.
-- Each JSON file is named after the dashboard title and represents a backup of the dashboard’s
-  configuration.
+[peter-evans-workaround]: https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
+[backup-workflow]: https://github.com/SRGSSR/pillarbox-monitoring-infra/actions/workflows/dashboard-backup.yml
+[grana-sync-action]: https://github.com/srgssr/grafana-sync-action

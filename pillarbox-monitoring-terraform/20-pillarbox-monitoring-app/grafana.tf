@@ -194,11 +194,11 @@ resource "aws_security_group" "grafana_sg" {
 
   # Allow HTTP access from ALB and transfer service
   ingress {
-    description     = "Allow HTTP access from ALB"
-    from_port       = 3000
-    to_port         = 3000
-    protocol        = "tcp"
-    security_groups = [aws_security_group.grafana_alb_sg.id]
+    description = "Allow HTTP access from ALB"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.main_vpc.cidr_block]
   }
 
   # Allow all outbound traffic
@@ -208,6 +208,14 @@ resource "aws_security_group" "grafana_sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description     = "SSH from the Bastion host"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.bastion_sg.id]
   }
 
   tags = {

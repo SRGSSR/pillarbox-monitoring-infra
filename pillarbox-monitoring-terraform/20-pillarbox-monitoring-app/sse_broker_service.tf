@@ -218,10 +218,7 @@ resource "aws_security_group" "dispatch_task_sg" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    security_groups = [
-      aws_security_group.dispatch_alb_sg.id,
-      aws_security_group.transfer_task_sg.id
-    ]
+    cidr_blocks = [data.aws_vpc.main_vpc.cidr_block]
   }
 
   # Allow all outbound traffic

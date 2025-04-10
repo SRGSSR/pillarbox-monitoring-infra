@@ -138,10 +138,6 @@ The project is split into several Terraform configurations:
   allow access to GitHub Action for specific repositories and operations. **This applies to both
   dev and prod environments**. You can switch between workspaces (as mentioned earlier) to deploy
   infrastructure in either the dev or prod account.
-- [22-bastion][app]: Configures a bastion host for secure remote access and management of the
-  OpenSearch cluster. **This applies to both dev and prod environments**. You can switch
-  between workspaces (as mentioned earlier) to deploy infrastructure in either the dev or prod
-  account.
 
 ### System Flow Overview
 

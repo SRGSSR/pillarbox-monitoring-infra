@@ -30,3 +30,15 @@ variable "grafana_default_pwd" {
   description = "Grafana default admin password"
   type        = string
 }
+
+
+# Variable for Public Key
+variable "bastion_public_key" {
+  description = "Public key for the bastion host"
+  type        = string
+}
+
+variable "bastion_allowed_ips" {
+  description = "The list of ips that are allowed to connect to the bastion"
+  type        = list(string)
+}

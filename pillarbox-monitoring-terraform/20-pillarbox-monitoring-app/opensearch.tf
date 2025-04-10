@@ -102,7 +102,8 @@ resource "aws_security_group" "opensearch_sg" {
     protocol    = "tcp"
     security_groups = [
       aws_security_group.transfer_task_sg.id,
-      aws_security_group.grafana_sg.id
+      aws_security_group.grafana_sg.id,
+      aws_security_group.bastion_sg.id
     ]
   }
 

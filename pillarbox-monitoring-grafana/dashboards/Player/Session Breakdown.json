@@ -1774,7 +1774,7 @@
     }
   ],
   "preload": false,
-  "refresh": "5s",
+  "refresh": "",
   "schemaVersion": 40,
   "tags": [
     "hidden"
@@ -1783,8 +1783,8 @@
     "list": [
       {
         "current": {
-          "text": "2986d98d-3b4b-4639-b711-6cfc2dfb527e",
-          "value": "2986d98d-3b4b-4639-b711-6cfc2dfb527e"
+          "text": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb",
+          "value": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb"
         },
         "description": "The session id.",
         "label": "Session",
@@ -1792,11 +1792,11 @@
         "options": [
           {
             "selected": true,
-            "text": "2986d98d-3b4b-4639-b711-6cfc2dfb527e",
-            "value": "2986d98d-3b4b-4639-b711-6cfc2dfb527e"
+            "text": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb",
+            "value": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb"
           }
         ],
-        "query": "2986d98d-3b4b-4639-b711-6cfc2dfb527e",
+        "query": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb",
         "type": "textbox"
       },
       {
@@ -1867,13 +1867,13 @@
     ]
   },
   "time": {
-    "from": "2025-03-27T13:27:28.793Z",
+    "from": "2025-04-14T08:21:15.004Z",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }

@@ -277,10 +277,11 @@
                 "data.business_error",
                 "data.error_type",
                 "session.device.model",
+                "session.media.id",
                 "session.player.platform",
                 "session_id",
                 "user_ip",
-                "session.media.id"
+                "data.block_reason"
               ]
             }
           }
@@ -302,9 +303,16 @@
           "options": {
             "alias": "from",
             "binary": {
-              "left": "@timestamp",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "@timestamp"
+                }
+              },
               "operator": "-",
-              "right": "1000"
+              "right": {
+                "fixed": "1000"
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -325,6 +333,7 @@
               "session.browser.version": false,
               "session.browser.version (lastNotNull)": true,
               "session.device.type": false,
+              "session.media.id": true,
               "session.os.name": true,
               "session.os.name (lastNotNull)": true,
               "session.os.version": false,
@@ -353,8 +362,9 @@
               "browser": "Browser",
               "data.bandwidth (lastNotNull)": "Last Bandwidth",
               "data.bitrate (lastNotNull)": "Last Bitrate",
+              "data.block_reason": "Block Reason",
               "data.business_error": "Blocked",
-              "data.error_type": "Block Reason",
+              "data.error_type": "Error Type",
               "data.playback_duration (firstNotNull)": "Playback Duration",
               "data.playback_duration (lastNotNull)": "Playback Duration",
               "from": "Start time",
@@ -504,27 +514,6 @@
         "type": "custom"
       },
       {
-        "allValue": "* OR (NOT _exists_:data.error_type)",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "name": "user-events",
-          "type": "grafana-opensearch-datasource"
-        },
-        "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"data.error_type\",\n  \"query\": \"event_name:ERROR\",\n  \"size\": 10\n}",
-        "includeAll": true,
-        "label": "Block Reason",
-        "name": "error_type",
-        "options": [],
-        "query": "{\n  \"find\": \"terms\",\n  \"field\": \"data.error_type\",\n  \"query\": \"event_name:ERROR\",\n  \"size\": 10\n}",
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
         "allValue": "*",
         "current": {
           "text": "$__all",
@@ -561,13 +550,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

@@ -372,7 +372,7 @@
               "type": "count"
             }
           ],
-          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.error_type:GEOBLOCK",
+          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.block_reason:GEOBLOCK",
           "queryType": "lucene",
           "refId": "geoblock",
           "timeField": "@timestamp"
@@ -1058,7 +1058,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND user_ip:\"${user_ip}\"",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND user_ip:\"${user_ip}\"",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1383,8 +1383,8 @@
     "list": [
       {
         "current": {
-          "text": "155.133.4.228",
-          "value": "155.133.4.228"
+          "text": "81.56.116.163",
+          "value": "81.56.116.163"
         },
         "description": "The session id.",
         "label": "IP",
@@ -1392,11 +1392,11 @@
         "options": [
           {
             "selected": true,
-            "text": "155.133.4.228",
-            "value": "155.133.4.228"
+            "text": "81.56.116.163",
+            "value": "81.56.116.163"
           }
         ],
-        "query": "155.133.4.228",
+        "query": "81.56.116.163",
         "type": "textbox"
       },
       {
@@ -1467,13 +1467,13 @@
     ]
   },
   "time": {
-    "from": "2025-03-31T07:00:47.761Z",
-    "to": "2025-03-31T08:00:47.761Z"
+    "from": "2025-04-29T11:56:46.353Z",
+    "to": "2025-04-29T12:01:46.353Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

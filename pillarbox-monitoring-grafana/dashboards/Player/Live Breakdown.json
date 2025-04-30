@@ -288,7 +288,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${video_live}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${video_live}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "queryType": "lucene",
           "refId": "errors",
           "timeField": "@timestamp"
@@ -659,7 +659,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${audio_live}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${audio_live}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "queryType": "lucene",
           "refId": "errors",
           "timeField": "@timestamp"
@@ -1030,7 +1030,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${scheduled}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${scheduled}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "queryType": "lucene",
           "refId": "errors",
           "timeField": "@timestamp"
@@ -1243,20 +1243,20 @@
       {
         "allValue": "*",
         "current": {
-          "text": "rts",
-          "value": "rts"
+          "text": "srf",
+          "value": "srf"
         },
         "includeAll": false,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "srf",
             "value": "srf"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "rts",
             "value": "rts"
           },
@@ -1477,13 +1477,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Live Breakdown",
   "uid": "cegsn2q0xrncwb",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }

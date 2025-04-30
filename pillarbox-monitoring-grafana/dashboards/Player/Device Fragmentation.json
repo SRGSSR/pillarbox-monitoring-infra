@@ -15,7 +15,6 @@
       }
     ]
   },
-  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -65,7 +64,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
+        "w": 5,
         "x": 0,
         "y": 0
       },
@@ -75,6 +74,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -86,7 +86,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -141,7 +141,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -189,8 +189,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 4,
-        "x": 4,
+        "w": 5,
+        "x": 5,
         "y": 0
       },
       "id": 25,
@@ -199,6 +199,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -210,7 +211,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -290,43 +291,12 @@
         "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
-      "description": "Adoption rates of different device models for the selected tyoe across the selected time range.",
+      "description": "The number of sessions for the selected period and device.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "percent"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -337,52 +307,45 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 14,
-        "w": 16,
-        "x": 8,
+        "h": 5,
+        "w": 4,
+        "x": 10,
         "y": 0
       },
-      "id": 21,
+      "id": 27,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [
             {
-              "field": "session.device.model",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "5"
-              },
-              "type": "terms"
-            },
-            {
               "field": "@timestamp",
-              "id": "5",
+              "id": "2",
               "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
@@ -392,52 +355,209 @@
             "type": "grafana-opensearch-datasource"
           },
           "format": "table",
+          "hide": false,
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
           "queryType": "lucene",
-          "refId": "A",
+          "refId": "playing",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Model trend",
-      "type": "timeseries"
+      "title": "Sessions",
+      "type": "stat"
     },
     {
       "datasource": {
         "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
-      "description": "The top 5 operating systems and their top 3 versions for the selected device type, model and time range.",
+      "description": "The number of errors for the selected period and device.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 14,
+        "y": 0
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "queryType": "lucene",
+          "refId": "playing",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Errors",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "description": "The number of DRM errors for the selected period and device.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 0
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND (data.error_type:DRM_NOT_SUPPORTED OR data.error_type:DRM_ERROR)\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "queryType": "lucene",
+          "refId": "playing",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "DRM Errors",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -458,57 +578,131 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 8,
+        "h": 12,
+        "w": 12,
         "x": 0,
         "y": 5
       },
-      "id": 22,
+      "id": 30,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "orientation": "horizontal",
-        "showValue": "never",
-        "stacking": "none",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
+        "showHeader": true,
+        "sortBy": []
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [
             {
-              "field": "session.os.name",
+              "field": "session.device.model",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_count",
-                "size": "5"
+                "size": "0"
               },
               "type": "terms"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Model breakdown",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 32,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
             {
               "field": "session.os.version",
-              "id": "3",
+              "id": "2",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_count",
-                "size": "3"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -529,81 +723,27 @@
         }
       ],
       "title": "OS breakdown",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.os.version",
-                "session.os.name"
-              ],
-              "reducer": "allValues"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "session.os.name": true,
-              "session.os.version": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "All values": 2,
-              "Count": 3,
-              "session.os.name": 0,
-              "session.os.version": 1
-            },
-            "renameByName": {
-              "All values": ""
-            }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "string",
-                "targetField": "All values"
-              }
-            ],
-            "fields": {}
-          }
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "Count"
-              }
-            ]
-          }
-        }
-      ],
-      "type": "barchart"
+      "type": "table"
     },
     {
       "datasource": {
         "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 17
       },
       "id": 26,
       "options": {
         "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
@@ -612,6 +752,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -739,8 +880,9 @@
       "type": "logs"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "pillarbox"
   ],
@@ -749,19 +891,16 @@
       {
         "allValue": "*",
         "current": {
-          "selected": true,
-          "text": "Apple",
-          "value": "Apple"
+          "text": "$__all",
+          "value": "$__all"
         },
         "description": "Filter by platform.",
-        "hide": 0,
         "includeAll": true,
         "label": "Platform",
-        "multi": false,
         "name": "platform",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "Apple",
             "value": "Apple"
           },
@@ -772,16 +911,13 @@
           }
         ],
         "query": "Apple, Android",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "allValue": "*",
         "current": {
-          "selected": false,
-          "text": "Phone",
-          "value": "Phone"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "name": "user-events",
@@ -789,23 +925,18 @@
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.device.type\",\n  \"query\": \"event_name:START AND session.player.platform:$platform\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by device.",
-        "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Device",
-        "multi": false,
         "name": "device",
         "options": [],
         "query": "{\n  \"find\": \"terms\",\n  \"field\": \"session.device.type\",\n  \"query\": \"event_name:START AND session.player.platform:$platform\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "allValue": "*",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -815,17 +946,13 @@
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.device.model\",\n  \"query\": \"event_name:START AND session.player.platform:$platform AND session.device.type:$device\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by device model.",
-        "hide": 0,
         "includeAll": true,
         "label": "Model",
-        "multi": false,
         "name": "model",
         "options": [],
         "query": "{\n  \"find\": \"terms\",\n  \"field\": \"session.device.model\",\n  \"query\": \"event_name:START AND session.player.platform:$platform AND session.device.type:$device\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -833,18 +960,11 @@
         "auto_count": 30,
         "auto_min": "1m",
         "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
+          "text": "$__auto",
+          "value": "$__auto"
         },
-        "hide": 0,
         "name": "interval",
         "options": [
-          {
-            "selected": true,
-            "text": "auto",
-            "value": "$__auto_interval_interval"
-          },
           {
             "selected": false,
             "text": "1m",
@@ -897,21 +1017,19 @@
           }
         ],
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "queryValue": "",
         "refresh": 2,
-        "skipUrlSync": false,
         "type": "interval"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Device Fragmentation",
   "uid": "becr0oio9m8zka",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

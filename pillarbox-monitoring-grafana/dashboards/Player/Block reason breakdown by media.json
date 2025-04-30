@@ -207,7 +207,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 11,
         "w": 5,
         "x": 0,
         "y": 3
@@ -355,8 +355,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 10,
+        "h": 11,
+        "w": 12,
         "x": 5,
         "y": 3
       },
@@ -606,9 +606,9 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 9,
-        "x": 15,
+        "h": 11,
+        "w": 7,
+        "x": 17,
         "y": 3
       },
       "id": 21,
@@ -616,10 +616,12 @@
         "displayLabels": [],
         "legend": {
           "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
+          "displayMode": "table",
+          "placement": "bottom",
           "showLegend": true,
-          "values": []
+          "values": [
+            "percent"
+          ]
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -631,7 +633,7 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -641,7 +643,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.error_type",
+              "field": "data.block_reason",
               "id": "2",
               "settings": {
                 "min_doc_count": "1",
@@ -843,7 +845,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 12
+        "y": 14
       },
       "id": 22,
       "options": {
@@ -865,7 +867,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "data.error_type",
+              "field": "data.block_reason",
               "id": "3",
               "settings": {
                 "min_doc_count": "1",
@@ -965,7 +967,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 12
+        "y": 14
       },
       "id": 14,
       "options": {
@@ -1046,7 +1048,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 22
       },
       "id": 7,
       "options": {
@@ -1284,31 +1286,31 @@
       },
       {
         "current": {
-          "text": "urn:swisstxt:video:srf:1817096",
-          "value": "urn:swisstxt:video:srf:1817096"
+          "text": "urn:swisstxt:video:srf:1821401",
+          "value": "urn:swisstxt:video:srf:1821401"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:swisstxt:video:srf:1817096",
-            "value": "urn:swisstxt:video:srf:1817096"
+            "text": "urn:swisstxt:video:srf:1821401",
+            "value": "urn:swisstxt:video:srf:1821401"
           }
         ],
-        "query": "urn:swisstxt:video:srf:1817096",
+        "query": "urn:swisstxt:video:srf:1821401",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-03-31T07:00:47.761Z",
-    "to": "2025-03-31T08:00:47.761Z"
+    "from": "2025-04-30T07:25:00.272Z",
+    "to": "2025-04-30T08:25:00.272Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Block reason breakdown by media",
   "uid": "bec87qxee87wgd",
-  "version": 5,
+  "version": 7,
   "weekStart": ""
 }

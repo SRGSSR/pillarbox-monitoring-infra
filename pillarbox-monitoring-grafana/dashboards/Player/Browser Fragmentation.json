@@ -1100,9 +1100,10 @@
                 "session.os.name",
                 "session.os.version",
                 "session.player.platform",
+                "session.player.version",
                 "session_id",
                 "user_ip",
-                "session.player.version"
+                "data.error_type"
               ]
             }
           }
@@ -1110,6 +1111,8 @@
         {
           "id": "extractFields",
           "options": {
+            "delimiter": ",",
+            "format": "json",
             "source": "data.log"
           }
         },
@@ -1126,6 +1129,7 @@
             "include": {
               "names": [
                 "@timestamp",
+                "data.log",
                 "data.message",
                 "data.name",
                 "data.position",
@@ -1139,7 +1143,7 @@
                 "session.player.version",
                 "session_id",
                 "user_ip",
-                "data.log"
+                "data.error_type"
               ]
             }
           }
@@ -1159,6 +1163,7 @@
             "renameByName": {
               "@timestamp": "",
               "Log": "",
+              "data.error_type": "Error Type",
               "data.log": "Logs",
               "data.message": "Message",
               "data.name": "Name",
@@ -1191,8 +1196,8 @@
       {
         "allValue": "*",
         "current": {
-          "text": "Chrome",
-          "value": "Chrome"
+          "text": "Safari",
+          "value": "Safari"
         },
         "datasource": {
           "name": "user-events",
@@ -1298,13 +1303,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
-    "to": "now"
+    "from": "2025-05-04T18:19:50.486Z",
+    "to": "2025-05-04T21:59:59.999Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Browser Fragmentation",
   "uid": "fecn8fvwzzz7ka",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

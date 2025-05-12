@@ -455,7 +455,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&refresh=5s&var-session_id=${__value.text}&from=${__from}&to=${__to}"
+                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&var-session_id=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto"
                   }
                 ]
               }
@@ -736,8 +736,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -851,8 +850,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -965,8 +963,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "green",
@@ -1383,20 +1380,20 @@
     "list": [
       {
         "current": {
-          "text": "81.56.116.163",
-          "value": "81.56.116.163"
+          "text": "93.235.172.136",
+          "value": "93.235.172.136"
         },
-        "description": "The session id.",
+        "description": "The user IP address.",
         "label": "IP",
         "name": "user_ip",
         "options": [
           {
             "selected": true,
-            "text": "81.56.116.163",
-            "value": "81.56.116.163"
+            "text": "93.235.172.136",
+            "value": "93.235.172.136"
           }
         ],
-        "query": "81.56.116.163",
+        "query": "93.235.172.136",
         "type": "textbox"
       },
       {
@@ -1404,13 +1401,13 @@
         "auto_count": 30,
         "auto_min": "30s",
         "current": {
-          "text": "1m",
-          "value": "1m"
+          "text": "$__auto",
+          "value": "$__auto"
         },
         "name": "interval",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "1m",
             "value": "1m"
           },
@@ -1467,13 +1464,13 @@
     ]
   },
   "time": {
-    "from": "2025-04-29T11:56:46.353Z",
-    "to": "2025-04-29T12:01:46.353Z"
+    "from": "2025-05-01T07:57:11.817Z",
+    "to": "2025-05-01T08:57:11.817Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 7,
+  "version": 10,
   "weekStart": ""
 }

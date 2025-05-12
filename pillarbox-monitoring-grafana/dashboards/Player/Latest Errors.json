@@ -81,7 +81,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&refresh=5s&var-session_id=${__value.text}﻿&from=﻿${__from}﻿&to=﻿${__to}"
+                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&var-session_id=${__value.text}﻿&from=﻿${__from}﻿&to=﻿${__to}&var-interval=$__auto"
                   }
                 ]
               }
@@ -134,7 +134,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}﻿&from=﻿${__from}﻿&to=${__to}"
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}﻿&from=﻿${__from}﻿&to=${__to}&var-interval=$__auto"
                   }
                 ]
               }
@@ -261,7 +261,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:${business_error}\nAND (data.error_type:${error_type:raw})",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:${business_error}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -550,13 +550,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

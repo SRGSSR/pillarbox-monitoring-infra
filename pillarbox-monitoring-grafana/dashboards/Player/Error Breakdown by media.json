@@ -1081,7 +1081,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1410,7 +1411,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1749,7 +1751,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1872,6 +1875,24 @@
                 "value": 186
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.device.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/celn8pqg1yuioe/device-id-breakdown?var-device_id=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1934,6 +1955,7 @@
             "include": {
               "names": [
                 "@timestamp",
+                "data.error_type",
                 "data.log",
                 "session.browser.name",
                 "session.browser.version",
@@ -1941,7 +1963,7 @@
                 "session.player.platform",
                 "session_id",
                 "user_ip",
-                "data.error_type"
+                "session.device.id"
               ]
             }
           }
@@ -2015,15 +2037,16 @@
             },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 2,
-              "Browser": 6,
-              "data.error_type": 8,
-              "data.log": 9,
-              "from": 3,
-              "session.browser.name": 7,
-              "session.browser.version": 10,
-              "session.device.model": 5,
-              "session.player.platform": 4,
+              "@timestamp": 3,
+              "Browser": 7,
+              "data.error_type": 9,
+              "data.log": 10,
+              "from": 4,
+              "session.browser.name": 8,
+              "session.browser.version": 11,
+              "session.device.id": 2,
+              "session.device.model": 6,
+              "session.player.platform": 5,
               "session_id": 0,
               "user_ip": 1
             },
@@ -2050,6 +2073,7 @@
               "session.browser.name (lastNotNull) + session.browser.version (lastNotNull)": "Browser",
               "session.browser.version": "",
               "session.browser.version (lastNotNull)": "",
+              "session.device.id": "Device",
               "session.device.model": "Device",
               "session.device.model (lastNotNull)": "Device Model",
               "session.device.type (lastNotNull)": "Device Type",
@@ -2352,7 +2376,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2585,7 +2610,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2701,7 +2727,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2817,7 +2844,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2989,31 +3017,31 @@
       },
       {
         "current": {
-          "text": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651",
-          "value": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651"
+          "text": "urn:swisstxt:video:srf:1814018",
+          "value": "urn:swisstxt:video:srf:1814018"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651",
-            "value": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651"
+            "text": "urn:swisstxt:video:srf:1814018",
+            "value": "urn:swisstxt:video:srf:1814018"
           }
         ],
-        "query": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651",
+        "query": "urn:swisstxt:video:srf:1814018",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-05-12T11:04:42.921Z",
-    "to": "2025-05-12T12:04:42.921Z"
+    "from": "2025-05-13T12:39:55.797Z",
+    "to": "2025-05-13T13:39:55.797Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 20,
+  "version": 21,
   "weekStart": ""
 }

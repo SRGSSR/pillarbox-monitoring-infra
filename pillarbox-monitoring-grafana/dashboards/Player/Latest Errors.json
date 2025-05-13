@@ -72,10 +72,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 340
-              },
-              {
                 "id": "links",
                 "value": [
                   {
@@ -212,6 +208,24 @@
                 "value": 130
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.device.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/celn8pqg1yuioe/device-id-breakdown?var-device_id=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -234,7 +248,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Start time"
+          }
+        ]
       },
       "pluginVersion": "11.5.2",
       "targets": [
@@ -274,6 +293,7 @@
             "include": {
               "names": [
                 "@timestamp",
+                "data.block_reason",
                 "data.business_error",
                 "data.error_type",
                 "session.device.model",
@@ -281,7 +301,7 @@
                 "session.player.platform",
                 "session_id",
                 "user_ip",
-                "data.block_reason"
+                "session.device.id"
               ]
             }
           }
@@ -341,13 +361,15 @@
             },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 2,
-              "data.business_error": 7,
-              "data.error_type": 8,
-              "from": 3,
-              "session.device.model": 6,
-              "session.media.id": 4,
-              "session.player.platform": 5,
+              "@timestamp": 3,
+              "data.block_reason": 10,
+              "data.business_error": 8,
+              "data.error_type": 9,
+              "from": 4,
+              "session.device.id": 2,
+              "session.device.model": 7,
+              "session.media.id": 5,
+              "session.player.platform": 6,
               "session_id": 0,
               "user_ip": 1
             },
@@ -374,6 +396,7 @@
               "session.browser.name (lastNotNull) + session.browser.version (lastNotNull)": "Browser",
               "session.browser.version": "",
               "session.browser.version (lastNotNull)": "",
+              "session.device.id": "Device",
               "session.device.model": "Device",
               "session.device.model (lastNotNull)": "Device Model",
               "session.device.type (lastNotNull)": "Device Type",
@@ -550,13 +573,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
-    "to": "now"
+    "from": "2025-05-13T12:39:55.797Z",
+    "to": "2025-05-13T13:39:55.797Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }

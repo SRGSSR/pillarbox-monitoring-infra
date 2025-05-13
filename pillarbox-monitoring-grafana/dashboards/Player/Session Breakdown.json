@@ -783,11 +783,36 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Device"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/celn8pqg1yuioe/device-id-breakdown?var-device_id=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 8
@@ -846,7 +871,8 @@
               "names": [
                 "session.media.id",
                 "session.media.origin",
-                "user_ip"
+                "user_ip",
+                "session.device.id"
               ]
             }
           }
@@ -869,6 +895,7 @@
               "session.screen.width": 3
             },
             "renameByName": {
+              "session.device.id": "Device",
               "session.device.model": "Device Model",
               "session.device.type": "Device Type",
               "session.media.id": "Media ID",
@@ -879,20 +906,6 @@
               "session.player.platform": "Player Platform",
               "user_ip": "IP"
             }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "session.os.name": true,
-              "session.os.version": true,
-              "session.screen.height": true,
-              "session.screen.width": true
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {}
           }
         }
       ],
@@ -1004,7 +1017,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 11
+        "y": 12
       },
       "id": 1,
       "options": {
@@ -1230,7 +1243,7 @@
         "h": 9,
         "w": 4,
         "x": 4,
-        "y": 11
+        "y": 12
       },
       "id": 9,
       "options": {
@@ -1430,7 +1443,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 11
+        "y": 12
       },
       "id": 6,
       "options": {
@@ -1576,7 +1589,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 11
+        "y": 12
       },
       "id": 10,
       "options": {
@@ -1640,7 +1653,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 21
       },
       "id": 8,
       "options": {
@@ -1783,8 +1796,8 @@
     "list": [
       {
         "current": {
-          "text": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb",
-          "value": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb"
+          "text": "403634da-7e3a-4606-b773-92d324766fc2",
+          "value": "403634da-7e3a-4606-b773-92d324766fc2"
         },
         "description": "The session id.",
         "label": "Session",
@@ -1792,11 +1805,11 @@
         "options": [
           {
             "selected": true,
-            "text": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb",
-            "value": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb"
+            "text": "403634da-7e3a-4606-b773-92d324766fc2",
+            "value": "403634da-7e3a-4606-b773-92d324766fc2"
           }
         ],
-        "query": "805d4e82-fea4-4f3e-86d0-6f1824b6f5cb",
+        "query": "403634da-7e3a-4606-b773-92d324766fc2",
         "type": "textbox"
       },
       {
@@ -1867,13 +1880,13 @@
     ]
   },
   "time": {
-    "from": "2025-04-14T08:21:15.004Z",
-    "to": "now"
+    "from": "2025-05-13T12:36:44.873Z",
+    "to": "2025-05-13T13:36:44.873Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }

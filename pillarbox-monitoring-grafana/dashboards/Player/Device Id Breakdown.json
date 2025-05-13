@@ -735,10 +735,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 329
-              },
-              {
                 "id": "links",
                 "value": [
                   {
@@ -810,41 +806,71 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Error"
+              "options": "Status"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "bool_yes_no"
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Error"
+                      },
+                      "1": {
+                        "color": "orange",
+                        "index": 0,
+                        "text": "Blocked"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "match": "null+nan",
+                      "result": {
+                        "color": "green",
+                        "index": 2,
+                        "text": "Ok"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
               },
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "color-text"
+                  "type": "color-text",
+                  "wrapText": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.media.id"
+            },
+            "properties": [
               {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "red",
-                      "value": 1
-                    }
-                  ]
-                }
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                  }
+                ]
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 8
@@ -862,7 +888,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Start time"
+          }
+        ]
       },
       "pluginVersion": "11.5.2",
       "targets": [
@@ -901,6 +932,17 @@
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "data.business_error",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
                 "orderBy": "_term",
                 "size": "10"
               },
@@ -919,7 +961,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.device.id:${device_id}",
+          "query": "event_name:ERROR\nAND session.device.id:${device_id}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -939,13 +981,14 @@
           "options": {
             "include": {
               "names": [
+                "session_id",
                 "@timestamp",
                 "session.player.name",
                 "session.player.version",
                 "session.qoe_timings.total",
-                "session_id",
                 "user_ip",
-                "Count"
+                "data.business_error",
+                "session.media.id"
               ]
             }
           }
@@ -977,29 +1020,14 @@
           }
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "error",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "Count"
-              ],
-              "reducer": "sum"
-            },
-            "unary": {
-              "fieldName": "Error",
-              "operator": "abs"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
               "@timestamp": false,
               "@timestamp 1": false,
               "Count": true,
+              "data.business_error": false,
+              "error": false,
               "from": false,
               "session.browser.name": true,
               "session.browser.name (lastNotNull)": true,
@@ -1015,11 +1043,13 @@
             },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 2,
-              "player": 5,
-              "session.player.name": 3,
-              "session.player.version": 4,
-              "session.qoe_timings.total": 6,
+              "@timestamp": 3,
+              "data.business_error": 8,
+              "player": 6,
+              "session.media.id": 2,
+              "session.player.name": 4,
+              "session.player.version": 5,
+              "session.qoe_timings.total": 7,
               "session_id": 0,
               "user_ip": 1
             },
@@ -1035,9 +1065,10 @@
               "browser": "Browser",
               "data.bandwidth (lastNotNull)": "Last Bandwidth",
               "data.bitrate (lastNotNull)": "Last Bitrate",
+              "data.business_error": "Status",
               "data.playback_duration (firstNotNull)": "Playback Duration",
               "data.playback_duration (lastNotNull)": "Playback Duration",
-              "error": "Error",
+              "error": "",
               "from": "Start time",
               "os": "OS",
               "player": "Player",
@@ -1050,6 +1081,7 @@
               "session.device.model": "Device",
               "session.device.model (lastNotNull)": "Device Model",
               "session.device.type (lastNotNull)": "Device Type",
+              "session.media.id": "Media",
               "session.media.id (lastNotNull)": "Media Id",
               "session.media.origin": "Origin",
               "session.media.origin (lastNotNull)": "Origin",
@@ -1214,7 +1246,7 @@
         "h": 13,
         "w": 8,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 6,
       "options": {
@@ -1380,7 +1412,7 @@
         "h": 13,
         "w": 8,
         "x": 8,
-        "y": 19
+        "y": 20
       },
       "id": 7,
       "options": {
@@ -1444,6 +1476,465 @@
       ],
       "title": "Block Reason Breakdown",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "description": "This timeline illustrates the specific time intervals during which access to media by the current IP address was restricted based on its geographical location.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "ERROR": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Geoblocked"
+                },
+                "HEARTBEAT": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Unrestricted"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Activity"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Geoblock"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 8,
+        "x": 16,
+        "y": 20
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "Starts",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "Sessions",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Geoblock",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.block_reason:GEOBLOCK\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "geoblock",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR \nAND data.business_error:false\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Restriction Timeline",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "name": "user-events",
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 9,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "1",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "name": "user-events",
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "logs"
+            }
+          ],
+          "query": "event_name:ERROR\nAND session.device.id:${device_id}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Error log",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "data.business_error",
+                "data.error_type",
+                "data.log",
+                "data.message",
+                "data.name",
+                "data.position",
+                "data.url",
+                "event_name",
+                "session.browser.name",
+                "session.browser.user_agent",
+                "session.browser.version",
+                "session.device.id",
+                "session.device.model",
+                "session.device.type",
+                "session.media.asset_url",
+                "session.media.id",
+                "session.media.metadata_url",
+                "session.media.origin",
+                "session.os.name",
+                "session.os.version",
+                "session.player.name",
+                "session.player.platform",
+                "session.player.version",
+                "session.qoe_timings.asset",
+                "session.qoe_timings.metadata",
+                "session.qoe_timings.total",
+                "session.qos_timings.asset",
+                "session.qos_timings.metadata",
+                "session.robot",
+                "session.screen.height",
+                "session.screen.width",
+                "session_id",
+                "user_ip",
+                "version",
+                "@timestamp"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "data.error_type": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "@timestamp": 3,
+              "data.business_error": 4,
+              "data.error_type": 1,
+              "data.log": 5,
+              "data.message": 2,
+              "data.name": 6,
+              "data.position": 7,
+              "data.url": 8,
+              "event_name": 0,
+              "session.browser.name": 9,
+              "session.browser.user_agent": 10,
+              "session.browser.version": 11,
+              "session.device.id": 12,
+              "session.device.model": 13,
+              "session.device.type": 14,
+              "session.media.asset_url": 15,
+              "session.media.id": 16,
+              "session.media.metadata_url": 17,
+              "session.media.origin": 18,
+              "session.os.name": 19,
+              "session.os.version": 20,
+              "session.player.name": 21,
+              "session.player.platform": 22,
+              "session.player.version": 23,
+              "session.qoe_timings.asset": 24,
+              "session.qoe_timings.metadata": 25,
+              "session.qoe_timings.total": 26,
+              "session.qos_timings.asset": 27,
+              "session.qos_timings.metadata": 28,
+              "session.robot": 29,
+              "session.screen.height": 30,
+              "session.screen.width": 31,
+              "session_id": 32,
+              "user_ip": 33,
+              "version": 34
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "event_name",
+                "data.message"
+              ],
+              "reducer": "allValues"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "joinWith": "",
+                "targetField": "All values"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "event_name": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "@timestamp": 1,
+              "All values": 0,
+              "data.business_error": 2,
+              "data.error_type": 5,
+              "data.log": 3,
+              "data.message": 6,
+              "data.name": 4,
+              "data.position": 7,
+              "data.url": 8,
+              "event_name": 9,
+              "session.browser.name": 10,
+              "session.browser.user_agent": 11,
+              "session.browser.version": 12,
+              "session.device.id": 13,
+              "session.device.model": 14,
+              "session.device.type": 15,
+              "session.media.asset_url": 16,
+              "session.media.id": 17,
+              "session.media.metadata_url": 18,
+              "session.media.origin": 19,
+              "session.os.name": 20,
+              "session.os.version": 21,
+              "session.player.name": 22,
+              "session.player.platform": 23,
+              "session.player.version": 24,
+              "session.qoe_timings.asset": 25,
+              "session.qoe_timings.metadata": 26,
+              "session.qoe_timings.total": 27,
+              "session.qos_timings.asset": 28,
+              "session.qos_timings.metadata": 29,
+              "session.robot": 30,
+              "session.screen.height": 31,
+              "session.screen.width": 32,
+              "session_id": 33,
+              "user_ip": 34,
+              "version": 35
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "logs"
     }
   ],
   "preload": false,
@@ -1456,8 +1947,8 @@
     "list": [
       {
         "current": {
-          "text": "cd1c9f44-e558-4a44-aa76-80ef546ce3c5",
-          "value": "cd1c9f44-e558-4a44-aa76-80ef546ce3c5"
+          "text": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f",
+          "value": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f"
         },
         "description": "The device identifier.",
         "label": "Device",
@@ -1465,11 +1956,11 @@
         "options": [
           {
             "selected": true,
-            "text": "cd1c9f44-e558-4a44-aa76-80ef546ce3c5",
-            "value": "cd1c9f44-e558-4a44-aa76-80ef546ce3c5"
+            "text": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f",
+            "value": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f"
           }
         ],
-        "query": "cd1c9f44-e558-4a44-aa76-80ef546ce3c5",
+        "query": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f",
         "type": "textbox"
       },
       {
@@ -1548,6 +2039,6 @@
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 6,
+  "version": 11,
   "weekStart": ""
 }

@@ -442,13 +442,9 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Session"
+              "options": "session_id"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 328
-              },
               {
                 "id": "links",
                 "value": [
@@ -495,6 +491,87 @@
                 "value": 83
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Device"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/celn8pqg1yuioe/device-id-breakdown?var-device_id=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.business_error"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Error"
+                      },
+                      "1": {
+                        "color": "orange",
+                        "index": 2,
+                        "text": "Blocked"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "match": "null+nan",
+                      "result": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Ok"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.media.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -517,7 +594,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Start time"
+          }
+        ]
       },
       "pluginVersion": "11.5.2",
       "targets": [
@@ -546,23 +628,75 @@
           "query": "event_name:START\nAND user_ip:\"${user_ip}\"",
           "refId": "A",
           "timeField": "@timestamp"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session_id",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "data.business_error",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND user_ip:\"${user_ip}\"",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
         }
       ],
-      "title": "",
+      "title": "Latest Sessions",
       "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "session_id",
+            "mode": "outer"
+          }
+        },
         {
           "id": "filterFieldsByName",
           "options": {
             "include": {
               "names": [
+                "session_id",
                 "@timestamp",
+                "session.device.id",
                 "session.device.model",
                 "session.device.type",
                 "session.os.name",
                 "session.os.version",
                 "session.player.platform",
-                "session_id",
-                "session.device.id"
+                "data.business_error",
+                "session.media.id"
               ]
             }
           }
@@ -658,16 +792,18 @@
             },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 1,
-              "browser": 7,
-              "from": 2,
-              "os": 4,
-              "session.device.id": 6,
-              "session.device.model": 5,
-              "session.device.type": 8,
-              "session.os.name": 9,
-              "session.os.version": 10,
-              "session.player.platform": 3,
+              "@timestamp": 3,
+              "browser": 8,
+              "data.business_error": 9,
+              "from": 4,
+              "os": 6,
+              "session.device.id": 1,
+              "session.device.model": 7,
+              "session.device.type": 10,
+              "session.media.id": 2,
+              "session.os.name": 11,
+              "session.os.version": 12,
+              "session.player.platform": 5,
               "session_id": 0
             },
             "renameByName": {
@@ -681,6 +817,7 @@
               "browser": "Browser",
               "data.bandwidth (lastNotNull)": "Last Bandwidth",
               "data.bitrate (lastNotNull)": "Last Bitrate",
+              "data.business_error": "Status",
               "data.playback_duration (firstNotNull)": "Playback Duration",
               "data.playback_duration (lastNotNull)": "Playback Duration",
               "from": "Start time",
@@ -690,10 +827,11 @@
               "session.browser.name (lastNotNull) + session.browser.version (lastNotNull)": "Browser",
               "session.browser.version": "",
               "session.browser.version (lastNotNull)": "",
-              "session.device.id": "Device ID",
-              "session.device.model": "Device",
+              "session.device.id": "Device",
+              "session.device.model": "Model",
               "session.device.model (lastNotNull)": "Device Model",
               "session.device.type (lastNotNull)": "Device Type",
+              "session.media.id": "Media",
               "session.media.id (lastNotNull)": "Media Id",
               "session.media.origin": "Origin",
               "session.media.origin (lastNotNull)": "Origin",
@@ -736,7 +874,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           },
@@ -850,7 +989,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -963,7 +1103,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "green",
@@ -1380,8 +1521,8 @@
     "list": [
       {
         "current": {
-          "text": "93.235.172.136",
-          "value": "93.235.172.136"
+          "text": "194.230.146.240",
+          "value": "194.230.146.240"
         },
         "description": "The user IP address.",
         "label": "IP",
@@ -1389,11 +1530,11 @@
         "options": [
           {
             "selected": true,
-            "text": "93.235.172.136",
-            "value": "93.235.172.136"
+            "text": "194.230.146.240",
+            "value": "194.230.146.240"
           }
         ],
-        "query": "93.235.172.136",
+        "query": "194.230.146.240",
         "type": "textbox"
       },
       {
@@ -1464,13 +1605,13 @@
     ]
   },
   "time": {
-    "from": "2025-05-01T07:57:11.817Z",
-    "to": "2025-05-01T08:57:11.817Z"
+    "from": "2025-05-13T12:42:04.224Z",
+    "to": "2025-05-13T13:42:04.224Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 10,
+  "version": 13,
   "weekStart": ""
 }

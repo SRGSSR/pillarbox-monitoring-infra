@@ -112,7 +112,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -141,7 +141,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -237,7 +237,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -266,7 +266,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "total",
           "timeField": "@timestamp"
@@ -362,7 +362,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -447,7 +447,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -532,7 +532,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND (data.error_type:DRM_NOT_SUPPORTED OR data.error_type:DRM_ERROR)\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:ERROR\nAND (data.error_type:DRM_NOT_SUPPORTED OR data.error_type:DRM_ERROR)\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -625,7 +625,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -717,7 +717,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -776,7 +776,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.device.type:${device}\nAND session.device.model:${model}\nAND session.media.id:${bu:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -916,6 +916,50 @@
       {
         "allValue": "*",
         "current": {
+          "text": "$__all",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Business Unit",
+        "name": "bu",
+        "options": [
+          {
+            "selected": false,
+            "text": "srf",
+            "value": "*\\:srf\\:*"
+          },
+          {
+            "selected": false,
+            "text": "rts",
+            "value": "*\\:rts\\:*"
+          },
+          {
+            "selected": false,
+            "text": "rsi",
+            "value": "*\\:rsi\\:*"
+          },
+          {
+            "selected": false,
+            "text": "rtr",
+            "value": "*\\:rtr\\:*"
+          },
+          {
+            "selected": false,
+            "text": "swi",
+            "value": "*\\:swi\\:*"
+          },
+          {
+            "selected": false,
+            "text": "rio",
+            "value": "*\\:rio\\:*"
+          }
+        ],
+        "query": "srf : *\\:srf\\:*, rts : *\\:rts\\:*, rsi : *\\:rsi\\:*, rtr : *\\:rtr\\:*, swi : *\\:swi\\:*, rio : *\\:rio\\:*",
+        "type": "custom"
+      },
+      {
+        "allValue": "*",
+        "current": {
           "text": "All",
           "value": "$__all"
         },
@@ -1023,13 +1067,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "browser",
+  "timezone": "Europe/Zurich",
   "title": "Device Fragmentation",
   "uid": "becr0oio9m8zka",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }

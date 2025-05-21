@@ -1014,8 +1014,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1344,8 +1343,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1908,8 +1906,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2138,15 +2135,15 @@
       {
         "allValue": "*",
         "current": {
-          "text": "srf",
-          "value": "srf"
+          "text": "$__all",
+          "value": "$__all"
         },
         "includeAll": true,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "srf",
             "value": "srf"
           },
@@ -2192,12 +2189,12 @@
           {
             "selected": false,
             "text": "Audio",
-            "value": "*\\:srf\\:audio\\:*"
+            "value": "*\\:*\\:audio\\:*"
           },
           {
             "selected": false,
             "text": "Video",
-            "value": "*\\:srf\\:video\\:*"
+            "value": "*\\:*\\:video\\:*"
           }
         ],
         "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
@@ -2278,6 +2275,6 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 16,
+  "version": 17,
   "weekStart": ""
 }

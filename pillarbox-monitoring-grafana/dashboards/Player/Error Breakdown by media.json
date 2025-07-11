@@ -183,8 +183,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
       "fieldConfig": {
@@ -249,8 +249,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -279,8 +279,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -379,8 +379,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -546,8 +546,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -576,8 +576,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -598,8 +598,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "Repartition of error by platform for the selected time range.",
       "fieldConfig": {
@@ -800,8 +800,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -819,8 +819,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -880,8 +880,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -909,8 +909,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -932,8 +932,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -1025,8 +1025,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "luceneQueryType": "Metric",
           "metrics": [
@@ -1060,8 +1060,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "Web player only.",
       "fieldConfig": {
@@ -1206,8 +1206,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1236,8 +1236,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1390,8 +1390,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -1536,8 +1536,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1566,8 +1566,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1731,8 +1731,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -1933,8 +1933,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -2107,8 +2107,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -2308,8 +2308,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -2329,8 +2329,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -2528,8 +2528,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -3017,31 +3017,31 @@
       },
       {
         "current": {
-          "text": "urn:swisstxt:video:srf:1814018",
-          "value": "urn:swisstxt:video:srf:1814018"
+          "text": "urn:rts:video:3608506",
+          "value": "urn:rts:video:3608506"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:swisstxt:video:srf:1814018",
-            "value": "urn:swisstxt:video:srf:1814018"
+            "text": "urn:rts:video:3608506",
+            "value": "urn:rts:video:3608506"
           }
         ],
-        "query": "urn:swisstxt:video:srf:1814018",
+        "query": "urn:rts:video:3608506",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-05-13T12:39:55.797Z",
-    "to": "2025-05-13T13:39:55.797Z"
+    "from": "2025-06-16T22:00:00.000Z",
+    "to": "2025-06-17T21:59:59.999Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 21,
+  "version": 22,
   "weekStart": ""
 }

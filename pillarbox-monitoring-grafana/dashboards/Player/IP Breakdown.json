@@ -36,8 +36,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "Wether the IP has been detected as a VPN by the player.",
       "fieldConfig": {
@@ -156,8 +156,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "luceneQueryType": "Metric",
@@ -180,8 +180,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "This timeline illustrates the specific time intervals during which access to media by the current IP address was restricted based on its geographical location.",
       "fieldConfig": {
@@ -333,8 +333,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -362,7 +362,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -390,8 +390,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -412,8 +412,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -616,8 +616,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -657,7 +657,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -860,8 +860,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The total number of sessions for the selected period.",
       "fieldConfig": {
@@ -922,8 +922,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -1090,8 +1090,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -1155,8 +1155,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1185,8 +1185,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1285,8 +1285,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {},
@@ -1325,8 +1325,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -1521,8 +1521,8 @@
     "list": [
       {
         "current": {
-          "text": "194.230.146.240",
-          "value": "194.230.146.240"
+          "text": "193.57.49.24",
+          "value": "193.57.49.24"
         },
         "description": "The user IP address.",
         "label": "IP",
@@ -1530,11 +1530,11 @@
         "options": [
           {
             "selected": true,
-            "text": "194.230.146.240",
-            "value": "194.230.146.240"
+            "text": "193.57.49.24",
+            "value": "193.57.49.24"
           }
         ],
-        "query": "194.230.146.240",
+        "query": "193.57.49.24",
         "type": "textbox"
       },
       {
@@ -1605,13 +1605,13 @@
     ]
   },
   "time": {
-    "from": "2025-05-13T12:42:04.224Z",
-    "to": "2025-05-13T13:42:04.224Z"
+    "from": "2025-06-16T22:00:00.000Z",
+    "to": "2025-06-17T21:59:59.999Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }

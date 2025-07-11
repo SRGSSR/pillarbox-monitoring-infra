@@ -38,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The average error rate for the selected browser and time range.",
       "fieldConfig": {
@@ -101,8 +101,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -130,8 +130,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -163,8 +163,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The percentage of sessions using the selected device. This percentage is relative to the selected platform total number of sessions.",
       "fieldConfig": {
@@ -226,8 +226,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -255,8 +255,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -288,8 +288,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The number of sessions for the selected period and device.",
       "fieldConfig": {
@@ -351,8 +351,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -373,8 +373,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The number of errors for the selected period and device.",
       "fieldConfig": {
@@ -436,8 +436,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -458,8 +458,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The number of DRM errors for the selected period and device.",
       "fieldConfig": {
@@ -521,8 +521,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -543,8 +543,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -616,8 +616,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -635,8 +635,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -708,8 +708,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -727,8 +727,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {},
@@ -767,8 +767,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -952,9 +952,14 @@
             "selected": false,
             "text": "rio",
             "value": "*\\:rio\\:*"
+          },
+          {
+            "selected": false,
+            "text": "swisstxt",
+            "value": "*\\:swisstxt\\:*"
           }
         ],
-        "query": "srf : *\\:srf\\:*, rts : *\\:rts\\:*, rsi : *\\:rsi\\:*, rtr : *\\:rtr\\:*, swi : *\\:swi\\:*, rio : *\\:rio\\:*",
+        "query": "srf : *\\:srf\\:*, rts : *\\:rts\\:*, rsi : *\\:rsi\\:*, rtr : *\\:rtr\\:*, swi : *\\:swi\\:*, rio : *\\:rio\\:*, swisstxt : *\\:swisstxt\\:*",
         "type": "custom"
       },
       {
@@ -964,8 +969,8 @@
           "value": "$__all"
         },
         "datasource": {
-          "name": "user-events",
-          "type": "grafana-opensearch-datasource"
+          "type": "grafana-opensearch-datasource",
+          "uid": "deoqp3q289nnkd"
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.device.type\",\n  \"query\": \"event_name:START AND session.player.platform:$platform\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by device.",
@@ -985,8 +990,8 @@
           "value": "$__all"
         },
         "datasource": {
-          "name": "user-events",
-          "type": "grafana-opensearch-datasource"
+          "type": "grafana-opensearch-datasource",
+          "uid": "deoqp3q289nnkd"
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.device.model\",\n  \"query\": \"event_name:START AND session.player.platform:$platform AND session.device.type:$device\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by device model.",
@@ -1074,6 +1079,6 @@
   "timezone": "Europe/Zurich",
   "title": "Device Fragmentation",
   "uid": "becr0oio9m8zka",
-  "version": 4,
+  "version": 7,
   "weekStart": ""
 }

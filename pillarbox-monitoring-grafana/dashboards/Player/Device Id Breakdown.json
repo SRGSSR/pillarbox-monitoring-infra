@@ -23,8 +23,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -83,8 +83,8 @@
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -252,8 +252,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The total number of sessions for the selected period.",
       "fieldConfig": {
@@ -314,8 +314,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -529,8 +529,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -595,8 +595,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -627,8 +627,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -701,8 +701,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -910,8 +910,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -951,7 +951,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1114,8 +1114,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "Error Type Breakdown for the selected browser and time range.",
       "fieldConfig": {
@@ -1290,8 +1290,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -1311,8 +1311,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The breakdown of blocking reasons for the selected period.",
       "fieldConfig": {
@@ -1458,8 +1458,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -1479,8 +1479,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "This timeline illustrates the specific time intervals during which access to media by the current IP address was restricted based on its geographical location.",
       "fieldConfig": {
@@ -1632,8 +1632,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -1661,7 +1661,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1689,8 +1689,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1711,8 +1711,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {},
@@ -1751,8 +1751,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -1947,8 +1947,8 @@
     "list": [
       {
         "current": {
-          "text": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f",
-          "value": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f"
+          "text": "2548c17b-1cab-4657-be99-835b9dfcb8fa",
+          "value": "2548c17b-1cab-4657-be99-835b9dfcb8fa"
         },
         "description": "The device identifier.",
         "label": "Device",
@@ -1956,11 +1956,11 @@
         "options": [
           {
             "selected": true,
-            "text": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f",
-            "value": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f"
+            "text": "2548c17b-1cab-4657-be99-835b9dfcb8fa",
+            "value": "2548c17b-1cab-4657-be99-835b9dfcb8fa"
           }
         ],
-        "query": "b8b0ab30-ab6e-4f5b-94ee-70c90a57f93f",
+        "query": "2548c17b-1cab-4657-be99-835b9dfcb8fa",
         "type": "textbox"
       },
       {
@@ -2032,13 +2032,13 @@
     ]
   },
   "time": {
-    "from": "now-7d",
-    "to": "now"
+    "from": "2025-06-16T22:00:00.000Z",
+    "to": "2025-06-17T21:59:59.999Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 11,
+  "version": 12,
   "weekStart": ""
 }

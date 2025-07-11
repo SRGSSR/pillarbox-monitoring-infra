@@ -38,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -271,8 +271,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -507,9 +507,14 @@
             "selected": false,
             "text": "rio",
             "value": "rio"
+          },
+          {
+            "selected": false,
+            "text": "swisstxt",
+            "value": "swisstxt"
           }
         ],
-        "query": "srf, rts, rsi, rtr, swi, rio",
+        "query": "srf, rts, rsi, rtr, swi, rio, swisstxt",
         "type": "custom"
       },
       {
@@ -573,13 +578,13 @@
     ]
   },
   "time": {
-    "from": "2025-05-13T12:39:55.797Z",
-    "to": "2025-05-13T13:39:55.797Z"
+    "from": "now-1h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 6,
+  "version": 8,
   "weekStart": ""
 }

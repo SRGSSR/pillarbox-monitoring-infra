@@ -246,7 +246,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -278,7 +278,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -617,7 +617,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -649,7 +649,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -988,7 +988,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1020,7 +1020,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -1243,20 +1243,20 @@
       {
         "allValue": "*",
         "current": {
-          "text": "srf",
-          "value": "srf"
+          "text": "rts",
+          "value": "rts"
         },
         "includeAll": false,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "srf",
             "value": "srf"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "rts",
             "value": "rts"
           },
@@ -1477,13 +1477,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
-    "to": "now"
+    "from": "now-1d/d",
+    "to": "now-1d/d"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Live Breakdown",
   "uid": "cegsn2q0xrncwb",
-  "version": 6,
+  "version": 9,
   "weekStart": ""
 }

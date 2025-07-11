@@ -50,8 +50,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -110,8 +110,8 @@
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -279,8 +279,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -415,8 +415,8 @@
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -684,8 +684,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -845,8 +845,8 @@
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -1796,8 +1796,8 @@
     "list": [
       {
         "current": {
-          "text": "403634da-7e3a-4606-b773-92d324766fc2",
-          "value": "403634da-7e3a-4606-b773-92d324766fc2"
+          "text": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571",
+          "value": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571"
         },
         "description": "The session id.",
         "label": "Session",
@@ -1805,11 +1805,11 @@
         "options": [
           {
             "selected": true,
-            "text": "403634da-7e3a-4606-b773-92d324766fc2",
-            "value": "403634da-7e3a-4606-b773-92d324766fc2"
+            "text": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571",
+            "value": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571"
           }
         ],
-        "query": "403634da-7e3a-4606-b773-92d324766fc2",
+        "query": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571",
         "type": "textbox"
       },
       {
@@ -1880,13 +1880,13 @@
     ]
   },
   "time": {
-    "from": "2025-05-13T12:36:44.873Z",
-    "to": "2025-05-13T13:36:44.873Z"
+    "from": "2025-06-16T22:00:00.000Z",
+    "to": "2025-06-17T21:59:59.999Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

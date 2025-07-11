@@ -104,8 +104,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
       "fieldConfig": {
@@ -170,8 +170,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -202,8 +202,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -281,8 +281,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -448,8 +448,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -478,8 +478,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -500,8 +500,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {
@@ -682,8 +682,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -712,8 +712,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -881,8 +881,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The total number of sessions for the selected period.",
       "fieldConfig": {
@@ -943,8 +943,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -971,8 +971,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -993,8 +993,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "Web player only.",
       "fieldConfig": {
@@ -1139,8 +1139,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1169,8 +1169,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1323,8 +1323,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -1469,8 +1469,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1499,8 +1499,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "hide": false,
           "metrics": [
@@ -1664,8 +1664,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "Error Type Breakdown for the selected browser and time range.",
       "fieldConfig": {
@@ -1840,8 +1840,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -1861,8 +1861,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -2075,8 +2075,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -2138,15 +2138,15 @@
       {
         "allValue": "*",
         "current": {
-          "text": "srf",
-          "value": "srf"
+          "text": "$__all",
+          "value": "$__all"
         },
         "includeAll": true,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "srf",
             "value": "srf"
           },
@@ -2174,9 +2174,14 @@
             "selected": false,
             "text": "rio",
             "value": "rio"
+          },
+          {
+            "selected": false,
+            "text": "swisstxt",
+            "value": "swisstxt"
           }
         ],
-        "query": "srf, rts, rsi, rtr, swi, rio",
+        "query": "srf, rts, rsi, rtr, swi, rio, swisstxt",
         "type": "custom"
       },
       {
@@ -2192,12 +2197,12 @@
           {
             "selected": false,
             "text": "Audio",
-            "value": "*\\:srf\\:audio\\:*"
+            "value": "*\\:*\\:audio\\:*"
           },
           {
             "selected": false,
             "text": "Video",
-            "value": "*\\:srf\\:video\\:*"
+            "value": "*\\:*\\:video\\:*"
           }
         ],
         "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
@@ -2278,6 +2283,6 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 16,
+  "version": 24,
   "weekStart": ""
 }

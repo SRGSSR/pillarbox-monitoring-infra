@@ -183,8 +183,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -245,8 +245,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -273,8 +273,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -295,8 +295,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -391,8 +391,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -421,8 +421,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": true,
@@ -454,8 +454,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "The breakdown of blocking reasons for the selected period.",
       "fieldConfig": {
@@ -655,8 +655,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "metrics": [
@@ -676,8 +676,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -887,8 +887,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "format": "table",
           "hide": false,
@@ -909,8 +909,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -1002,8 +1002,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "luceneQueryType": "Metric",
           "metrics": [
@@ -1037,8 +1037,8 @@
     },
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
         "defaults": {},
@@ -1077,8 +1077,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -1286,31 +1286,31 @@
       },
       {
         "current": {
-          "text": "urn:rts:video:de632cae-3393-3f83-a125-137be1432296",
-          "value": "urn:rts:video:de632cae-3393-3f83-a125-137be1432296"
+          "text": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
+          "value": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:rts:video:de632cae-3393-3f83-a125-137be1432296",
-            "value": "urn:rts:video:de632cae-3393-3f83-a125-137be1432296"
+            "text": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
+            "value": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661"
           }
         ],
-        "query": "urn:rts:video:de632cae-3393-3f83-a125-137be1432296",
+        "query": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-05-01T07:59:28.665Z",
-    "to": "2025-05-01T08:59:28.665Z"
+    "from": "2025-06-16T22:00:00.000Z",
+    "to": "2025-06-17T21:59:59.999Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Block reason breakdown by media",
   "uid": "bec87qxee87wgd",
-  "version": 8,
+  "version": 9,
   "weekStart": ""
 }

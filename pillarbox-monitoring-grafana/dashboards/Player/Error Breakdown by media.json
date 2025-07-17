@@ -1100,7 +1100,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/fecn8fvwzzz7ka/browser-fragmentation?var-browser=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto"
+                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${__value.raw}&from=${__from}&to=${__to}&var-media_id=${media_id:lucene}&var-interval=$__auto"
                   }
                 ]
               }
@@ -1430,7 +1430,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/becr0oio9m8zka/device-fragmentation?var-model=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto"
+                    "url": "/d/des44th87qarke/device-breakdown?var-device=${__value.raw}&from=${__from}&to=${__to}&var-platform=${platform}&var-media_id=${media_id:lucene}&var-interval=$__auto"
                   }
                 ]
               }
@@ -2376,8 +2376,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2610,8 +2609,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2727,8 +2725,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2844,8 +2841,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2923,8 +2919,8 @@
       {
         "allValue": "*",
         "current": {
-          "text": "$__all",
-          "value": "$__all"
+          "text": "Android",
+          "value": "Android"
         },
         "description": "Filter by player platform.",
         "includeAll": true,
@@ -2932,7 +2928,7 @@
         "name": "platform",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "Android",
             "value": "Android"
           },
@@ -3017,31 +3013,31 @@
       },
       {
         "current": {
-          "text": "urn:rts:video:3608506",
-          "value": "urn:rts:video:3608506"
+          "text": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f",
+          "value": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:rts:video:3608506",
-            "value": "urn:rts:video:3608506"
+            "text": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f",
+            "value": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f"
           }
         ],
-        "query": "urn:rts:video:3608506",
+        "query": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-06-16T22:00:00.000Z",
-    "to": "2025-06-17T21:59:59.999Z"
+    "from": "2025-07-15T15:18:15.663Z",
+    "to": "2025-07-16T15:18:15.663Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 22,
+  "version": 26,
   "weekStart": ""
 }

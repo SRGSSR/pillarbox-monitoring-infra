@@ -231,7 +231,7 @@
               "type": "count"
             }
           ],
-          "query": "NOT event_name:HEARTBEAT\nAND (session.player.platform:${platform} AND session.media.id:${type:raw})",
+          "query": "NOT event_name:HEARTBEAT\nAND (session.player.platform:${platform} AND session.media.id:${type_lucene:raw})",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -475,7 +475,7 @@
               "type": "count"
             }
           ],
-          "query": "session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "query": "session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -654,7 +654,7 @@
           "placement": "right",
           "showLegend": true
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -696,7 +696,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -869,7 +869,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND (session.player.platform:${platform}\nAND session.media.id:${type:raw} )",
+          "query": "event_name:START\nAND (session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw} )",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -919,15 +919,15 @@
       {
         "allValue": "*",
         "current": {
-          "text": "$__all",
-          "value": "$__all"
+          "text": "srf",
+          "value": "srf"
         },
         "includeAll": true,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "srf",
             "value": "srf"
           },
@@ -966,7 +966,7 @@
         "type": "custom"
       },
       {
-        "allValue": "*$bu*",
+        "allValue": "*",
         "current": {
           "text": "$__all",
           "value": "$__all"
@@ -977,16 +977,16 @@
         "options": [
           {
             "selected": false,
-            "text": "Audio",
-            "value": "*\\:*\\:audio\\:*"
+            "text": "audio",
+            "value": "audio"
           },
           {
             "selected": false,
-            "text": "Video",
-            "value": "*\\:*\\:video\\:*"
+            "text": "video",
+            "value": "video"
           }
         ],
-        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
+        "query": "audio, video",
         "type": "custom"
       },
       {
@@ -1053,6 +1053,17 @@
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
         "type": "interval"
+      },
+      {
+        "current": {
+          "text": "*\\:${bu}\\:${type}*",
+          "value": "*\\:${bu}\\:${type}*"
+        },
+        "hide": 2,
+        "name": "type_lucene",
+        "query": "*\\:${bu}\\:${type}*",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },
@@ -1064,6 +1075,6 @@
   "timezone": "Europe/Zurich",
   "title": "Event Breakdown",
   "uid": "bdrg12eb4dp1cf",
-  "version": 4,
+  "version": 7,
   "weekStart": ""
 }

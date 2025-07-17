@@ -182,7 +182,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -213,7 +213,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -460,7 +460,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -489,7 +489,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -520,8 +520,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -692,7 +691,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -722,7 +721,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -895,8 +894,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -953,7 +951,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -982,7 +980,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -1014,8 +1012,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1033,7 +1030,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/fecn8fvwzzz7ka/browser-fragmentation?var-browser=${__value.raw}&from=${__from}&to=${__to}&var-bu=${bu}&var-interval=$__auto"
+                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${__value.raw}&from=${__from}&to=${__to}&var-media_id=*\\:${bu}\\:${type}*&var-interval=$__auto"
                   }
                 ]
               }
@@ -1149,7 +1146,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${type:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1179,7 +1176,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${type:raw}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${type_lucene:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1344,8 +1341,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1363,7 +1359,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/becr0oio9m8zka/device-fragmentation?var-model=${__value.raw}&from=${__from}&to=${__to}&var-bu=${bu}&var-interval=$__auto"
+                    "url": "/d/des44th87qarke/device-breakdown?var-device=${__value.raw}&from=${__from}&to=${__to}&var-platform=${platform}&var-media_id=*\\:${bu}\\:${type}*&var-interval=$__auto"
                   }
                 ]
               }
@@ -1479,7 +1475,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1509,7 +1505,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1850,7 +1846,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -1908,8 +1904,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2086,7 +2081,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${type:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -2185,7 +2180,7 @@
         "type": "custom"
       },
       {
-        "allValue": "*$bu\\:*",
+        "allValue": "*",
         "current": {
           "text": "$__all",
           "value": "$__all"
@@ -2196,16 +2191,16 @@
         "options": [
           {
             "selected": false,
-            "text": "Audio",
-            "value": "*\\:*\\:audio\\:*"
+            "text": "audio",
+            "value": "audio"
           },
           {
             "selected": false,
-            "text": "Video",
-            "value": "*\\:*\\:video\\:*"
+            "text": "video",
+            "value": "video"
           }
         ],
-        "query": "Audio : *\\:$bu\\:audio\\:*, Video : *\\:$bu\\:video\\:*",
+        "query": "audio, video",
         "type": "custom"
       },
       {
@@ -2272,17 +2267,28 @@
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
         "type": "interval"
+      },
+      {
+        "current": {
+          "text": "*\\:${bu}\\:${type}*",
+          "value": "*\\:${bu}\\:${type}*"
+        },
+        "hide": 2,
+        "name": "type_lucene",
+        "query": "*\\:${bu}\\:${type}*",
+        "skipUrlSync": true,
+        "type": "constant"
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 24,
+  "version": 30,
   "weekStart": ""
 }

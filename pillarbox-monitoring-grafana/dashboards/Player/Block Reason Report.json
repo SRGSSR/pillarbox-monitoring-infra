@@ -1204,10 +1204,11 @@
           "placement": "bottom",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1301,20 +1302,20 @@
       {
         "allValue": "*",
         "current": {
-          "text": "srf",
-          "value": "srf"
+          "text": "rts",
+          "value": "rts"
         },
         "includeAll": true,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "srf",
             "value": "srf"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "rts",
             "value": "rts"
           },
@@ -1450,13 +1451,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Block Reason Report",
   "uid": "cec4zkjaqmdj4e",
-  "version": 12,
+  "version": 13,
   "weekStart": ""
 }

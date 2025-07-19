@@ -1255,10 +1255,11 @@
           "placement": "bottom",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1423,10 +1424,11 @@
           "placement": "bottom",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1947,8 +1949,8 @@
     "list": [
       {
         "current": {
-          "text": "2548c17b-1cab-4657-be99-835b9dfcb8fa",
-          "value": "2548c17b-1cab-4657-be99-835b9dfcb8fa"
+          "text": "74b9209f-7feb-4416-94f8-fc64688698c2",
+          "value": "74b9209f-7feb-4416-94f8-fc64688698c2"
         },
         "description": "The device identifier.",
         "label": "Device",
@@ -1956,11 +1958,11 @@
         "options": [
           {
             "selected": true,
-            "text": "2548c17b-1cab-4657-be99-835b9dfcb8fa",
-            "value": "2548c17b-1cab-4657-be99-835b9dfcb8fa"
+            "text": "74b9209f-7feb-4416-94f8-fc64688698c2",
+            "value": "74b9209f-7feb-4416-94f8-fc64688698c2"
           }
         ],
-        "query": "2548c17b-1cab-4657-be99-835b9dfcb8fa",
+        "query": "74b9209f-7feb-4416-94f8-fc64688698c2",
         "type": "textbox"
       },
       {
@@ -2032,13 +2034,13 @@
     ]
   },
   "time": {
-    "from": "2025-06-16T22:00:00.000Z",
-    "to": "2025-06-17T21:59:59.999Z"
+    "from": "2025-07-16T13:35:22.307Z",
+    "to": "2025-07-17T13:35:22.307Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 12,
+  "version": 13,
   "weekStart": ""
 }

@@ -620,10 +620,11 @@
           "placement": "bottom",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1286,31 +1287,31 @@
       },
       {
         "current": {
-          "text": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
-          "value": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661"
+          "text": "urn:rts:video:0bd1b265-dc8a-3b51-80d8-52f44a4af60c",
+          "value": "urn:rts:video:0bd1b265-dc8a-3b51-80d8-52f44a4af60c"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
-            "value": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661"
+            "text": "urn:rts:video:0bd1b265-dc8a-3b51-80d8-52f44a4af60c",
+            "value": "urn:rts:video:0bd1b265-dc8a-3b51-80d8-52f44a4af60c"
           }
         ],
-        "query": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
+        "query": "urn:rts:video:0bd1b265-dc8a-3b51-80d8-52f44a4af60c",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-06-16T22:00:00.000Z",
-    "to": "2025-06-17T21:59:59.999Z"
+    "from": "2025-07-16T13:35:22.307Z",
+    "to": "2025-07-17T13:35:22.307Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Block reason breakdown by media",
   "uid": "bec87qxee87wgd",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }

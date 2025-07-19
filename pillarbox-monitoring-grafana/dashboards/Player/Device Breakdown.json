@@ -31,7 +31,7 @@
       },
       "id": 41,
       "panels": [],
-      "title": "$browser Breakdown",
+      "title": "$device Breakdown",
       "type": "row"
     },
     {
@@ -1817,7 +1817,8 @@
             },
             "lineWidth": 0,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 2,
+              "type": "symlog"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -1987,7 +1988,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_count",
-                "size": "0"
+                "size": "10"
               },
               "type": "terms"
             },
@@ -2409,7 +2410,7 @@
       },
       "id": 42,
       "panels": [],
-      "title": "$browser Metrics",
+      "title": "$device Metrics",
       "type": "row"
     },
     {
@@ -2883,31 +2884,31 @@
       },
       {
         "current": {
-          "text": "*",
-          "value": "*"
+          "text": "*\\:*\\:**",
+          "value": "*\\:*\\:**"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "*",
-            "value": "*"
+            "text": "*\\:*\\:**",
+            "value": "*\\:*\\:**"
           }
         ],
-        "query": "*",
+        "query": "*\\:*\\:**",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-16T13:48:41.801Z",
-    "to": "2025-07-16T14:48:41.801Z"
+    "from": "2025-07-17T07:52:13.446Z",
+    "to": "2025-07-18T07:52:13.446Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Device Breakdown",
   "uid": "des44th87qarke",
-  "version": 8,
+  "version": 9,
   "weekStart": ""
 }

@@ -520,7 +520,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -894,7 +895,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           },
@@ -1099,7 +1101,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 11,
+        "w": 12,
         "x": 0,
         "y": 20
       },
@@ -1428,8 +1430,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 13,
-        "x": 11,
+        "w": 12,
+        "x": 12,
         "y": 20
       },
       "id": 10,
@@ -1789,8 +1791,8 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
+        "h": 8,
+        "w": 11,
         "x": 0,
         "y": 32
       },
@@ -1798,13 +1800,14 @@
       "options": {
         "legend": {
           "displayMode": "table",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2023,9 +2026,9 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 16,
-        "x": 8,
+        "h": 8,
+        "w": 13,
+        "x": 11,
         "y": 32
       },
       "id": 11,
@@ -2289,6 +2292,6 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 30,
+  "version": 32,
   "weekStart": ""
 }

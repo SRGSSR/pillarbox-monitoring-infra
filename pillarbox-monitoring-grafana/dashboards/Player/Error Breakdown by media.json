@@ -763,11 +763,15 @@
       "id": 19,
       "options": {
         "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1216,7 +1220,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1246,7 +1250,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${media_id}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${media_id}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1393,7 +1397,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "",
+      "description": "Apple and Android Players Only",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1546,7 +1550,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1576,7 +1580,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${media_id}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${media_id}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -2261,8 +2265,8 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
+        "h": 8,
+        "w": 11,
         "x": 0,
         "y": 43
       },
@@ -2270,13 +2274,14 @@
       "options": {
         "legend": {
           "displayMode": "table",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2376,7 +2381,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2480,9 +2486,9 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 16,
-        "x": 8,
+        "h": 8,
+        "w": 13,
+        "x": 11,
         "y": 43
       },
       "id": 33,
@@ -2553,7 +2559,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 51
       },
       "id": 26,
       "panels": [],
@@ -2609,7 +2615,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2625,7 +2632,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 56
+        "y": 52
       },
       "id": 30,
       "options": {
@@ -2725,7 +2732,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2741,7 +2749,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 56
+        "y": 52
       },
       "id": 28,
       "options": {
@@ -2841,7 +2849,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2856,7 +2865,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 56
+        "y": 52
       },
       "id": 29,
       "options": {
@@ -2919,8 +2928,8 @@
       {
         "allValue": "*",
         "current": {
-          "text": "Android",
-          "value": "Android"
+          "text": "$__all",
+          "value": "$__all"
         },
         "description": "Filter by player platform.",
         "includeAll": true,
@@ -2928,7 +2937,7 @@
         "name": "platform",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "Android",
             "value": "Android"
           },
@@ -3031,13 +3040,13 @@
     ]
   },
   "time": {
-    "from": "2025-07-15T15:18:15.663Z",
-    "to": "2025-07-16T15:18:15.663Z"
+    "from": "2025-07-21T08:59:50.176Z",
+    "to": "2025-07-22T08:59:50.176Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 26,
+  "version": 32,
   "weekStart": ""
 }

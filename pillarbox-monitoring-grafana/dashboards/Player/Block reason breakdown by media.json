@@ -331,7 +331,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -620,10 +620,11 @@
           "placement": "bottom",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1224,8 +1225,8 @@
         "auto_count": 30,
         "auto_min": "30s",
         "current": {
-          "text": "$__auto",
-          "value": "$__auto"
+          "text": "10m",
+          "value": "10m"
         },
         "name": "interval",
         "options": [
@@ -1235,7 +1236,7 @@
             "value": "1m"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "10m",
             "value": "10m"
           },
@@ -1286,31 +1287,31 @@
       },
       {
         "current": {
-          "text": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
-          "value": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661"
+          "text": "urn:swisstxt:video:srf:1813084",
+          "value": "urn:swisstxt:video:srf:1813084"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
-            "value": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661"
+            "text": "urn:swisstxt:video:srf:1813084",
+            "value": "urn:swisstxt:video:srf:1813084"
           }
         ],
-        "query": "urn:srf:scheduled_livestream:video:3fb7b1e3-c87b-4440-87d6-f433214ad661",
+        "query": "urn:swisstxt:video:srf:1813084",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-06-16T22:00:00.000Z",
-    "to": "2025-06-17T21:59:59.999Z"
+    "from": "2025-07-21T09:07:57.672Z",
+    "to": "2025-07-22T09:07:57.672Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Block reason breakdown by media",
   "uid": "bec87qxee87wgd",
-  "version": 9,
+  "version": 11,
   "weekStart": ""
 }

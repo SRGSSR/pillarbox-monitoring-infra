@@ -1698,11 +1698,7 @@
             "include": {
               "names": [
                 "@timestamp",
-                "data.business_error",
-                "data.error_type",
-                "data.log",
-                "data.message",
-                "data.name",
+                "data",
                 "data.position",
                 "data.url",
                 "event_name",
@@ -1714,7 +1710,6 @@
                 "session.device.type",
                 "session.media.asset_url",
                 "session.media.id",
-                "session.media.metadata_url",
                 "session.media.origin",
                 "session.os.name",
                 "session.os.version",
@@ -1722,17 +1717,23 @@
                 "session.player.platform",
                 "session.player.version",
                 "session.qoe_timings.asset",
-                "session.qoe_timings.metadata",
                 "session.qoe_timings.total",
                 "session.qos_timings.asset",
-                "session.qos_timings.metadata",
                 "session.robot",
                 "session.screen.height",
                 "session.screen.width",
                 "session_id",
                 "user_ip",
                 "version",
-                "data"
+                "data.name",
+                "data.message",
+                "data.log",
+                "data.error_type",
+                "data.business_error",
+                "data.block_reason",
+                "session.qos_timings.metadata",
+                "session.qoe_timings.metadata",
+                "session.media.metadata_url"
               ]
             }
           }
@@ -1796,8 +1797,8 @@
     "list": [
       {
         "current": {
-          "text": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571",
-          "value": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571"
+          "text": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4",
+          "value": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4"
         },
         "description": "The session id.",
         "label": "Session",
@@ -1805,11 +1806,11 @@
         "options": [
           {
             "selected": true,
-            "text": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571",
-            "value": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571"
+            "text": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4",
+            "value": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4"
           }
         ],
-        "query": "f0fd4ced-5250-4ab0-aa26-0eac23e4c571",
+        "query": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4",
         "type": "textbox"
       },
       {
@@ -1880,13 +1881,13 @@
     ]
   },
   "time": {
-    "from": "2025-06-16T22:00:00.000Z",
-    "to": "2025-06-17T21:59:59.999Z"
+    "from": "2025-07-21T07:46:05.579Z",
+    "to": "2025-07-22T07:46:05.579Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 7,
+  "version": 9,
   "weekStart": ""
 }

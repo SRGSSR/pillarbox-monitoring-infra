@@ -33,58 +33,10 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Now",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-30m&to=now"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Today",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now/d&to=now"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
       "title": "Yesterday",
       "tooltip": "",
       "type": "link",
       "url": "/d/fe3wlaan74740b/daily-report?from=now-1d/d&to=now-1d/d"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "2 Days Ago",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-2d/d&to=now-2d/d"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "3 Days Ago",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-3d/d&to=now-3d/d"
     },
     {
       "asDropdown": true,
@@ -520,7 +472,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -894,7 +847,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           },
@@ -1012,7 +966,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1099,7 +1054,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 11,
+        "w": 12,
         "x": 0,
         "y": 20
       },
@@ -1146,7 +1101,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1176,7 +1131,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${type_lucene:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1323,7 +1278,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "",
+      "description": "Apple and Android Players Only",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1341,7 +1296,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1428,8 +1384,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 13,
-        "x": 11,
+        "w": 12,
+        "x": 12,
         "y": 20
       },
       "id": 10,
@@ -1475,7 +1431,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1505,7 +1461,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1789,8 +1745,8 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
+        "h": 8,
+        "w": 11,
         "x": 0,
         "y": 32
       },
@@ -1798,13 +1754,14 @@
       "options": {
         "legend": {
           "displayMode": "table",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true,
           "values": [
-            "percent"
+            "percent",
+            "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1904,7 +1861,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2023,9 +1981,9 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 16,
-        "x": 8,
+        "h": 8,
+        "w": 13,
+        "x": 11,
         "y": 32
       },
       "id": 11,
@@ -2208,8 +2166,8 @@
         "auto_count": 30,
         "auto_min": "1m",
         "current": {
-          "text": "$__auto",
-          "value": "$__auto"
+          "text": "10m",
+          "value": "10m"
         },
         "name": "interval",
         "options": [
@@ -2219,7 +2177,7 @@
             "value": "1m"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "10m",
             "value": "10m"
           },
@@ -2289,6 +2247,6 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 30,
+  "version": 38,
   "weekStart": ""
 }

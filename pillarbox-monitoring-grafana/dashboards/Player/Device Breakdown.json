@@ -31,7 +31,7 @@
       },
       "id": 41,
       "panels": [],
-      "title": "$browser Breakdown",
+      "title": "$device Breakdown",
       "type": "row"
     },
     {
@@ -1942,6 +1942,29 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OS Version"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "pattern": "(.*)",
+                      "result": {
+                        "index": 0,
+                        "text": "v$1"
+                      }
+                    },
+                    "type": "regex"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1965,7 +1988,7 @@
         },
         "orientation": "horizontal",
         "showValue": "never",
-        "stacking": "normal",
+        "stacking": "percent",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
@@ -1987,7 +2010,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_count",
-                "size": "0"
+                "size": "10"
               },
               "type": "terms"
             },
@@ -2409,7 +2432,7 @@
       },
       "id": 42,
       "panels": [],
-      "title": "$browser Metrics",
+      "title": "$device Metrics",
       "type": "row"
     },
     {
@@ -2883,31 +2906,31 @@
       },
       {
         "current": {
-          "text": "*",
-          "value": "*"
+          "text": "*\\:srf\\:video*",
+          "value": "*\\:srf\\:video*"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "*",
-            "value": "*"
+            "text": "*\\:srf\\:video*",
+            "value": "*\\:srf\\:video*"
           }
         ],
-        "query": "*",
+        "query": "*\\:srf\\:video*",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-16T13:48:41.801Z",
-    "to": "2025-07-16T14:48:41.801Z"
+    "from": "2025-07-20T09:50:36.862Z",
+    "to": "2025-07-21T09:50:36.862Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Device Breakdown",
   "uid": "des44th87qarke",
-  "version": 8,
+  "version": 10,
   "weekStart": ""
 }

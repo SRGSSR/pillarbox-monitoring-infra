@@ -553,6 +553,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -1047,6 +1069,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -1377,6 +1421,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -2247,6 +2313,6 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 38,
+  "version": 39,
   "weekStart": ""
 }

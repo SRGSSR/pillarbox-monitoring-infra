@@ -742,6 +742,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -1032,7 +1054,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -1507,6 +1529,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -2244,8 +2288,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -2953,8 +2996,8 @@
       {
         "allValue": "*",
         "current": {
-          "text": "Chrome",
-          "value": "Chrome"
+          "text": "Edge",
+          "value": "Edge"
         },
         "datasource": {
           "type": "grafana-opensearch-datasource",
@@ -3038,31 +3081,31 @@
       },
       {
         "current": {
-          "text": "*srf*",
-          "value": "*srf*"
+          "text": "urn\\:srf\\:video\\:f000e936\\-ff6b\\-4bf2\\-bdcc\\-7cd4f3db5bd3",
+          "value": "urn\\:srf\\:video\\:f000e936\\-ff6b\\-4bf2\\-bdcc\\-7cd4f3db5bd3"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "*srf*",
-            "value": "*srf*"
+            "text": "urn\\:srf\\:video\\:f000e936\\-ff6b\\-4bf2\\-bdcc\\-7cd4f3db5bd3",
+            "value": "urn\\:srf\\:video\\:f000e936\\-ff6b\\-4bf2\\-bdcc\\-7cd4f3db5bd3"
           }
         ],
-        "query": "*srf*",
+        "query": "urn\\:srf\\:video\\:f000e936\\-ff6b\\-4bf2\\-bdcc\\-7cd4f3db5bd3",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-16T11:57:39.858Z",
-    "to": "2025-07-16T12:57:39.858Z"
+    "from": "2025-07-24T07:46:46.213Z",
+    "to": "2025-07-25T07:46:46.213Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Browser Breakdown",
   "uid": "cerwrzn7ypzwga",
-  "version": 20,
+  "version": 22,
   "weekStart": ""
 }

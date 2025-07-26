@@ -689,14 +689,16 @@
               "names": [
                 "session_id",
                 "@timestamp",
+                "session.browser.name",
                 "session.device.id",
                 "session.device.model",
                 "session.device.type",
+                "session.media.id",
                 "session.os.name",
                 "session.os.version",
                 "session.player.platform",
                 "data.business_error",
-                "session.media.id"
+                "session.browser.version"
               ]
             }
           }
@@ -1521,8 +1523,8 @@
     "list": [
       {
         "current": {
-          "text": "193.57.49.24",
-          "value": "193.57.49.24"
+          "text": "81.13.173.52",
+          "value": "81.13.173.52"
         },
         "description": "The user IP address.",
         "label": "IP",
@@ -1530,11 +1532,11 @@
         "options": [
           {
             "selected": true,
-            "text": "193.57.49.24",
-            "value": "193.57.49.24"
+            "text": "81.13.173.52",
+            "value": "81.13.173.52"
           }
         ],
-        "query": "193.57.49.24",
+        "query": "81.13.173.52",
         "type": "textbox"
       },
       {
@@ -1605,13 +1607,13 @@
     ]
   },
   "time": {
-    "from": "2025-06-16T22:00:00.000Z",
-    "to": "2025-06-17T21:59:59.999Z"
+    "from": "2025-06-24T08:53:42.255Z",
+    "to": "2025-07-24T08:53:42.255Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }

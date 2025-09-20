@@ -1166,6 +1166,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -1496,6 +1518,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -3022,31 +3066,31 @@
       },
       {
         "current": {
-          "text": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f",
-          "value": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f"
+          "text": "urn:swisstxt:video:srf:1814729",
+          "value": "urn:swisstxt:video:srf:1814729"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f",
-            "value": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f"
+            "text": "urn:swisstxt:video:srf:1814729",
+            "value": "urn:swisstxt:video:srf:1814729"
           }
         ],
-        "query": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f",
+        "query": "urn:swisstxt:video:srf:1814729",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-21T08:59:50.176Z",
-    "to": "2025-07-22T08:59:50.176Z"
+    "from": "2025-07-23T08:39:34.598Z",
+    "to": "2025-07-24T08:39:34.598Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 32,
+  "version": 33,
   "weekStart": ""
 }

@@ -864,6 +864,10 @@
                     "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto\n"
                   }
                 ]
+              },
+              {
+                "id": "filterable",
+                "value": true
               }
             ]
           }
@@ -1949,8 +1953,8 @@
     "list": [
       {
         "current": {
-          "text": "74b9209f-7feb-4416-94f8-fc64688698c2",
-          "value": "74b9209f-7feb-4416-94f8-fc64688698c2"
+          "text": "20fde8cc-9a37-41a0-90c7-af04d7e3679d",
+          "value": "20fde8cc-9a37-41a0-90c7-af04d7e3679d"
         },
         "description": "The device identifier.",
         "label": "Device",
@@ -1958,11 +1962,11 @@
         "options": [
           {
             "selected": true,
-            "text": "74b9209f-7feb-4416-94f8-fc64688698c2",
-            "value": "74b9209f-7feb-4416-94f8-fc64688698c2"
+            "text": "20fde8cc-9a37-41a0-90c7-af04d7e3679d",
+            "value": "20fde8cc-9a37-41a0-90c7-af04d7e3679d"
           }
         ],
-        "query": "74b9209f-7feb-4416-94f8-fc64688698c2",
+        "query": "20fde8cc-9a37-41a0-90c7-af04d7e3679d",
         "type": "textbox"
       },
       {
@@ -2034,13 +2038,13 @@
     ]
   },
   "time": {
-    "from": "2025-07-16T13:35:22.307Z",
-    "to": "2025-07-17T13:35:22.307Z"
+    "from": "now-30d",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }

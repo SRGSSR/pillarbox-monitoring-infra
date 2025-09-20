@@ -742,6 +742,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -1032,7 +1054,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -1047,7 +1069,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "orange",
                   "mode": "fixed"
                 }
               }
@@ -1507,6 +1529,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -2953,8 +2997,8 @@
       {
         "allValue": "*",
         "current": {
-          "text": "Chrome",
-          "value": "Chrome"
+          "text": "Safari",
+          "value": "Safari"
         },
         "datasource": {
           "type": "grafana-opensearch-datasource",
@@ -3038,31 +3082,31 @@
       },
       {
         "current": {
-          "text": "*srf*",
-          "value": "*srf*"
+          "text": "*\\:*\\:**",
+          "value": "*\\:*\\:**"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "*srf*",
-            "value": "*srf*"
+            "text": "*\\:*\\:**",
+            "value": "*\\:*\\:**"
           }
         ],
-        "query": "*srf*",
+        "query": "*\\:*\\:**",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-16T11:57:39.858Z",
-    "to": "2025-07-16T12:57:39.858Z"
+    "from": "2025-09-18T07:54:09.740Z",
+    "to": "2025-09-19T07:54:09.740Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Browser Breakdown",
   "uid": "cerwrzn7ypzwga",
-  "version": 20,
+  "version": 23,
   "weekStart": ""
 }

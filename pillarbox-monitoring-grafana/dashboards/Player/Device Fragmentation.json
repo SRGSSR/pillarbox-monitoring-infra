@@ -339,6 +339,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -621,6 +643,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -1652,6 +1675,6 @@
   "timezone": "Europe/Zurich",
   "title": "Device Fragmentation",
   "uid": "des41og1b0074e",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }

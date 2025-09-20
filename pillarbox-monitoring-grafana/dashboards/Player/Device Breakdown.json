@@ -1507,6 +1507,28 @@
               {
                 "id": "custom.width",
                 "value": 105
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.05
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -2797,15 +2819,15 @@
       {
         "allValue": "*",
         "current": {
-          "text": "Apple",
-          "value": "Apple"
+          "text": "$__all",
+          "value": "$__all"
         },
         "includeAll": true,
         "label": "Platform",
         "name": "platform",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "Apple",
             "value": "Apple"
           },
@@ -2906,31 +2928,31 @@
       },
       {
         "current": {
-          "text": "*\\:srf\\:video*",
-          "value": "*\\:srf\\:video*"
+          "text": "*\\:*\\:**",
+          "value": "*\\:*\\:**"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "*\\:srf\\:video*",
-            "value": "*\\:srf\\:video*"
+            "text": "*\\:*\\:**",
+            "value": "*\\:*\\:**"
           }
         ],
-        "query": "*\\:srf\\:video*",
+        "query": "*\\:*\\:**",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-20T09:50:36.862Z",
-    "to": "2025-07-21T09:50:36.862Z"
+    "from": "2025-07-23T08:43:19.291Z",
+    "to": "2025-07-24T08:43:19.291Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Device Breakdown",
   "uid": "des44th87qarke",
-  "version": 10,
+  "version": 11,
   "weekStart": ""
 }

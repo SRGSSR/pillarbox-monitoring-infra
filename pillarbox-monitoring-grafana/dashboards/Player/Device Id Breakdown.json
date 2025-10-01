@@ -38,7 +38,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -77,7 +77,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -267,7 +267,7 @@
             "steps": [
               {
                 "color": "blue",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -299,7 +299,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Sessions",
@@ -350,7 +350,7 @@
             "steps": [
               {
                 "color": "red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "green",
@@ -384,7 +384,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -544,7 +544,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -578,7 +578,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -714,6 +714,7 @@
             "cellOptions": {
               "type": "auto"
             },
+            "filterable": true,
             "inspect": false
           },
           "mappings": [],
@@ -722,7 +723,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -766,6 +767,9 @@
               {
                 "id": "custom.width",
                 "value": 163
+              },
+              {
+                "id": "custom.filterable"
               }
             ]
           },
@@ -800,6 +804,9 @@
               {
                 "id": "unit",
                 "value": "ms"
+              },
+              {
+                "id": "custom.filterable"
               }
             ]
           },
@@ -892,14 +899,9 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Start time"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -1277,7 +1279,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -1446,7 +1448,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -1549,7 +1551,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -1623,7 +1625,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Starts",
@@ -1742,7 +1744,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -1945,7 +1947,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [
     "hidden"
   ],
@@ -1966,7 +1968,7 @@
             "value": "20fde8cc-9a37-41a0-90c7-af04d7e3679d"
           }
         ],
-        "query": "20fde8cc-9a37-41a0-90c7-af04d7e3679d",
+        "query": "0770bdf0-37a2-4077-b36c-19d668f73d86",
         "type": "textbox"
       },
       {
@@ -2045,6 +2047,5 @@
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 14,
-  "weekStart": ""
+  "version": 15
 }

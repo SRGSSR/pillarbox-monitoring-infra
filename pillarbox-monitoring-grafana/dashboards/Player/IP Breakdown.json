@@ -111,7 +111,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -139,7 +139,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "VPN",
@@ -244,7 +244,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -318,7 +318,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Starts",
@@ -425,6 +425,7 @@
             "cellOptions": {
               "type": "auto"
             },
+            "filterable": true,
             "inspect": false
           },
           "mappings": [],
@@ -433,7 +434,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -477,6 +478,9 @@
               {
                 "id": "custom.width",
                 "value": 163
+              },
+              {
+                "id": "custom.filterable"
               }
             ]
           },
@@ -601,7 +605,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -852,6 +856,14 @@
               {
                 "destinationType": "time",
                 "targetField": "Start time"
+              },
+              {
+                "destinationType": "string",
+                "targetField": "Browser"
+              },
+              {
+                "destinationType": "string",
+                "targetField": "OS"
               }
             ],
             "fields": {}
@@ -877,7 +889,7 @@
             "steps": [
               {
                 "color": "blue",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -909,7 +921,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Sessions",
@@ -992,7 +1004,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1056,7 +1068,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Bandwidth",
@@ -1106,7 +1118,7 @@
             "steps": [
               {
                 "color": "red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "green",
@@ -1140,7 +1152,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -1312,7 +1324,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -1515,7 +1527,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [
     "hidden"
   ],
@@ -1536,7 +1548,7 @@
             "value": "81.13.173.52"
           }
         ],
-        "query": "81.13.173.52",
+        "query": "82.220.114.159",
         "type": "textbox"
       },
       {
@@ -1614,6 +1626,5 @@
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 15,
-  "weekStart": ""
+  "version": 16
 }

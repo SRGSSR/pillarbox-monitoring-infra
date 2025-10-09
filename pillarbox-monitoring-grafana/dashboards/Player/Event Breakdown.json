@@ -38,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
       },
       "description": "",
       "fieldConfig": {
@@ -55,7 +55,8 @@
             }
           },
           "fieldMinMax": false,
-          "mappings": []
+          "mappings": [],
+          "unit": "short"
         },
         "overrides": [
           {
@@ -176,7 +177,7 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 6,
         "x": 0,
         "y": 0
@@ -185,9 +186,15 @@
       "options": {
         "displayLabels": [],
         "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Value",
+          "sortDesc": false,
+          "values": [
+            "percent",
+            "value"
+          ]
         },
         "pieType": "donut",
         "reduceOptions": {
@@ -200,7 +207,7 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -222,8 +229,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
           },
           "metrics": [
             {
@@ -231,7 +238,7 @@
               "type": "count"
             }
           ],
-          "query": "NOT event_name:HEARTBEAT\nAND (session.player.platform:${platform} AND session.media.id:${type_lucene:raw})",
+          "query": "session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\n",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -296,7 +303,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": [
           {
@@ -418,7 +426,7 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 18,
         "x": 6,
         "y": 0
@@ -434,7 +442,7 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -475,7 +483,7 @@
               "type": "count"
             }
           ],
-          "query": "session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
+          "query": "session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\n",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -501,7 +509,8 @@
               "viz": false
             }
           },
-          "mappings": []
+          "mappings": [],
+          "unit": "short"
         },
         "overrides": [
           {
@@ -638,21 +647,70 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Android"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Web"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apple"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 6,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 11,
       "options": {
         "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
         },
         "pieType": "donut",
         "reduceOptions": {
@@ -665,7 +723,7 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -680,8 +738,8 @@
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
+                "orderBy": "_count",
+                "size": "3"
               },
               "type": "terms"
             }
@@ -696,7 +754,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -761,7 +819,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": [
           {
@@ -808,14 +867,59 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Android"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Apple"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Web"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 18,
         "x": 6,
-        "y": 8
+        "y": 9
       },
       "id": 14,
       "options": {
@@ -828,7 +932,7 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -843,8 +947,8 @@
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
+                "orderBy": "_count",
+                "size": "3"
               },
               "type": "terms"
             },
@@ -869,7 +973,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND (session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw} )",
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -918,6 +1022,7 @@
       },
       {
         "allValue": "*",
+        "allowCustomValue": false,
         "current": {
           "text": "$__all",
           "value": "$__all"
@@ -953,16 +1058,11 @@
           },
           {
             "selected": false,
-            "text": "rio",
-            "value": "rio"
-          },
-          {
-            "selected": false,
-            "text": "swisstxt",
-            "value": "swisstxt"
+            "text": "playsuisse",
+            "value": "playsuisse"
           }
         ],
-        "query": "srf, rts, rsi, rtr, swi, rio, swisstxt",
+        "query": "srf, rts, rsi, rtr, swi, playsuisse",
         "type": "custom"
       },
       {
@@ -994,8 +1094,8 @@
         "auto_count": 30,
         "auto_min": "30s",
         "current": {
-          "text": "10m",
-          "value": "10m"
+          "text": "$__auto",
+          "value": "$__auto"
         },
         "name": "interval",
         "options": [
@@ -1005,7 +1105,7 @@
             "value": "1m"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "10m",
             "value": "10m"
           },
@@ -1055,15 +1155,34 @@
         "type": "interval"
       },
       {
+        "allValue": "true, false",
+        "allowCustomValue": false,
         "current": {
-          "text": "*\\:${bu}\\:${type}*",
-          "value": "*\\:${bu}\\:${type}*"
+          "text": "(true OR false)",
+          "value": "(true OR false)"
         },
-        "hide": 2,
-        "name": "type_lucene",
-        "query": "*\\:${bu}\\:${type}*",
-        "skipUrlSync": true,
-        "type": "constant"
+        "hide": 1,
+        "includeAll": false,
+        "name": "swisstxt",
+        "options": [
+          {
+            "selected": true,
+            "text": "Include SwissTXT",
+            "value": "(true OR false)"
+          },
+          {
+            "selected": false,
+            "text": "Only SwissTXT",
+            "value": "true"
+          },
+          {
+            "selected": false,
+            "text": "Exclude SwissTXT",
+            "value": "false"
+          }
+        ],
+        "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
+        "type": "custom"
       }
     ]
   },
@@ -1075,5 +1194,5 @@
   "timezone": "Europe/Zurich",
   "title": "Event Breakdown",
   "uid": "bdrg12eb4dp1cf",
-  "version": 8
+  "version": 12
 }

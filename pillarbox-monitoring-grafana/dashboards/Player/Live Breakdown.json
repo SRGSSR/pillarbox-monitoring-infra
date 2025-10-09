@@ -130,7 +130,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -144,7 +144,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -250,7 +250,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -526,7 +526,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -825,7 +825,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${live_ids}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${live_ids}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "queryType": "lucene",
           "refId": "errors",
           "timeField": "@timestamp"
@@ -1141,6 +1141,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1374,6 +1389,21 @@
                 "id": "color",
                 "value": {
                   "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
                   "mode": "fixed"
                 }
               }
@@ -1927,20 +1957,20 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "rts",
-          "value": "rts"
+          "text": "srf",
+          "value": "srf"
         },
         "includeAll": false,
         "label": "Business Unit",
         "name": "bu",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "srf",
             "value": "srf"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "rts",
             "value": "rts"
           },
@@ -2026,8 +2056,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "urn:rts:video:3608506,urn:rts:video:8841634,urn:rts:video:3608517,urn:swisstxt:video:rts:eb9e5dbf8ea84d608e4e1861437efe82,urn:rts:video:1967124,urn:swisstxt:video:rts:d90c96c7e9ae470bbe2d3e0122a9e3f3,urn:swisstxt:video:rts:c8e67fb42cd547f8bffd791134629c81,urn:swisstxt:video:rts:1825798,urn:swisstxt:video:rts:464fd6f7961f485b837bb94f24c82516,urn:swisstxt:video:rts:8926b69ec8074383abd4c7a453a8251c,urn:rts:scheduled_livestream:video:15c1fb35-3b3c-47ec-93c0-6c63e47e7827,urn:rts:scheduled_livestream:video:c8e67fb4-2cd5-47f8-bffd-791134629c81,urn:rts:scheduled_livestream:video:d90c96c7-e9ae-470b-be2d-3e0122a9e3f3,urn:rts:scheduled_livestream:video:eb9e5dbf-8ea8-4d60-8e4e-1861437efe82,urn:rts:scheduled_livestream:video:464fd6f7-961f-485b-837b-b94f24c82516,urn:rts:scheduled_livestream:video:8926b69e-c807-4383-abd4-c7a453a8251c",
-          "value": "urn:rts:video:3608506,urn:rts:video:8841634,urn:rts:video:3608517,urn:swisstxt:video:rts:eb9e5dbf8ea84d608e4e1861437efe82,urn:rts:video:1967124,urn:swisstxt:video:rts:d90c96c7e9ae470bbe2d3e0122a9e3f3,urn:swisstxt:video:rts:c8e67fb42cd547f8bffd791134629c81,urn:swisstxt:video:rts:1825798,urn:swisstxt:video:rts:464fd6f7961f485b837bb94f24c82516,urn:swisstxt:video:rts:8926b69ec8074383abd4c7a453a8251c,urn:rts:scheduled_livestream:video:15c1fb35-3b3c-47ec-93c0-6c63e47e7827,urn:rts:scheduled_livestream:video:c8e67fb4-2cd5-47f8-bffd-791134629c81,urn:rts:scheduled_livestream:video:d90c96c7-e9ae-470b-be2d-3e0122a9e3f3,urn:rts:scheduled_livestream:video:eb9e5dbf-8ea8-4d60-8e4e-1861437efe82,urn:rts:scheduled_livestream:video:464fd6f7-961f-485b-837b-b94f24c82516,urn:rts:scheduled_livestream:video:8926b69e-c807-4383-abd4-c7a453a8251c"
+          "text": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651,urn:srf:video:c49c1d64-9f60-0001-1c36-43c288c01a10,urn:srf:video:c49c1d73-2f70-0001-138a-15e0c4ccd3d0",
+          "value": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651,urn:srf:video:c49c1d64-9f60-0001-1c36-43c288c01a10,urn:srf:video:c49c1d73-2f70-0001-138a-15e0c4ccd3d0"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -2131,12 +2161,12 @@
     ]
   },
   "time": {
-    "from": "2025-07-20T09:20:51.592Z",
-    "to": "2025-07-21T09:20:51.592Z"
+    "from": "2025-10-07T13:52:03.615Z",
+    "to": "2025-10-08T13:52:03.615Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Live Breakdown",
   "uid": "cegsn2q0xrncwb",
-  "version": 20
+  "version": 23
 }

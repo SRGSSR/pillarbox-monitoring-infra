@@ -416,7 +416,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1131,6 +1131,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1723,5 +1738,5 @@
   "timezone": "Europe/Zurich",
   "title": "Browser Fragmentation",
   "uid": "berwlriqtgkcgd",
-  "version": 23
+  "version": 25
 }

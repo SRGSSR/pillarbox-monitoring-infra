@@ -1107,6 +1107,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1210,7 +1211,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND user_ip:\"${user_ip}\"",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND user_ip:\"${user_ip}\"",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1548,7 +1549,7 @@
             "value": "81.13.173.52"
           }
         ],
-        "query": "82.220.114.159",
+        "query": "194.230.145.171",
         "type": "textbox"
       },
       {
@@ -1626,5 +1627,5 @@
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 16
+  "version": 17
 }

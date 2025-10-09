@@ -338,7 +338,7 @@
         "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -444,7 +444,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.device.id:${device_id}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.device.id:${device_id}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1245,6 +1245,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1955,8 +1970,8 @@
     "list": [
       {
         "current": {
-          "text": "20fde8cc-9a37-41a0-90c7-af04d7e3679d",
-          "value": "20fde8cc-9a37-41a0-90c7-af04d7e3679d"
+          "text": "bf3fbd21-3a5d-4cd4-b214-44ac45db4770",
+          "value": "bf3fbd21-3a5d-4cd4-b214-44ac45db4770"
         },
         "description": "The device identifier.",
         "label": "Device",
@@ -1964,11 +1979,11 @@
         "options": [
           {
             "selected": true,
-            "text": "20fde8cc-9a37-41a0-90c7-af04d7e3679d",
-            "value": "20fde8cc-9a37-41a0-90c7-af04d7e3679d"
+            "text": "bf3fbd21-3a5d-4cd4-b214-44ac45db4770",
+            "value": "bf3fbd21-3a5d-4cd4-b214-44ac45db4770"
           }
         ],
-        "query": "0770bdf0-37a2-4077-b36c-19d668f73d86",
+        "query": "bf3fbd21-3a5d-4cd4-b214-44ac45db4770",
         "type": "textbox"
       },
       {
@@ -2040,12 +2055,12 @@
     ]
   },
   "time": {
-    "from": "now-30d",
-    "to": "now"
+    "from": "2025-10-07T13:41:43.888Z",
+    "to": "2025-10-08T13:41:43.888Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 15
+  "version": 18
 }

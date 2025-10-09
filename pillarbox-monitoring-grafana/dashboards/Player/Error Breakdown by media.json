@@ -186,7 +186,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -290,7 +290,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -587,7 +587,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1246,7 +1246,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1602,7 +1602,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${media_id}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -2335,6 +2335,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -2568,6 +2583,21 @@
                 "id": "color",
                 "value": {
                   "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
                   "mode": "fixed"
                 }
               }
@@ -3075,23 +3105,7 @@
         "includeAll": true,
         "label": "Player Platform",
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": false,
-            "text": "Web",
-            "value": "Web"
-          }
-        ],
+        "options": [],
         "query": "Android, Apple, Web",
         "type": "custom"
       },
@@ -3162,30 +3176,30 @@
       },
       {
         "current": {
-          "text": "urn:swisstxt:video:srf:1814729",
-          "value": "urn:swisstxt:video:srf:1814729"
+          "text": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651",
+          "value": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:swisstxt:video:srf:1814729",
-            "value": "urn:swisstxt:video:srf:1814729"
+            "text": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651",
+            "value": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651"
           }
         ],
-        "query": "urn:srf:video:b7ac9791-2ea9-4452-acbd-7ffc9fa25b98",
+        "query": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651",
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2025-07-23T08:39:34.598Z",
-    "to": "2025-07-24T08:39:34.598Z"
+    "from": "2025-10-07T13:41:43.888Z",
+    "to": "2025-10-08T13:41:43.888Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 36
+  "version": 39
 }

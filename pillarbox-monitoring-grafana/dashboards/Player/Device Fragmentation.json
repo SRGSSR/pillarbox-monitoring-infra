@@ -440,7 +440,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -803,6 +803,21 @@
                     "type": "regex"
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
               }
             ]
           }
@@ -1234,6 +1249,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1253,7 +1283,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "horizontal",
         "showValue": "never",
@@ -1679,5 +1709,5 @@
   "timezone": "Europe/Zurich",
   "title": "Device Fragmentation",
   "uid": "des41og1b0074e",
-  "version": 13
+  "version": 16
 }

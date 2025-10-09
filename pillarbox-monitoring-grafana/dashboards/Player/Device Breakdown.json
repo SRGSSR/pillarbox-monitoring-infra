@@ -454,7 +454,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.device.model:${device}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.device.model:${device}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -468,7 +468,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -574,7 +574,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.device.model:${device}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.device.model:${device}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1112,6 +1112,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1349,6 +1364,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1510,8 +1540,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "",
-                    "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                    "title": "Filter by media",
+                    "url": "/d/des44th87qarke/device-breakdown?var-device=${device}﻿&from=﻿${__from}﻿&to=﻿${__to}﻿&var-media_id=﻿${__value.raw:lucene}﻿&interval=${interval}\n"
                   }
                 ]
               },
@@ -1663,7 +1693,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Errors"
+            "displayName": "Sessions"
           }
         ]
       },
@@ -2917,8 +2947,8 @@
       {
         "allValue": "*",
         "current": {
-          "text": "iPhone 13",
-          "value": "iPhone 13"
+          "text": "iPhone 16 Pro",
+          "value": "iPhone 16 Pro"
         },
         "datasource": {
           "type": "grafana-opensearch-datasource",
@@ -3020,12 +3050,12 @@
     ]
   },
   "time": {
-    "from": "2025-07-23T08:43:19.291Z",
-    "to": "2025-07-24T08:43:19.291Z"
+    "from": "2025-10-07T13:41:43.888Z",
+    "to": "2025-10-08T13:41:43.888Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Device Breakdown",
   "uid": "des44th87qarke",
-  "version": 13
+  "version": 17
 }

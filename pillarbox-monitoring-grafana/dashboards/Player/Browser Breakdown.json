@@ -454,7 +454,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -468,7 +468,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -574,7 +574,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1134,6 +1134,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1371,6 +1386,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1532,8 +1562,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "",
-                    "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                    "title": "Filter by media",
+                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${browser}﻿&from=﻿${__from}﻿&to=﻿${__to}﻿&var-media_id=﻿${__value.raw:lucene}﻿&interval=${interval}\n"
                   }
                 ]
               }
@@ -2226,6 +2256,21 @@
                 "id": "color",
                 "value": {
                   "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
                   "mode": "fixed"
                 }
               }
@@ -3169,12 +3214,12 @@
     ]
   },
   "time": {
-    "from": "2025-09-18T07:54:09.740Z",
-    "to": "2025-09-19T07:54:09.740Z"
+    "from": "2025-10-07T13:41:43.888Z",
+    "to": "2025-10-08T13:41:43.888Z"
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
   "title": "Browser Breakdown",
   "uid": "cerwrzn7ypzwga",
-  "version": 25
+  "version": 31
 }

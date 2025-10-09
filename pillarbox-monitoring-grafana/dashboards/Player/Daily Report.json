@@ -59,7 +59,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons or unsupported DRM errors.",
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -165,7 +165,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -441,7 +441,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -671,7 +671,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -961,7 +961,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -1154,7 +1154,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1510,7 +1510,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:DRM_NOT_SUPPORTED",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1820,6 +1820,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -2053,6 +2068,21 @@
                 "id": "color",
                 "value": {
                   "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
                   "mode": "fixed"
                 }
               }
@@ -2377,5 +2407,5 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 42
+  "version": 46
 }

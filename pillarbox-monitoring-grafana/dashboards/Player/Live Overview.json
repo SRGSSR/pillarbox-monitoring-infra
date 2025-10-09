@@ -65,7 +65,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -98,7 +98,7 @@
                   "steps": [
                     {
                       "color": "green",
-                      "value": null
+                      "value": 0
                     },
                     {
                       "color": "red",
@@ -208,7 +208,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "columns": [
@@ -295,7 +295,7 @@
             "steps": [
               {
                 "color": "blue",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -327,7 +327,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "Sessions",
@@ -381,7 +381,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -517,6 +517,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CONNECTION_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5c5c5c",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -550,7 +565,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "",
@@ -604,7 +619,7 @@
             "steps": [
               {
                 "color": "red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "green",
@@ -638,7 +653,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -698,7 +713,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -817,7 +832,7 @@
             "steps": [
               {
                 "color": "transparent",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -872,7 +887,7 @@
                   "steps": [
                     {
                       "color": "red",
-                      "value": null
+                      "value": 0
                     },
                     {
                       "color": "green",
@@ -905,7 +920,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -974,7 +989,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:DRM_NOT_SUPPORTED\nAND data.business_error:false\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -986,7 +1001,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [
     "pillarbox"
   ],
@@ -1261,6 +1276,5 @@
   "timezone": "Europe/Zurich",
   "title": "Live Overview",
   "uid": "deskzjgmnpn28b",
-  "version": 6,
-  "weekStart": ""
+  "version": 8
 }

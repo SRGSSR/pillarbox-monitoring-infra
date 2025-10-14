@@ -27,18 +27,6 @@
   "id": 16,
   "links": [
     {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": false,
-      "title": "Yesterday",
-      "tooltip": "",
-      "type": "link",
-      "url": "/d/fe3wlaan74740b/daily-report?from=now-1d/d&to=now-1d/d"
-    },
-    {
       "asDropdown": true,
       "icon": "external link",
       "includeVars": true,
@@ -134,7 +122,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -165,7 +153,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -412,7 +400,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -441,7 +429,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -671,7 +659,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -701,7 +689,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -932,7 +920,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -961,7 +949,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -1154,7 +1142,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1184,7 +1172,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:(Android Apple android)\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1510,7 +1498,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
           "refId": "errors",
           "timeField": "@timestamp"
         },
@@ -1540,7 +1528,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.id:${type_lucene:raw}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
           "refId": "sessions",
           "timeField": "@timestamp"
         }
@@ -1897,7 +1885,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -2149,7 +2137,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -2179,7 +2167,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${type_lucene:raw}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -2250,6 +2238,7 @@
       },
       {
         "allValue": "*",
+        "allowCustomValue": false,
         "current": {
           "text": "$__all",
           "value": "$__all"
@@ -2285,20 +2274,16 @@
           },
           {
             "selected": false,
-            "text": "rio",
-            "value": "rio"
-          },
-          {
-            "selected": false,
-            "text": "swisstxt",
-            "value": "swisstxt"
+            "text": "playsuisse",
+            "value": "playsuisse"
           }
         ],
-        "query": "srf, rts, rsi, rtr, swi, rio, swisstxt",
+        "query": "srf, rts, rsi, rtr, swi, playsuisse",
         "type": "custom"
       },
       {
         "allValue": "*",
+        "allowCustomValue": false,
         "current": {
           "text": "$__all",
           "value": "$__all"
@@ -2324,7 +2309,7 @@
       {
         "auto": true,
         "auto_count": 30,
-        "auto_min": "1m",
+        "auto_min": "5s",
         "current": {
           "text": "10m",
           "value": "10m"
@@ -2382,20 +2367,37 @@
             "value": "30d"
           }
         ],
-        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
         "type": "interval"
       },
       {
+        "allowCustomValue": false,
         "current": {
-          "text": "*\\:${bu}\\:${type}*",
-          "value": "*\\:${bu}\\:${type}*"
+          "text": "(true OR false)",
+          "value": "(true OR false)"
         },
-        "hide": 2,
-        "name": "type_lucene",
-        "query": "*\\:${bu}\\:${type}*",
-        "skipUrlSync": true,
-        "type": "constant"
+        "hide": 1,
+        "name": "swisstxt",
+        "options": [
+          {
+            "selected": true,
+            "text": "Include SwissTXT",
+            "value": "(true OR false)"
+          },
+          {
+            "selected": false,
+            "text": "Only SwissTXT",
+            "value": "true"
+          },
+          {
+            "selected": false,
+            "text": "Exclude SwissTXT",
+            "value": "false"
+          }
+        ],
+        "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
+        "type": "custom"
       }
     ]
   },
@@ -2407,5 +2409,5 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 46
+  "version": 50
 }

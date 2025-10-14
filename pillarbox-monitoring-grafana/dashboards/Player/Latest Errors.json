@@ -284,7 +284,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${type_lucene:raw}\nAND data.business_error:${business_error}",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND data.business_error:${business_error}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -474,6 +474,7 @@
       },
       {
         "allValue": "*",
+        "allowCustomValue": false,
         "current": {
           "text": "srf",
           "value": "srf"
@@ -518,11 +519,12 @@
             "value": "swisstxt"
           }
         ],
-        "query": "srf, rts, rsi, rtr, swi, rio, swisstxt",
+        "query": "srf, rts, rsi, rtr, swi, playsuisse",
         "type": "custom"
       },
       {
         "allValue": "*",
+        "allowCustomValue": false,
         "current": {
           "text": "video",
           "value": "video"
@@ -578,17 +580,6 @@
         "filters": [],
         "name": "Filter",
         "type": "adhoc"
-      },
-      {
-        "current": {
-          "text": "*\\:${bu}\\:${type}*",
-          "value": "*\\:${bu}\\:${type}*"
-        },
-        "hide": 2,
-        "name": "type_lucene",
-        "query": "*\\:${bu}\\:${type}*",
-        "skipUrlSync": true,
-        "type": "constant"
       }
     ]
   },
@@ -600,5 +591,5 @@
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 11
+  "version": 12
 }

@@ -66,81 +66,6 @@ resource "aws_iam_role" "ecs_task_role" {
 }
 
 # -----------------------------------
-# OpenSearch Policies for ECS Tasks
-# -----------------------------------
-
-# OpenSearch Policy Document for ECS Tasks
-data "aws_iam_policy_document" "ecs_task_opensearch_policy" {
-  statement {
-    actions   = ["es:ESHttp*"]
-    resources = ["${aws_opensearch_domain.opensearch_domain.arn}/*"]
-  }
-}
-
-# OpenSearch Policy for ECS Tasks
-resource "aws_iam_policy" "ecs_task_opensearch_policy" {
-  name   = "ecs_task_opensearch_policy"
-  policy = data.aws_iam_policy_document.ecs_task_opensearch_policy.json
-}
-
-# Attach OpenSearch Policy to ECS Task Role
-resource "aws_iam_role_policy_attachment" "ecs_task_opensearch_policy_attachment" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = aws_iam_policy.ecs_task_opensearch_policy.arn
-}
-
-# -----------------------------------
-# OpenSearch Access Policies
-# -----------------------------------
-
-# OpenSearch Domain Access Policy
-data "aws_iam_policy_document" "opensearch_policy" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions = ["es:*"]
-    resources = [
-      "arn:aws:es:${data.aws_region.current.name}:${local.account_id}:domain/${local.opensearch.domain_name}/*"
-    ]
-  }
-}
-
-# -----------------------------------
-# CloudWatch Log Policy for OpenSearch
-# -----------------------------------
-
-# Policy Document for OpenSearch Logging in CloudWatch
-data "aws_iam_policy_document" "opensearch_log_policy" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["es.amazonaws.com"]
-    }
-
-    actions = [
-      "logs:PutLogEvents",
-      "logs:PutLogEventsBatch",
-      "logs:CreateLogStream",
-    ]
-
-    resources = ["arn:aws:logs:*"]
-  }
-}
-
-# Attach CloudWatch Log Policy for OpenSearch
-resource "aws_cloudwatch_log_resource_policy" "opensearch_log_policy" {
-  policy_name     = "opensearch-logging-policy"
-  policy_document = data.aws_iam_policy_document.opensearch_log_policy.json
-}
-
-# -----------------------------------
 # Grafana Host Policies
 # -----------------------------------
 
@@ -183,4 +108,50 @@ resource "aws_iam_role_policy_attachment" "grafana_ssm_policy_attach" {
 resource "aws_iam_instance_profile" "grafana_instance_profile" {
   name = "grafana-instance-profile"
   role = aws_iam_role.grafana_ec2_role.name
+}
+
+
+# -----------------------------------
+# Opensearch Host Policies
+# -----------------------------------
+
+resource "aws_iam_role" "opensearch_ec2_role" {
+  name = "opensearch-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "opensearch_ssm_policy" {
+  name        = "opensearch-ssm-policy"
+  description = "Allows EC2 to read Opensearch admin password from SSM Parameter Store"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "ssm:GetParameter",
+        Resource = "arn:aws:ssm:${data.aws_region.current.name}:${local.account_id}:parameter/opensearch/admin_password"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "opensearch_ssm_policy_attach" {
+  role       = aws_iam_role.opensearch_ec2_role.name
+  policy_arn = aws_iam_policy.opensearch_ssm_policy.arn
+}
+
+resource "aws_iam_instance_profile" "opensearch_instance_profile" {
+  name = "opensearch-instance-profile"
+  role = aws_iam_role.opensearch_ec2_role.name
 }

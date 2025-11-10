@@ -1,104 +1,16 @@
 # -----------------------------------
-# OpenSearch Domain Setup
+# OpenSearch EC2 Instance
 # -----------------------------------
 
-resource "aws_opensearch_domain" "opensearch_domain" {
-  domain_name    = local.opensearch.domain_name
-  engine_version = "OpenSearch_2.17"
-
-  # Cluster configuration including instance type and count
-  cluster_config {
-    instance_type          = local.opensearch.instance_type
-    instance_count         = length(data.aws_subnets.private_subnets.ids)
-    zone_awareness_enabled = true
-
-    # Zone awareness setup for availability across subnets
-    zone_awareness_config {
-      availability_zone_count = length(data.aws_subnets.private_subnets.ids)
-    }
-  }
-
-  # EBS volume configuration for persistent storage
-  ebs_options {
-    ebs_enabled = true
-    volume_size = local.opensearch.volume_size
-    volume_type = local.opensearch.volume_type
-    throughput  = local.opensearch.throughput
-  }
-
-  # VPC configuration linking to private subnets and security group
-  vpc_options {
-    subnet_ids         = data.aws_subnets.private_subnets.ids
-    security_group_ids = [aws_security_group.opensearch_sg.id]
-  }
-
-  # Access policies for OpenSearch, configured via IAM policy
-  access_policies = data.aws_iam_policy_document.opensearch_policy.json
-
-  # Log publishing options for CloudWatch logging
-  log_publishing_options {
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_slow_logs.arn
-    enabled                  = true
-  }
-
-  log_publishing_options {
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_search_logs.arn
-    enabled                  = true
-  }
-
-  log_publishing_options {
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch_application_logs.arn
-    enabled                  = true
-  }
-
-  tags = {
-    Name = "opensearch-domain"
-  }
-
-  timeouts {
-    create = "90m"
-  }
-}
-
-# -----------------------------------
-# CloudWatch Log Groups
-# -----------------------------------
-
-# Log Group for Slow Logs
-resource "aws_cloudwatch_log_group" "opensearch_slow_logs" {
-  name              = "/aws/opensearch/${local.opensearch.domain_name}/slow-logs"
-  retention_in_days = 7
-}
-
-# Log Group for Search Logs
-resource "aws_cloudwatch_log_group" "opensearch_search_logs" {
-  name              = "/aws/opensearch/${local.opensearch.domain_name}/search-logs"
-  retention_in_days = 7
-}
-
-# Log Group for Application Logs
-resource "aws_cloudwatch_log_group" "opensearch_application_logs" {
-  name              = "/aws/opensearch/${local.opensearch.domain_name}/application-logs"
-  retention_in_days = 7
-}
-
-# -----------------------------------
-# Security Group for OpenSearch
-# -----------------------------------
-
-# Private Access Security Group for OpenSearch
 resource "aws_security_group" "opensearch_sg" {
   name   = "opensearch-sg"
   vpc_id = data.aws_vpc.main_vpc.id
 
-  # Ingress rule to allow access from specific services
+  # Allow HTTPS from Grafana, Bastion and Data Transfer
   ingress {
-    description = "Allow access from data-transfer and Grafana services"
-    from_port   = 443
-    to_port     = 443
+    description = "Allow HTTP access from Grafana, Bastion and data transfer service"
+    from_port   = 9200
+    to_port     = 9200
     protocol    = "tcp"
     security_groups = [
       aws_security_group.transfer_task_sg.id,
@@ -107,7 +19,16 @@ resource "aws_security_group" "opensearch_sg" {
     ]
   }
 
-  # Egress rule to allow all outbound traffic
+  # Allow SSH from Bastion
+  ingress {
+    description     = "SSH from Bastion"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.bastion_sg.id]
+  }
+
+  # Egress: allow all outbound
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0
@@ -118,5 +39,67 @@ resource "aws_security_group" "opensearch_sg" {
 
   tags = {
     Name = "opensearch-sg"
+  }
+}
+
+# -----------------------------------
+# OpenSearch EC2 Instance
+# -----------------------------------
+
+resource "aws_instance" "opensearch" {
+  ami                         = local.opensearch.ami
+  instance_type               = local.opensearch.instance_type
+  subnet_id                   = data.aws_subnets.public_subnets.ids[0]
+  vpc_security_group_ids      = [aws_security_group.opensearch_sg.id]
+  key_name                    = "bastion-keypair"
+  ebs_optimized               = true
+  associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.opensearch_instance_profile.name
+
+  # Mount the attached EBS volume and install OpenSearch
+  user_data = <<-EOF
+              #!/bin/bash
+              set -e  # Exit on errorx
+
+              sudo yum update -y
+              sudo yum install -y aws-cli
+
+              sudo curl -SL https://artifacts.opensearch.org/releases/bundle/opensearch/3.x/opensearch-3.x.repo -o /etc/yum.repos.d/opensearch-3.x.repo
+              sudo yum clean all
+              sudo env OPENSEARCH_INITIAL_ADMIN_PASSWORD=$(aws ssm get-parameter --name "/opensearch/admin_password" --with-decryption --query "Parameter.Value" --output text) yum install -y opensearch
+
+              {
+                echo "plugins.security.disabled: true"
+                echo "discovery.type: single-node"
+                echo "network.host: 0.0.0.0"
+                echo "node.name: opensearch-node"
+                echo "bootstrap.memory_lock: true"
+              } | sudo tee -a /etc/opensearch/opensearch.yml
+              echo "${local.opensearch.java_opts}" | tr ' ' '\n' | sudo tee /etc/opensearch/jvm.options.d/custom.options
+
+              sudo systemctl enable opensearch
+              sudo systemctl start opensearch
+              EOF
+
+  root_block_device {
+    volume_size = local.opensearch.volume.size
+    volume_type = local.opensearch.volume.type
+    throughput  = local.opensearch.volume.throughput
+    iops        = local.opensearch.volume.iops
+  }
+
+  tags = {
+    Name = "opensearch-instance"
+  }
+}
+
+resource "aws_ssm_parameter" "opensearch_admin_password" {
+  name        = "/opensearch/admin_password"
+  description = "Opensearch admin password"
+  type        = "SecureString"
+  value       = var.opensearch_default_pwd
+
+  tags = {
+    Name = "opensearch-admin-password"
   }
 }

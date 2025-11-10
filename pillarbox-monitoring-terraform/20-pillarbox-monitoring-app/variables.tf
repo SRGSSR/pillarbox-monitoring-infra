@@ -31,8 +31,11 @@ variable "grafana_default_pwd" {
   type        = string
 }
 
+variable "opensearch_default_pwd" {
+  description = "Opensearch default admin password"
+  type        = string
+}
 
-# Variable for Public Key
 variable "bastion_public_key" {
   description = "Public key for the bastion host"
   type        = string

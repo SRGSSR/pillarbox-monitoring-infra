@@ -1,6 +1,6 @@
 output "opensearch_endpoint" {
   description = "The endpoint of the OpenSearch domain"
-  value       = aws_opensearch_domain.opensearch_domain.endpoint
+  value       = aws_instance.opensearch.private_ip
 }
 
 output "dispatch_dns_name" {

@@ -8,11 +8,16 @@ locals {
   ecr_image_tag    = local.is_prod ? "stable" : "latest"
 
   opensearch = {
+    ami           = "ami-0d7c381edfc5ee30e"
     domain_name   = "${var.application_name}-search"
-    volume_size   = local.is_prod ? 300 : 10
-    instance_type = local.is_prod ? "m7g.medium.search" : "t3.small.search"
-    volume_type   = local.is_prod ? "gp3" : "gp2"
-    throughput    = local.is_prod ? 250 : null
+    instance_type = local.is_prod ? "r7g.xlarge" : "t4g.medium"
+    volume = {
+      type       = local.is_prod ? "gp3" : "gp2"
+      size       = local.is_prod ? 500 : 20,
+      iops       = local.is_prod ? 6000 : null
+      throughput = local.is_prod ? 300 : null
+    }
+    java_opts = local.is_prod ? "-Xms16g -Xmx16g" : "-Xms2g -Xmx2g"
   }
 
   grafana = {

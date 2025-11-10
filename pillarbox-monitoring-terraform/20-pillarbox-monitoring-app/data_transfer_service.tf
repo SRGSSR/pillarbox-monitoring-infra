@@ -70,7 +70,7 @@ resource "aws_ecs_task_definition" "transfer_task" {
         },
         {
           name  = "PILLARBOX_MONITORING_OPENSEARCH_URI"
-          value = "https://${aws_opensearch_domain.opensearch_domain.endpoint}:443"
+          value = "http://${aws_instance.opensearch.private_ip}:9200"
         },
         {
           name  = "JAVA_OPTS"

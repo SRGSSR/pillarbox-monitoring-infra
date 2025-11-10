@@ -100,7 +100,7 @@ This repository allows running the Pillarbox Monitoring solution locally. To do 
 services using Docker Compose:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 This command will build and run the following services:

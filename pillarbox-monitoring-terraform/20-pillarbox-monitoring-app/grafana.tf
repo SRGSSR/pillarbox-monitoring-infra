@@ -223,16 +223,6 @@ resource "aws_security_group" "grafana_sg" {
   }
 }
 
-
-resource "aws_secretsmanager_secret" "grafana_admin" {
-  name = "grafana-admin-password"
-}
-
-resource "aws_secretsmanager_secret_version" "grafana_admin" {
-  secret_id     = aws_secretsmanager_secret.grafana_admin.id
-  secret_string = jsonencode({ "password" = var.grafana_default_pwd })
-}
-
 # -----------------------------------
 # AWS Grafana Workspace Setup
 # -----------------------------------

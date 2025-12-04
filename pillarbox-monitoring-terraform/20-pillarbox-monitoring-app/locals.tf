@@ -12,10 +12,10 @@ locals {
     domain_name   = "${var.application_name}-search"
     instance_type = local.is_prod ? "r7g.xlarge" : "t4g.medium"
     volume = {
-      type       = local.is_prod ? "gp3" : "gp2"
+      type       = "gp3"
       size       = local.is_prod ? 500 : 20,
-      iops       = local.is_prod ? 6000 : null
-      throughput = local.is_prod ? 300 : null
+      iops       = 3000
+      throughput = 125
     }
     java_opts = local.is_prod ? "-Xms16g -Xmx16g" : "-Xms2g -Xmx2g"
   }
@@ -28,7 +28,7 @@ locals {
 
   transfer = {
     task = {
-      cpu       = local.is_prod ? 2048 : 512
+      cpu       = local.is_prod ? 2048 : 256
       memory    = local.is_prod ? 16384 : 1024
       java_opts = local.is_prod ? "-Xms14G -Xmx14G" : "-Xms1G -Xmx1G"
     }

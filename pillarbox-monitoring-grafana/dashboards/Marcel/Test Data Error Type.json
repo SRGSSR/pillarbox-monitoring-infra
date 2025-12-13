@@ -29,6 +29,173 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 33
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.error_type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.message"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.name"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.os.name"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 31,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "LSA Stream Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": true,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false\nAND event_name:ERROR",
+          "queryType": "lucene",
+          "refId": "lsa",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Not LSA Stream Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": true,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false\nAND event_name:ERROR\n",
+          "queryType": "lucene",
+          "refId": "notlsa",
+          "timeField": "@timestamp"
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "$lsa/$notlsa",
+          "hide": false,
+          "refId": "A",
+          "type": "math"
+        }
+      ],
+      "title": "LSA vs not-LSA Errors",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -52,8 +219,7 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "log": 10,
-              "type": "log"
+              "type": "linear"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -119,17 +285,17 @@
         ]
       },
       "gridPos": {
-        "h": 18,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
-      "id": 17,
+      "id": 29,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -141,15 +307,13 @@
       "pluginVersion": "12.1.1",
       "targets": [
         {
-          "alias": "Audio Sessions",
+          "alias": "",
           "bucketAggs": [
             {
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "20m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
+                "interval": "1h"
               },
               "type": "date_histogram"
             }
@@ -163,50 +327,144 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "field": "session.device.id",
-              "id": "1",
-              "type": "cardinality"
-            }
-          ],
-          "query": "session.media.type:audio",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "PMSE: undefined: 19",
-          "bucketAggs": [
-            {
-              "id": "4",
-              "settings": {
-                "interval": "20m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:\"undefined: 19\"",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false ",
           "queryType": "lucene",
-          "refId": "A",
+          "refId": "LSA",
           "timeField": "@timestamp"
+        }
+      ],
+      "title": "LSA Stream Errors",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.error_type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.message"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.name"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.os.name"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
         {
           "alias": "PMSE: BehindLiveWindowException",
           "bucketAggs": [
             {
               "id": "4",
               "settings": {
-                "interval": "20m",
+                "interval": "1h",
                 "min_doc_count": "0",
                 "trimEdges": "0"
               },
@@ -226,9 +484,71 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:BehindLiveWindowException",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
           "queryType": "lucene",
-          "refId": "C",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE (stalled)",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND *stalled download*)",
+          "queryType": "lucene",
+          "refId": "F",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "I",
           "timeField": "@timestamp"
         },
         {
@@ -238,7 +558,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "20m"
+                "interval": "1h"
               },
               "type": "date_histogram"
             }
@@ -256,9 +576,9 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:*AVFoundationErrorDomain*",
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:*AVFoundationErrorDomain*",
           "queryType": "lucene",
-          "refId": "D",
+          "refId": "B",
           "timeField": "@timestamp"
         },
         {
@@ -268,7 +588,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "20m"
+                "interval": "1h"
               },
               "type": "date_histogram"
             }
@@ -286,7 +606,67 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:FileDataSourceException",
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:FileDataSourceException",
+          "queryType": "lucene",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: IOException timeout",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*IOException* AND *timeout*",
+          "queryType": "lucene",
+          "refId": "M",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: ExoTimeoutException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:ExoTimeoutException",
           "queryType": "lucene",
           "refId": "E",
           "timeField": "@timestamp"
@@ -298,7 +678,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "20m"
+                "interval": "1h"
               },
               "type": "date_histogram"
             }
@@ -316,13 +696,1667 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:HttpDataSourceException",
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:HttpDataSourceException",
           "queryType": "lucene",
-          "refId": "F",
+          "refId": "D",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: Response Code 503",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Responce code* AND *503*",
+          "queryType": "lucene",
+          "refId": "N",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Status Code 500",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR\nAND data.log:*httpStatusCode* AND *500*",
+          "queryType": "lucene",
+          "refId": "O",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Response 404",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Response* AND *404*",
+          "queryType": "lucene",
+          "refId": "L",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 404",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *404*)",
+          "queryType": "lucene",
+          "refId": "H",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 403",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *403*)",
+          "queryType": "lucene",
+          "refId": "P",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 200",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *200* AND NOT *404*)",
+          "queryType": "lucene",
+          "refId": "Q",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "CE: HTTP Status Code 418",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:CONNECTION_ERROR\nAND data.log:*httpStatusCode* AND *418*",
+          "queryType": "lucene",
+          "refId": "G",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PNE: MEDIA_ERR_NETWORK",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_NETWORK_ERROR \nAND data.log:MEDIA_ERR_NETWORK",
+          "queryType": "lucene",
+          "refId": "J",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PUM: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "K",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE (other)",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND NOT *stalled download*)",
+          "queryType": "lucene",
+          "refId": "R",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Errors vs total Sessions (logarithmic)",
+      "title": "Error Causes (only LSA)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.error_type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.message"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.name"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.os.name"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 34,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "PMSE: BehindLiveWindowException",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE (stalled)",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND *stalled download*)",
+          "queryType": "lucene",
+          "refId": "F",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "I",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: AVFoundationErrorDomain",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:*AVFoundationErrorDomain*",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: FileDataSourceException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:FileDataSourceException",
+          "queryType": "lucene",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: IOException timeout",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*IOException* AND *timeout*",
+          "queryType": "lucene",
+          "refId": "M",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: ExoTimeoutException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:ExoTimeoutException",
+          "queryType": "lucene",
+          "refId": "E",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HttpDataSourceException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:HttpDataSourceException",
+          "queryType": "lucene",
+          "refId": "D",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: Response Code 503",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Responce code* AND *503*",
+          "queryType": "lucene",
+          "refId": "N",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Status Code 500",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR\nAND data.log:*httpStatusCode* AND *500*",
+          "queryType": "lucene",
+          "refId": "O",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Response 404",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Response* AND *404*",
+          "queryType": "lucene",
+          "refId": "L",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 404",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *404*)",
+          "queryType": "lucene",
+          "refId": "H",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 403",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *403*)",
+          "queryType": "lucene",
+          "refId": "P",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 200",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *200* AND NOT *404*)",
+          "queryType": "lucene",
+          "refId": "Q",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "CE: HTTP Status Code 418",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:CONNECTION_ERROR\nAND data.log:*httpStatusCode* AND *418*",
+          "queryType": "lucene",
+          "refId": "G",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PNE: MEDIA_ERR_NETWORK",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_NETWORK_ERROR \nAND data.log:MEDIA_ERR_NETWORK",
+          "queryType": "lucene",
+          "refId": "J",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PUM: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "K",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE (other)",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:$mediatype\nAND NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND NOT *stalled download*)",
+          "queryType": "lucene",
+          "refId": "R",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Error Causes (Audio NOT LSA)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.error_type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.message"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.name"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.os.name"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "PMSE: BehindLiveWindowException",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE (stalled)",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND *stalled download*)",
+          "queryType": "lucene",
+          "refId": "F",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "I",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: AVFoundationErrorDomain",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:*AVFoundationErrorDomain*",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: FileDataSourceException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:FileDataSourceException",
+          "queryType": "lucene",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: IOException timeout",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*IOException* AND *timeout*",
+          "queryType": "lucene",
+          "refId": "M",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: ExoTimeoutException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:ExoTimeoutException",
+          "queryType": "lucene",
+          "refId": "E",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HttpDataSourceException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:HttpDataSourceException",
+          "queryType": "lucene",
+          "refId": "D",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: Response Code 503",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Responce code* AND *503*",
+          "queryType": "lucene",
+          "refId": "N",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Status Code 500",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR\nAND data.log:*httpStatusCode* AND *500*",
+          "queryType": "lucene",
+          "refId": "O",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Response 404",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Response* AND *404*",
+          "queryType": "lucene",
+          "refId": "L",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 404",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *404*)",
+          "queryType": "lucene",
+          "refId": "H",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 403",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *403*)",
+          "queryType": "lucene",
+          "refId": "P",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 200",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *200* AND NOT *404*)",
+          "queryType": "lucene",
+          "refId": "Q",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "CE: HTTP Status Code 418",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:CONNECTION_ERROR\nAND data.log:*httpStatusCode* AND *418*",
+          "queryType": "lucene",
+          "refId": "G",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PNE: MEDIA_ERR_NETWORK",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_NETWORK_ERROR \nAND data.log:MEDIA_ERR_NETWORK",
+          "queryType": "lucene",
+          "refId": "J",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PUM: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "K",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE (other)",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND NOT *stalled download*)",
+          "queryType": "lucene",
+          "refId": "R",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Error Causes (all Audio)",
       "type": "timeseries"
     },
     {
@@ -410,12 +2444,12 @@
         ]
       },
       "gridPos": {
-        "h": 18,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 40
       },
-      "id": 24,
+      "id": 30,
       "options": {
         "barRadius": 0,
         "barWidth": 0.97,
@@ -424,7 +2458,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true
         },
         "orientation": "auto",
@@ -441,45 +2475,12 @@
       "pluginVersion": "12.1.1",
       "targets": [
         {
-          "alias": "Audio Sessions",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "10m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": true,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "field": "session.device.id",
-              "id": "1",
-              "type": "cardinality"
-            }
-          ],
-          "query": "session.media.type:audio",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "ERROR",
+          "alias": "PMSE: BehindLiveWindowException",
           "bucketAggs": [
             {
               "id": "4",
               "settings": {
-                "interval": "10m",
+                "interval": "1h",
                 "min_doc_count": "0",
                 "trimEdges": "0"
               },
@@ -491,7 +2492,7 @@
             "uid": "fef4oi750u39cd"
           },
           "format": "table",
-          "hide": true,
+          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -499,11 +2500,619 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND event_name:ERROR",
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_DECODE",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_DECODE",
+          "queryType": "lucene",
+          "refId": "F",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PMSE: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "I",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: AVFoundationErrorDomain",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:*AVFoundationErrorDomain*",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: FileDataSourceException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:FileDataSourceException",
           "queryType": "lucene",
           "refId": "C",
           "timeField": "@timestamp"
         },
+        {
+          "alias": "UE: IOException timeout",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*IOException* AND *timeout*",
+          "queryType": "lucene",
+          "refId": "M",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: ExoTimeoutException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:ExoTimeoutException",
+          "queryType": "lucene",
+          "refId": "E",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HttpDataSourceException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:HttpDataSourceException",
+          "queryType": "lucene",
+          "refId": "D",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: Response Code 503",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Responce code* AND *503*",
+          "queryType": "lucene",
+          "refId": "N",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Status Code 500",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR\nAND data.log:*httpStatusCode* AND *500*",
+          "queryType": "lucene",
+          "refId": "O",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "UE: HTTP Response 404",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1h"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Response* AND *404*",
+          "queryType": "lucene",
+          "refId": "L",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 404",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *404*)",
+          "queryType": "lucene",
+          "refId": "H",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 403",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *403*)",
+          "queryType": "lucene",
+          "refId": "P",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "IE: HTTP Status Code 200",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *200*)",
+          "queryType": "lucene",
+          "refId": "Q",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "CE: HTTP Status Code 418",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:CONNECTION_ERROR\nAND data.log:*httpStatusCode* AND *418*",
+          "queryType": "lucene",
+          "refId": "G",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PNE: MEDIA_ERR_NETWORK",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_NETWORK_ERROR \nAND data.log:MEDIA_ERR_NETWORK",
+          "queryType": "lucene",
+          "refId": "J",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "PUM: MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "bucketAggs": [
+            {
+              "id": "4",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "hide": false,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio \nAND data.business_error:false \nAND data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "queryType": "lucene",
+          "refId": "K",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Error Causes (all Audio)",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.error_type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.message"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.name"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.os.name"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 24,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
         {
           "alias": "",
           "bucketAggs": [
@@ -522,7 +3131,7 @@
               "field": "@timestamp",
               "id": "3",
               "settings": {
-                "interval": "10m",
+                "interval": "1h",
                 "min_doc_count": "0",
                 "trimEdges": "0"
               },
@@ -542,13 +3151,13 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio AND data.business_error:false AND event_name:ERROR",
+          "query": "data.url:*audiostreaming*\nAND data.business_error:false\nAND event_name:ERROR",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Errors vs total Sessions (logarithmic)",
+      "title": "Error Types",
       "type": "barchart"
     },
     {
@@ -658,654 +3267,15 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 60
       },
       "id": 18,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "video.js Plugin deprecated",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "4",
-              "settings": {
-                "interval": "5m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:\"undefined: 19\" AND data.log:\"your browser did not support\"",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "stalled download",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "4",
-              "settings": {
-                "interval": "5m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:\"undefined: 19\" AND data.log:\"stalled download\"",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "undefined:19 causes for error",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {
-              "Count": 3,
-              "data.message": 2,
-              "data.name": 1,
-              "session.os.name": 0
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "session.os.name"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.log"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.url"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 651
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 44
-      },
-      "id": 23,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "data.url"
-          }
-        ]
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "stalled download",
-          "bucketAggs": [
-            {
-              "field": "data.url",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "20"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.device.type",
-              "id": "5",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "20"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:\"undefined: 19\" AND data.log:\"stalled download\"",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "undefined:19 causes for error",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {
-              "Count": 3,
-              "data.message": 2,
-              "data.name": 1,
-              "session.os.name": 0
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "session.os.name"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.log"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 52
-      },
-      "id": 20,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "timeout at androidx.media3.datasource",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "4",
-              "settings": {
-                "interval": "20m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:HttpDataSourceException AND data.log:\"timeout at androidx.media3\"",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Trust anchor for certification path not found",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "4",
-              "settings": {
-                "interval": "20m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:HttpDataSourceException AND data.log:\"Trust anchor for certification path not found\"",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "AVFoundationErrorDomain",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "20m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:*AVFoundationErrorDomain*",
-          "queryType": "lucene",
-          "refId": "C",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "DataSourceException",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "20m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND data.name:*DataSourceException*",
-          "queryType": "lucene",
-          "refId": "D",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "20m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": true,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR",
-          "queryType": "lucene",
-          "refId": "E",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "UNKNOWN_ERROR: causes for error",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {
-              "Count": 3,
-              "data.message": 2,
-              "data.name": 1,
-              "session.os.name": 0
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 60
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "hidden",
           "placement": "right",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -1316,53 +3286,19 @@
       "pluginVersion": "12.1.1",
       "targets": [
         {
-          "alias": "Playback Media Source Errors",
+          "alias": "PMSE: MEDIA_ERR_DECODE",
           "bucketAggs": [
             {
               "field": "@timestamp",
-              "id": "2",
+              "id": "4",
               "settings": {
-                "interval": "5m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Audio Sessions",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "5m",
+                "interval": "20m",
                 "min_doc_count": "0",
                 "trimEdges": "0"
               },
               "type": "date_histogram"
             }
           ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
           "format": "table",
           "hide": false,
           "luceneQueryType": "Metric",
@@ -1372,106 +3308,17 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio",
+          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:\"undefined: 19\" AND data.log:*MEDIA_ERR_DECODE* AND NOT data.log:\"stalled download\"",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
-        }
-      ],
-      "title": "Playback Source Error Rate (Logarithmic)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 70
-      },
-      "id": 22,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
         {
-          "alias": "Playback Media Source Errors",
+          "alias": "stalled download",
           "bucketAggs": [
             {
               "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "20m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": true,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Audio Sessions",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
+              "id": "4",
               "settings": {
                 "interval": "20m",
                 "min_doc_count": "0",
@@ -1486,125 +3333,6 @@
           },
           "format": "table",
           "hide": false,
-          "luceneQueryType": "Logs",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "logs"
-            }
-          ],
-          "query": "session.media.type:audio AND NOT event_name:HEARTBEAT AND NOT event_name:START AND NOT event_name:STOP",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Data Log",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 5,
-        "x": 0,
-        "y": 80
-      },
-      "id": 13,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.type",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "3"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -1612,1047 +3340,13 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Device Types overall",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 19,
-        "x": 5,
-        "y": 80
-      },
-      "id": 11,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.model",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "2",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND session.device.type:Phone",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Phone Models overall",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 5,
-        "x": 0,
-        "y": 91
-      },
-      "id": 12,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.type",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Device Types: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 19,
-        "x": 5,
-        "y": 91
-      },
-      "id": 2,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.model",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "2",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.device.type:Phone",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Phone Models: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 285
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 256
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 65
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "session.os.name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 157
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 9,
-        "x": 0,
-        "y": 102
-      },
-      "id": 14,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.os.name",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "data.name",
-              "id": "5",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "data.message",
-              "id": "6",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.device.type:Phone",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Phone Error Details: Audio Playback Media Source Error",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {
-              "Count": 3,
-              "data.message": 2,
-              "data.name": 1,
-              "session.os.name": 0
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 285
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 232
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 65
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 9,
-        "y": 102
-      },
-      "id": 16,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "data.message",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "2",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "data.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.device.type:Tablet",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Tablet Error Details: Audio Playback Media Source Error",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 285
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 232
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 65
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 16,
-        "y": 102
-      },
-      "id": 15,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "data.message",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "2",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "data.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.device.type:Desktop",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Desktop Error Details: Audio Playback Media Source Error",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "session.os.name"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 23,
-        "x": 0,
-        "y": 111
-      },
-      "id": 21,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "Playback Media Source Errors",
-          "bucketAggs": [
-            {
-              "id": "6",
-              "settings": {
-                "interval": "5m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Unknown Errors",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "5m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR",
+          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND data.name:\"undefined: 19\" AND data.log:\"stalled download\"",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
-        },
-        {
-          "alias": "Audio Sessions",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio",
-          "queryType": "lucene",
-          "refId": "C",
-          "timeField": "@timestamp"
         }
       ],
-      "title": "Error: Audio Playback Media Source Error and Unknown Error",
+      "title": "undefined:19 causes for error (20m Intervals)",
       "transformations": [
         {
           "id": "organize",
@@ -2670,1010 +3364,6 @@
         }
       ],
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.message"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 285
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 256
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 65
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "session.os.name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 157
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 9,
-        "x": 0,
-        "y": 120
-      },
-      "id": 19,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.os.name",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "3",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "data.name",
-              "id": "5",
-              "settings": {
-                "min_doc_count": "3",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:UNKNOWN_ERROR AND session.device.type:Phone",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Phone Error Details: Audio Unknown Error",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {
-              "Count": 3,
-              "data.message": 2,
-              "data.name": 1,
-              "session.os.name": 0
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 7,
-        "x": 0,
-        "y": 129
-      },
-      "id": 6,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.version",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Player Version: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 5,
-        "x": 7,
-        "y": 129
-      },
-      "id": 7,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.model",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.device.type:Desktop",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Desktop Models: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 14,
-        "x": 7,
-        "y": 138
-      },
-      "id": 9,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.model",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.player.platform:Web",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Web Devices: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 7,
-        "x": 0,
-        "y": 141
-      },
-      "id": 3,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.platform",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Platform: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 7,
-        "x": 7,
-        "y": 150
-      },
-      "id": 5,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Player Name: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 7,
-        "x": 14,
-        "y": 150
-      },
-      "id": 4,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.os.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "OS: Audio Playback Media Source Error",
-      "type": "barchart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "data.error_type"
-            },
-            "properties": []
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 19,
-        "x": 1,
-        "y": 162
-      },
-      "id": 8,
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.model",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.type:audio AND data.business_error:false AND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR AND session.device.type:Tablet",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Tablet Models: Audio Playback Media Source Error",
-      "type": "barchart"
     }
   ],
   "preload": false,
@@ -3690,6 +3380,47 @@
         "filters": [],
         "name": "Filters",
         "type": "adhoc"
+      },
+      {
+        "allValue": "audio",
+        "allowCustomValue": false,
+        "current": {
+          "text": "audio",
+          "value": "audio"
+        },
+        "includeAll": true,
+        "label": "Media Type",
+        "name": "mediatype",
+        "options": [
+          {
+            "selected": true,
+            "text": "audio",
+            "value": "audio"
+          },
+          {
+            "selected": false,
+            "text": "video",
+            "value": "video"
+          }
+        ],
+        "query": "audio, video",
+        "type": "custom"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "definition": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false ",
+        "hide": 2,
+        "label": "lsasessions",
+        "name": "lsasessions",
+        "options": [],
+        "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false ",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -3701,5 +3432,5 @@
   "timezone": "browser",
   "title": "Test: Data Error Type",
   "uid": "f66867e5-dfbd-4225-b898-5f7a25b020ab",
-  "version": 72
+  "version": 150
 }

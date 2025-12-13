@@ -1,0 +1,230 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 53,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "format": "table",
+          "luceneQueryType": "Logs",
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "10000"
+              },
+              "type": "logs"
+            }
+          ],
+          "query": "session_id:c24abec2-6954-4c85-86c7-6f357ebe8c8e",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "session c24abec2-6954-4c85-86c7-6f357ebe8c8e",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.browser.name",
+              "id": "4",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "3",
+              "settings": {
+                "interval": "1h",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "session_id:(53d1833a-c990-4a25-87c7-2f8342e826a5 OR f2cd0c7d-5889-44a2-a3fc-399ea77f8165 OR 3297b8d4-1119-4734-888b-047b3b76a11a OR f1c87e23-ec63-4fa8-8d9b-835e91580b5e OR eda08c73-2c37-446a-9daf-0690e0132667 OR 791e738b-0e54-48e8-9e65-fab0e4bb86d5 OR d56dc512-e699-4ac8-a60e-30cc256cd2c8 OR c3606709-3ae9-4289-8645-1598fb2f3312 OR 5219fea6-f643-4653-b46b-d727efd7198b OR 05aae1b8-272a-4288-8df0-62b937af0254 OR 4333aa89-a365-4b27-a314-1580bb1d4a73 OR 9c4ef879-5c87-4529-a55e-4c75df11d3f2 OR a1f455f4-d325-4c8c-ba07-ef3df3d91daa OR 5baecfc9-17f9-460d-b8f2-aa1b49693dd6 OR 33c9a73f-8af3-4957-9c79-ebb23575592a OR 8d579915-aa38-4409-8aaf-54a0971abc1e OR 5a232d9d-271d-40d3-bd1b-f54749f387b0 OR 99e35a3b-ce7b-45dd-be52-4130263764ce OR 4843d50c-bc4d-4b3f-8736-e6a1b681e064 OR 4761ae92-30ae-42ed-89a1-0b4e8e2a6792 OR 751ee607-5341-48bc-8164-66e7aee3d12e OR 79a7aee8-8f4d-431d-9841-deab40545b67 OR b4f9ece4-a6dc-497b-a5fb-08358cd4a5db OR beea1c33-3812-47af-8f4f-0f57b2beacc0 OR f895a161-07cd-4ff8-9551-ba98886e2d8c OR c24abec2-6954-4c85-86c7-6f357ebe8c8e OR 757afd8c-6785-4e6e-a170-a55a3e314fdf OR fcd7dbc8-aa29-4c24-98d1-5cfd5fdd8bea OR eadb6714-4103-4e39-bed8-15d454e97125 OR b7edbc46-5932-49ca-8d24-7e8dee8b971b OR e61f6d79-9da7-4b79-a779-e00712857592 OR 735d7ef3-12bf-43d1-a567-640450f7d6b9 OR b6c5b23a-7369-4b98-8ae4-cda5f763405f OR 39c7915b-ddba-41ad-aaed-af8a3b9d1188 OR 32f2769c-0285-4432-9161-3c0d6429b4ff OR cb0e99b8-dd77-4c14-8b32-696c9239c8a9 OR 4d4052d6-fe7c-48aa-bab8-286403727b7e OR 4c947b86-84ed-4bd1-84c6-739096830f4c OR 16618efc-d5bd-4b2c-83b6-a09777dc15da OR 5ca3526c-7a98-4df5-9e88-545b45a07f45 OR 1d3b67ed-bfc9-4c40-8943-51881c6d302e OR 335aff40-bb8c-4f33-b7b7-3458b418e3ef OR 710e512b-096f-4b53-97c9-cb3f9203a290 OR 60fd312e-fc62-4b71-8363-9cd097d7e8a9 OR 9c82e53e-8537-491a-a293-05f2db204685 OR 26c34914-9388-49ee-8930-990399231a00 OR ac4eb773-8b24-41cb-8b71-6ba243766a4d OR 37a29ca2-cc0b-47fb-8833-136781540072 OR 2703ed99-5a55-4cb4-9118-29972a787d5c OR f8bca616-8a62-4d3d-af3e-082c0c2d7463 OR f276a898-73b4-46e9-a66c-ee2a32684d23 OR 55b727ec-f9c0-48ca-a205-3e2c6478f6d9 OR 2fff6485-531b-40c2-9c4c-d67f1aeb235e OR 31fb06cd-366a-40e0-a9e4-83ae9f0017ee OR c8904e89-c8a4-4986-ad23-6c2d7f694497 OR 0dd45262-0c70-4df2-98d6-2c27d548f455 OR 47e238df-aca7-458c-ac4f-1e867ae674b3 OR 4a2eb9d9-867b-4e47-9c2a-157802473f3b OR 8d241c71-ceb8-4cde-b903-264b9c26b36b OR 44afe42b-1c69-4f51-ab32-8a923cbeea47 OR 4b90604a-6189-497e-9179-4456ba9e3e5c OR 0bb33b0a-acdb-4ff6-a1c5-2a287e253373 OR cf90f288-cc0c-4432-9707-a71a4fe5c291 OR 293b4e16-c387-43ce-83f0-d83321582d17 OR ca8fad52-0fec-4f4d-81ec-61d957be5af4 OR 4238101b-8275-45f3-8659-e8bd6653641f OR 66a6cd62-303f-499c-8071-d764ed008991 OR e1f4b6a0-dc1e-4ca4-a971-66aaca219ec8 OR 001ff805-65e4-4ad1-b643-037748bd8ab4 OR 04b9c046-5605-40d7-8388-646d509e5bdd OR dcd3d8b6-4c40-4919-a0d5-06b397739aaa OR 53c27552-75fc-4684-afda-36b934da665b OR 333522f0-7855-48a0-965a-e203503a32ff OR ac117385-29c8-425a-b726-b957ea3bb8cc OR f95a37f7-1300-4264-a192-cc18ef9a3acd OR d8f3feb1-2dba-43b6-890c-7ff4f335e4bc OR c48246ad-b14c-4574-a0e3-b2c39f25267f OR 01d27e4a-43bf-48a0-99ea-af0231067f65 OR e24833f6-6036-4c66-b57d-1b115f2297d3)",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "New panel",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-3d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Discontinuity 11.12.",
+  "uid": "abb8edb8-8663-45a0-9a2d-62b1db3c1ffc",
+  "version": 7
+}

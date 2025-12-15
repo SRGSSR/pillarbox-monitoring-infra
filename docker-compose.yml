@@ -13,8 +13,8 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - PILLARBOX_MONITORING_OPENSEARCH_URI=http://opensearch:9200
-      - PILLARBOX_MONITORING_DISPATCH_URI=http://pillarbox-event-dispatcher:8080/events
+      - config__override__open-search__uri=http://opensearch:9200
+      - config__override__dispatcher-client__uri=http://pillarbox-event-dispatcher:8080/events
       - SPRING_PROFILES_ACTIVE=local
 
   opensearch:

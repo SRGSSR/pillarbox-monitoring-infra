@@ -65,11 +65,11 @@ resource "aws_ecs_task_definition" "transfer_task" {
       # Environment variables for connecting to SSE and OpenSearch services
       environment = [
         {
-          name  = "PILLARBOX_MONITORING_DISPATCH_URI"
+          name  = "config__override__dispatcher-client__uri"
           value = "http://${aws_service_discovery_service.dispatch_service_discovery.name}.${aws_service_discovery_private_dns_namespace.service_discovery_namespace.name}:8080/events"
         },
         {
-          name  = "PILLARBOX_MONITORING_OPENSEARCH_URI"
+          name  = "config__override__open-search__uri"
           value = "http://${aws_instance.opensearch.private_ip}:9200"
         },
         {
@@ -77,7 +77,7 @@ resource "aws_ecs_task_definition" "transfer_task" {
           value = local.transfer.task.java_opts
         },
         {
-          name  = "SPRING_PROFILES_ACTIVE"
+          name  = "PILLARBOX_PROFILE"
           value = local.is_prod ? "prod" : "local"
         }
       ]

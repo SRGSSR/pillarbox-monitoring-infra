@@ -2105,7 +2105,7 @@
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"term\": {\n            \"event_name\": \"HEARTBEAT\"\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\", \"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
               "headers": [],
               "method": "POST"
             }
@@ -2146,7 +2146,7 @@
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"term\": {\n            \"event_name\": \"HEARTBEAT\"\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
               "headers": [],
               "method": "POST"
             }
@@ -2168,5 +2168,5 @@
   "timezone": "Europe/Zurich",
   "title": "Live Breakdown",
   "uid": "cegsn2q0xrncwb",
-  "version": 25
+  "version": 26
 }

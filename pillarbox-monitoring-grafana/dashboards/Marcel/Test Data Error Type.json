@@ -138,9 +138,9 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false\nAND event_name:ERROR",
+          "query": "session.media.type:$mediatype\nAND $lsa\nAND data.business_error:false\nAND event_name:ERROR",
           "queryType": "lucene",
-          "refId": "lsa",
+          "refId": "lsaerrors",
           "timeField": "@timestamp"
         },
         {
@@ -168,9 +168,9 @@
               "type": "count"
             }
           ],
-          "query": "NOT (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false\nAND event_name:ERROR\n",
+          "query": "NOT $lsa\nAND data.business_error:false\nAND event_name:ERROR\n",
           "queryType": "lucene",
-          "refId": "notlsa",
+          "refId": "notlsaerrors",
           "timeField": "@timestamp"
         },
         {
@@ -179,7 +179,7 @@
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "$lsa/$notlsa",
+          "expression": "$lsaerrors/$notlsaerrors",
           "hide": false,
           "refId": "A",
           "type": "math"
@@ -462,6 +462,7 @@
           "alias": "PMSE: BehindLiveWindowException",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -493,6 +494,7 @@
           "alias": "PMSE: MEDIA_ERR_DECODE (stalled)",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -515,7 +517,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND *stalled download*)",
+          "query": "session.media.type:$mediatype \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND *stalled download*)",
           "queryType": "lucene",
           "refId": "F",
           "timeField": "@timestamp"
@@ -524,6 +526,7 @@
           "alias": "PMSE: MEDIA_ERR_SRC_NOT_SUPPORTED",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -546,7 +549,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
           "queryType": "lucene",
           "refId": "I",
           "timeField": "@timestamp"
@@ -576,7 +579,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:*AVFoundationErrorDomain*",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:*AVFoundationErrorDomain*",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -606,7 +609,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:FileDataSourceException",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:FileDataSourceException",
           "queryType": "lucene",
           "refId": "C",
           "timeField": "@timestamp"
@@ -636,7 +639,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*IOException* AND *timeout*",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*IOException* AND *timeout*",
           "queryType": "lucene",
           "refId": "M",
           "timeField": "@timestamp"
@@ -666,7 +669,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:ExoTimeoutException",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:ExoTimeoutException",
           "queryType": "lucene",
           "refId": "E",
           "timeField": "@timestamp"
@@ -696,7 +699,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:HttpDataSourceException",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.name:HttpDataSourceException",
           "queryType": "lucene",
           "refId": "D",
           "timeField": "@timestamp"
@@ -726,7 +729,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Responce code* AND *503*",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Responce code* AND *503*",
           "queryType": "lucene",
           "refId": "N",
           "timeField": "@timestamp"
@@ -735,6 +738,7 @@
           "alias": "UE: HTTP Status Code 500",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -757,7 +761,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR\nAND data.log:*httpStatusCode* AND *500*",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR\nAND data.log:*httpStatusCode* AND *500*",
           "queryType": "lucene",
           "refId": "O",
           "timeField": "@timestamp"
@@ -787,7 +791,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Response* AND *404*",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:UNKNOWN_ERROR \nAND data.log:*Response* AND *404*",
           "queryType": "lucene",
           "refId": "L",
           "timeField": "@timestamp"
@@ -796,6 +800,7 @@
           "alias": "IE: HTTP Status Code 404",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -818,7 +823,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *404*)",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *404*)",
           "queryType": "lucene",
           "refId": "H",
           "timeField": "@timestamp"
@@ -827,6 +832,7 @@
           "alias": "IE: HTTP Status Code 403",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -849,7 +855,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *403*)",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *403*)",
           "queryType": "lucene",
           "refId": "P",
           "timeField": "@timestamp"
@@ -858,6 +864,7 @@
           "alias": "IE: HTTP Status Code 200",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -880,7 +887,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *200* AND NOT *404*)",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:IL_ERROR\nAND (data.log:*httpStatusCode* AND *200* AND NOT *404*)",
           "queryType": "lucene",
           "refId": "Q",
           "timeField": "@timestamp"
@@ -889,6 +896,7 @@
           "alias": "CE: HTTP Status Code 418",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -911,7 +919,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:CONNECTION_ERROR\nAND data.log:*httpStatusCode* AND *418*",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:CONNECTION_ERROR\nAND data.log:*httpStatusCode* AND *418*",
           "queryType": "lucene",
           "refId": "G",
           "timeField": "@timestamp"
@@ -920,6 +928,7 @@
           "alias": "PNE: MEDIA_ERR_NETWORK",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -942,7 +951,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_NETWORK_ERROR \nAND data.log:MEDIA_ERR_NETWORK",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_NETWORK_ERROR \nAND data.log:MEDIA_ERR_NETWORK",
           "queryType": "lucene",
           "refId": "J",
           "timeField": "@timestamp"
@@ -951,6 +960,7 @@
           "alias": "PUM: MEDIA_ERR_SRC_NOT_SUPPORTED",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -973,7 +983,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND data.log:MEDIA_ERR_SRC_NOT_SUPPORTED",
           "queryType": "lucene",
           "refId": "K",
           "timeField": "@timestamp"
@@ -982,6 +992,7 @@
           "alias": "PMSE: MEDIA_ERR_DECODE (other)",
           "bucketAggs": [
             {
+              "field": "@timestamp",
               "id": "4",
               "settings": {
                 "interval": "1h",
@@ -1004,7 +1015,7 @@
               "type": "count"
             }
           ],
-          "query": "session.media.type:audio \nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND NOT *stalled download*)",
+          "query": "session.media.type:$mediatype\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.log:(*MEDIA_ERR_DECODE* AND NOT *stalled download*)",
           "queryType": "lucene",
           "refId": "R",
           "timeField": "@timestamp"
@@ -3432,5 +3443,5 @@
   "timezone": "browser",
   "title": "Test: Data Error Type",
   "uid": "f66867e5-dfbd-4225-b898-5f7a25b020ab",
-  "version": 150
+  "version": 157
 }

@@ -1325,8 +1325,7 @@
             },
             "properties": [
               {
-                "id": "filterable",
-                "value": false
+                "id": "filterable"
               }
             ]
           },
@@ -1399,6 +1398,24 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Application"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Application breakdown",
+                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=$__auto&orgId=1&from=${__from}﻿&to=﻿${__to}﻿&var-platform=﻿${platform}﻿﻿﻿&var-application=﻿﻿${__value.text}﻿&interval=auto"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1408,7 +1425,7 @@
         "x": 11,
         "y": 15
       },
-      "id": 47,
+      "id": 59,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1420,12 +1437,11 @@
           ],
           "show": false
         },
-        "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Sessions"
+            "displayName": "Errors"
           }
         ]
       },
@@ -1435,35 +1451,13 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "session.application.id",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "2"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.application.version",
-              "id": "4",
+              "field": "session.media.short_origin",
+              "id": "1",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_count",
                 "size": "0"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.platform",
-              "id": "5",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "3"
               },
               "type": "terms"
             }
@@ -1480,42 +1474,20 @@
             }
           ],
           "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
-          "refId": "errors",
+          "refId": "errors_origin",
           "timeField": "@timestamp"
         },
         {
           "alias": "",
           "bucketAggs": [
             {
-              "field": "session.application.id",
+              "field": "session.media.short_origin",
               "id": "1",
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_count",
-                "size": "2"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.application.version",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
                 "size": "0"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.platform",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "3"
               },
               "type": "terms"
             }
@@ -1532,43 +1504,90 @@
             }
           ],
           "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
-          "refId": "sessions",
+          "refId": "sessions_origin",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.application.id",
+              "id": "1",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:(Android OR Apple)\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
+          "refId": "errors_application",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.application.id",
+              "id": "1",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:(Android OR Apple)",
+          "refId": "sessions_application",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Most Conflicting ${platform} Applications",
+      "title": "Most conflicting Applications",
       "transformations": [
         {
-          "id": "calculateField",
+          "id": "renameByRegex",
           "options": {
-            "alias": "player",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.application.version",
-                "session.player.platform",
-                "session.application.id"
-              ],
-              "reducer": "allValues"
-            }
+            "regex": ".*[.]application[.]id",
+            "renamePattern": "application"
           }
         },
         {
-          "id": "convertFieldType",
+          "id": "renameByRegex",
           "options": {
-            "conversions": [
-              {
-                "destinationType": "string",
-                "targetField": "player"
-              }
-            ],
-            "fields": {}
+            "regex": ".*[.]media[.]short_origin",
+            "renamePattern": "application"
           }
         },
         {
           "id": "joinByField",
           "options": {
-            "byField": "player",
+            "byField": "application",
             "mode": "outer"
           }
         },
@@ -1576,23 +1595,24 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "player": true,
-              "session.application.id 2": true,
-              "session.application.version 2": true,
-              "session.player.name 2": true,
-              "session.player.platform 2": true,
-              "session.player.version 2": true
+              "Count 2": false,
+              "session.device.type": true,
+              "session.player.platform": true
             },
             "includeByName": {},
-            "indexByName": {},
+            "indexByName": {
+              "Count 1": 0,
+              "Count 2": 1,
+              "origin": 2
+            },
             "renameByName": {
               "Count 1": "errors",
               "Count 2": "sessions_raw",
-              "session.application.id 1": "Application",
-              "session.application.id 2": "",
-              "session.application.version 1": "Version",
-              "session.application.version 2": "",
-              "session.player.version 2": ""
+              "Count 3": "errors",
+              "Count 4": "sessions_raw",
+              "name": "browser",
+              "session.device.type": "type",
+              "session.player.platform": "platform"
             }
           }
         },
@@ -1616,8 +1636,8 @@
             "mode": "reduceRow",
             "reduce": {
               "include": [
-                "errors",
-                "sessions_raw"
+                "sessions_raw",
+                "errors"
               ],
               "reducer": "max"
             }
@@ -1658,19 +1678,29 @@
           "options": {
             "excludeByName": {
               "errors": true,
-              "session.player.platform 1": true,
+              "sessions": false,
               "sessions_raw": true
             },
             "includeByName": {},
-            "indexByName": {},
+            "indexByName": {
+              "application": 0,
+              "error_rate": 4,
+              "errors": 1,
+              "sessions": 3,
+              "sessions_raw": 5,
+              "total_errors": 2
+            },
             "renameByName": {
+              "application": "Application",
+              "browser": "Browser",
               "error_rate": "Error Rate",
-              "session.player.name 1": "Name",
-              "session.player.platform 1": "Platform",
-              "session.player.version 1": "Version",
+              "errors": "",
+              "model": "Device",
+              "origin": "Origin",
+              "platform": "",
               "sessions": "Sessions",
-              "sessions_raw": "",
-              "total_errors": "Errors"
+              "total_errors": "Errors",
+              "type": ""
             }
           }
         },
@@ -1685,7 +1715,7 @@
                     "value": 0
                   }
                 },
-                "fieldName": "Errors"
+                "fieldName": "Sessions"
               }
             ],
             "match": "any",
@@ -2935,5 +2965,5 @@
   "timezone": "Europe/Zurich",
   "title": "Player Fragmentation",
   "uid": "eessxg1prer5sf",
-  "version": 19
+  "version": 23
 }

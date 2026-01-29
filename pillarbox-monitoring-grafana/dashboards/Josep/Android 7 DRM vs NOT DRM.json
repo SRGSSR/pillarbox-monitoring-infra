@@ -1,0 +1,402 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 65,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "drm START"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "DRM"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "not_drm START"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "NOT DRM"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "hide": true,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session.device.id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:START\nAND session.media.metadata_url:*vod* \nAND NOT session.media.metadata_url:*vod-drm*\nAND session.player.platform:Android\nAND session.os.version:7*)\n\nOR\n\n(event_name:START\nAND session.media.asset_url:*vod* \nAND NOT session.media.asset_url:*vod-drm*\nAND session.player.platform:Web\nAND session.os.name:Android\nAND session.os.version:7*)",
+          "queryType": "lucene",
+          "refId": "raw_not_drm",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "hide": true,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session.device.id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:START\nAND session.media.metadata_url:*vod-drm*\nAND session.player.platform:Android\nAND session.os.version:7*)\n\nOR\n\n(event_name:START\nAND session.media.asset_url:*vod-drm*\nAND session.player.platform:Web\nAND session.os.name:Android\nAND session.os.version:7*)",
+          "queryType": "lucene",
+          "refId": "raw_drm",
+          "timeField": "@timestamp"
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "downsampler": "last",
+          "expression": "raw_drm",
+          "hide": false,
+          "reducer": "sum",
+          "refId": "drm",
+          "type": "reduce",
+          "upsampler": "fillna"
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "downsampler": "last",
+          "expression": "raw_not_drm",
+          "hide": false,
+          "reducer": "sum",
+          "refId": "not_drm",
+          "type": "reduce",
+          "upsampler": "fillna"
+        }
+      ],
+      "title": "VOD Only",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "drm START"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "DRM"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "not_drm START"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "NOT DRM"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "hide": true,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session.device.id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:START\nAND NOT session.media.metadata_url:*vod-drm*\nAND NOT session.media.metadata_url:*lsvs*\nAND NOT session.media.id:(\"urn:rts:video:3608506\" OR \"urn:rts:video:3608517\")\nAND session.player.platform:Android\nAND session.os.version:7*)\n\nOR\n\n(event_name:START\nAND NOT session.media.asset_url:*vod-drm*\nAND NOT session.media.asset_url:*lsvs*\nAND NOT session.media.id:(\"urn:rts:video:3608506\" OR \"urn:rts:video:3608517\")\nAND session.player.platform:Web\nAND session.os.name:Android\nAND session.os.version:7*)",
+          "queryType": "lucene",
+          "refId": "raw_not_drm",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "hide": true,
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session.device.id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:START\nAND (session.media.metadata_url:*vod-drm*\nOR session.media.metadata_url:*lsvs*\nOR session.media.id:(\"urn:rts:video:3608506\" OR \"urn:rts:video:3608517\"))\nAND session.player.platform:Android\nAND session.os.version:7*)\n\nOR\n\n(event_name:START\nAND (session.media.asset_url:*vod-drm*\nOR session.media.asset_url:*lsvs*\nOR session.media.id:(\"urn:rts:video:3608506\" OR \"urn:rts:video:3608517\"))\nAND session.player.platform:Web\nAND session.os.name:Android\nAND session.os.version:7*)",
+          "queryType": "lucene",
+          "refId": "raw_drm",
+          "timeField": "@timestamp"
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "downsampler": "last",
+          "expression": "raw_drm",
+          "hide": false,
+          "reducer": "sum",
+          "refId": "drm",
+          "type": "reduce",
+          "upsampler": "fillna"
+        },
+        {
+          "datasource": {
+            "name": "Expression",
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "downsampler": "last",
+          "expression": "raw_not_drm",
+          "hide": false,
+          "reducer": "sum",
+          "refId": "not_drm",
+          "type": "reduce",
+          "upsampler": "fillna"
+        }
+      ],
+      "title": "VOD + Live",
+      "type": "piechart"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Android 7 DRM vs NOT DRM",
+  "uid": "14ce0087-0847-4cfa-a0e2-4cf300af228d",
+  "version": 3
+}

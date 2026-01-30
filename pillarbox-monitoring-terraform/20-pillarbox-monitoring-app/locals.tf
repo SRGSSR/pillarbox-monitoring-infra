@@ -13,7 +13,7 @@ locals {
     instance_type = local.is_prod ? "r7g.xlarge" : "t4g.medium"
     volume = {
       type       = "gp3"
-      size       = local.is_prod ? 500 : 20,
+      size       = local.is_prod ? 750 : 20,
       iops       = 3000
       throughput = 125
     }

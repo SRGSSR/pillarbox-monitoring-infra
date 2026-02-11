@@ -1185,7 +1185,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 9,
         "x": 0,
         "y": 21
       },
@@ -1436,8 +1436,8 @@
       },
       "gridPos": {
         "h": 14,
-        "w": 16,
-        "x": 8,
+        "w": 15,
+        "x": 9,
         "y": 21
       },
       "id": 39,
@@ -1742,7 +1742,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 9,
         "x": 0,
         "y": 28
       },
@@ -1924,7 +1924,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Name"
+              "options": "App Version"
             },
             "properties": [
               {
@@ -1936,7 +1936,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Version"
+              "options": "Platform"
             },
             "properties": [
               {
@@ -1970,7 +1970,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Errors"
+            "displayName": "App Version"
           }
         ]
       },
@@ -2187,7 +2187,7 @@
             },
             "renameByName": {
               "error_rate": "Error Rate",
-              "session.application.version 2": "Application Version",
+              "session.application.version 2": "App Version",
               "session.player.name 1": "Name",
               "session.player.name 2": "Name",
               "session.player.platform 1": "Platform",
@@ -2356,6 +2356,18 @@
                 "value": true
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Platform"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
           }
         ]
       },
@@ -2382,7 +2394,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Errors"
+            "displayName": "Version"
           }
         ]
       },
@@ -3576,5 +3588,5 @@
   "timezone": "Europe/Zurich",
   "title": "Application Breakdown",
   "uid": "e457800d-b0d9-4531-9285-5ea745b98122",
-  "version": 20
+  "version": 22
 }

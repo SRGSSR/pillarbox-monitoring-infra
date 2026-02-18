@@ -73,8 +73,8 @@ resource "aws_ecs_task_definition" "transfer_task" {
           value = "http://${aws_instance.opensearch.private_ip}:9200"
         },
         {
-          name  = "JAVA_OPTS"
-          value = local.transfer.task.java_opts
+          name  = "config__override__dispatcher-client__sse-timeout"
+          value = local.transfer.task.sse_timeout
         },
         {
           name  = "PILLARBOX_PROFILE"

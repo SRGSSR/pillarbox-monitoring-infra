@@ -28,9 +28,9 @@ locals {
 
   transfer = {
     task = {
-      cpu       = local.is_prod ? 2048 : 256
-      memory    = local.is_prod ? 16384 : 1024
-      java_opts = local.is_prod ? "-Xms14G -Xmx14G" : "-Xms1G -Xmx1G"
+      cpu         = local.is_prod ? 2048 : 256
+      memory      = local.is_prod ? 16384 : 1024
+      sse_timeout = local.is_prod ? "12000" : "86400000"
     }
   }
 

@@ -84,10 +84,9 @@ data "aws_iam_policy_document" "gha_assume_policy" {
 }
 
 ### Permissions Policy Document
-
 data "aws_iam_policy_document" "gha_policy" {
   # Define permissions for GitHub Actions to interact with ECR and ECS
-  for_each = var.service_mappings
+  for_each = local.services_with_policy
 
   # Allow Docker login to ECR
   dynamic "statement" {
@@ -120,39 +119,41 @@ data "aws_iam_policy_document" "gha_policy" {
       resources = [
         "arn:aws:ecr:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/${each.value.ecr_image_name}"
       ]
-
     }
   }
+  # Allow pushing and pulling images to/from ECR
+  dynamic "statement" {
+    for_each = each.value.ecs ? [1] : []
 
-  # Allow updating ECS services
-  statement {
-    sid    = "AllowUpdateService"
-    effect = "Allow"
-    actions = [
-      "ecs:UpdateService",
-      "ecs:DescribeServices"
-    ]
-    resources = [
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${local.ecs_cluster_name}",
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${local.ecs_cluster_name}/${each.key}"
-    ]
+    content {
+      sid    = "AllowUpdateService"
+      effect = "Allow"
+      actions = [
+        "ecs:UpdateService",
+        "ecs:DescribeServices"
+      ]
+      resources = [
+        "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${local.ecs_cluster_name}",
+        "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${local.ecs_cluster_name}/${each.key}"
+      ]
+    }
   }
 }
 
 ## Create IAM Roles for GitHub Actions
-
 resource "aws_iam_role" "gha_role" {
   # Create IAM roles for each service
   for_each = var.service_mappings
 
   name               = "gh-actions-role-${each.key}"
   assume_role_policy = data.aws_iam_policy_document.gha_assume_policy[each.key].json
-
-  # Attach inline policy for ECR and ECS permissions
-  inline_policy {
-    name   = "GithubActionPermissions"
-    policy = data.aws_iam_policy_document.gha_policy[each.key].json
-  }
 }
 
+## Attach each policy to their role
+resource "aws_iam_role_policy" "gha_policy" {
+  for_each = data.aws_iam_policy_document.gha_policy
 
+  name   = "GithubActionPermissions"
+  role   = aws_iam_role.gha_role[each.key].id
+  policy = data.aws_iam_policy_document.gha_policy[each.key].json
+}

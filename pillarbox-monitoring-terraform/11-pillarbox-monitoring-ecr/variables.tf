@@ -4,6 +4,7 @@ variable "ecr_repositories" {
   default = {
     "pillarbox-event-dispatcher"    = "SRGSSR/pillarbox-event-dispatcher"
     "pillarbox-monitoring-transfer" = "SRGSSR/pillarbox-monitoring-transfer"
+    "pillarbox-demo-backend"        = "SRGSSR/pillarbox-demo-backend"
   }
 }
 

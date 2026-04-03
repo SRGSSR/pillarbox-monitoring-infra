@@ -1,0 +1,252 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 69,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "count"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$each(aggregations.ios_versions.buckets, function($v, $k) {\n  {\n    \"version\": $k,\n    \"count\": $v.count_per_version.value\n  }\n})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"must\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"query_string\": {\n            \"query\": \"event_name:START AND session.player.platform:Web AND session.os.name:iOS\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"ios_versions\": {\n      \"filters\": {\n        \"other_bucket_key\": \"other_versions\",\n        \"filters\": {\n          \"ios16\": { \"query_string\": { \"query\": \"session.os.version:16*\" } },\n          \"ios15\": { \"query_string\": { \"query\": \"session.os.version:15*\" } },\n          \"ios14\": { \"query_string\": { \"query\": \"session.os.version:14*\" } },\n          \"ios13\": { \"query_string\": { \"query\": \"session.os.version:13*\" } },\n          \"ios12\": { \"query_string\": { \"query\": \"session.os.version:12*\" } },\n          \"ios11\": { \"query_string\": { \"query\": \"session.os.version:11*\" } },\n          \"ios10\": { \"query_string\": { \"query\": \"session.os.version:10*\" } },\n          \"ios9\": { \"query_string\": { \"query\": \"session.os.version:9*\" } },\n          \"ios8\": { \"query_string\": { \"query\": \"session.os.version:8*\" } }\n        }\n      },\n      \"aggs\": {\n        \"count_per_version\": {\n          \"cardinality\": {\n            \"field\": \"session.device.id\"\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "iOS Distribution on Web",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "count"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$each(aggregations.android_versions.buckets, function($v, $k) {\n  {\n    \"version\": $k,\n    \"count\": $v.unique_devices.value\n  }\n})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"must\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"query_string\": {\n            \"query\": \"event_name:START AND session.player.platform:Web AND session.os.name:Android\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"android_versions\": {\n      \"filters\": {\n        \"other_bucket_key\": \"other_versions\",\n        \"filters\": {\n          \"Android_11\": { \"query_string\": { \"query\": \"session.os.version:11*\" } },\n          \"Android_10\": { \"query_string\": { \"query\": \"session.os.version:10*\" } },\n          \"Android_9\":  { \"query_string\": { \"query\": \"session.os.version:9*\" } },\n          \"Android_8\":  { \"query_string\": { \"query\": \"session.os.version:8*\" } },\n          \"Android_7\":  { \"query_string\": { \"query\": \"session.os.version:7*\" } },\n          \"Android_6\":  { \"query_string\": { \"query\": \"session.os.version:6*\" } }\n        }\n      },\n      \"aggs\": {\n        \"unique_devices\": {\n          \"cardinality\": {\n            \"field\": \"session.device.id\"\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Android distribution on Web",
+      "type": "piechart"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Old iOS on Web",
+  "uid": "fb5a5937-33cd-4cb2-aca8-6548d134ada0",
+  "version": 3
+}

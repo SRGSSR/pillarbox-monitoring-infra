@@ -20,20 +20,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 17,
-  "links": [
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "Play Media",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://demo.pillarbox.ch/?src=${media_id}&type=srgssr/urn"
-    }
-  ],
+  "links": [],
   "panels": [
     {
       "datasource": {
@@ -83,31 +70,95 @@
               },
               {
                 "id": "custom.width",
-                "value": 97
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 185
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "Invalid Date": {
+                        "color": "#808080",
+                        "index": 0,
+                        "text": "Unscheduled"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "color": "#808080",
+                        "index": 1,
+                        "text": "Unscheduled"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Valid From"
+              "options": "media_id"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 174
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Valid To"
-            },
-            "properties": [
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Play Media",
+                    "url": "https://demo.pillarbox.ch/?src=${__value.raw}&type=srgssr%2Furn"
+                  }
+                ]
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "pattern": ".*",
+                      "result": {
+                        "index": 0,
+                        "text": "Play Media"
+                      }
+                    },
+                    "type": "regex"
+                  }
+                ]
+              },
               {
                 "id": "custom.width",
-                "value": 170
+                "value": 125
               }
             ]
           }
@@ -119,7 +170,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 23,
+      "id": 26,
       "options": {
         "cellHeight": "md",
         "footer": {
@@ -157,6 +208,11 @@
               "selector": "imageUrl",
               "text": "Thumbnail",
               "type": "string"
+            },
+            {
+              "selector": "urn",
+              "text": "media_id",
+              "type": "string"
             }
           ],
           "datasource": {
@@ -179,6 +235,26 @@
         }
       ],
       "title": "",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Thumbnail": 0,
+              "Title": 1,
+              "Valid From": 3,
+              "Valid To": 4,
+              "media_id": 2
+            },
+            "renameByName": {
+              "Thumbnail": " ",
+              "media_id": "Demo"
+            }
+          }
+        }
+      ],
       "type": "table"
     },
     {
@@ -255,7 +331,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -284,7 +360,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -302,7 +378,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "red",
+            "fixedColor": "orange",
             "mode": "fixed"
           },
           "custom": {
@@ -348,10 +424,53 @@
                 "value": 0
               }
             ]
-          },
-          "unit": "percentunit"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Block rate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
@@ -394,7 +513,7 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": true,
+          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -402,7 +521,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${media_id}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${media_id_lucene:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -431,7 +550,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "block",
           "timeField": "@timestamp"
@@ -696,7 +815,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -953,7 +1072,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform} \nAND session.media.id:${media_id}",
+          "query": "event_name:START\nAND session.player.platform:${platform} \nAND session.media.id:${media_id_lucene:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -993,7 +1112,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "block",
           "timeField": "@timestamp"
@@ -1127,7 +1246,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.player.platform:${platform}\nAND session.media.id:\"${media_id}\"",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.player.platform:${platform}\nAND session.media.id:${media_id_lucene:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -1156,26 +1275,129 @@
         "uid": "deoqp3q289nnkd"
       },
       "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Session"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Session Breakdown",
+                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&var-session_id=${__value.text}&from=${__from}&to=${__to}&var-interval=${interval}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 138
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "IP Breakdown",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__from}&to=${__to}&var-interval=${interval}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.device.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Device Breakdown",
+                    "url": "/d/celn8pqg1yuioe/device-id-breakdown?var-device_id=${__value.text}&from=${__from}&to=${__to}&var-interval=${interval}\n"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 11,
         "w": 24,
         "x": 0,
         "y": 22
       },
-      "id": 7,
+      "id": 25,
       "options": {
-        "dedupStrategy": "none",
-        "enableInfiniteScrolling": false,
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": false,
-        "showTime": true,
-        "sortOrder": "Descending",
-        "wrapLogMessage": false
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "12.1.1",
       "targets": [
@@ -1186,7 +1408,8 @@
               "field": "@timestamp",
               "id": "1",
               "settings": {
-                "interval": "$interval"
+                "interval": "auto",
+                "min_doc_count": "0"
               },
               "type": "date_histogram"
             }
@@ -1201,12 +1424,12 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR \nAND data.business_error:true\nAND session.media.id:\"${media_id}\"\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${media_id_lucene:raw}\nAND data.business_error:true",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Latest Block Log",
+      "title": "",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1215,94 +1438,137 @@
               "names": [
                 "@timestamp",
                 "data.log",
-                "data.message",
-                "data.name",
-                "data.position",
-                "session.browser.name",
-                "session.browser.version",
-                "session.device.model",
-                "session.media.id",
-                "session.os.name",
-                "session.os.version",
-                "session.player.platform",
+                "session.device.id",
                 "session_id",
                 "user_ip",
-                "session.player.version"
+                "data.block_reason"
               ]
             }
           }
         },
         {
-          "id": "extractFields",
+          "id": "sortBy",
           "options": {
-            "source": "data.log"
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "@timestamp"
+              }
+            ]
           }
         },
         {
-          "id": "renameByRegex",
+          "id": "calculateField",
           "options": {
-            "regex": "\\d+",
-            "renamePattern": "Log"
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "@timestamp",
-                "data.message",
-                "data.name",
-                "data.position",
-                "session.browser.name",
-                "session.browser.version",
-                "session.device.model",
-                "session.media.id",
-                "session.os.name",
-                "session.os.version",
-                "session.player.platform",
-                "session.player.version",
-                "session_id",
-                "user_ip",
-                "data.log"
-              ]
-            }
+            "alias": "from",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "@timestamp"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "fixed": "1000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
           }
         },
         {
           "id": "organize",
           "options": {
-            "excludeByName": {},
+            "excludeByName": {
+              "@timestamp": true,
+              "@timestamp 1": false,
+              "data.log": true,
+              "from": false,
+              "session.browser.name": true,
+              "session.browser.name (lastNotNull)": true,
+              "session.browser.version": true,
+              "session.browser.version (lastNotNull)": true,
+              "session.device.type": false,
+              "session.os.name": true,
+              "session.os.name (lastNotNull)": true,
+              "session.os.version": false,
+              "session.os.version (lastNotNull)": true
+            },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 0,
-              "data.log": 5,
-              "data.message": 1,
-              "data.name": 3,
-              "session_id": 4
+              "@timestamp": 3,
+              "Browser": 7,
+              "data.error_type": 9,
+              "data.log": 10,
+              "from": 4,
+              "session.browser.name": 8,
+              "session.browser.version": 11,
+              "session.device.id": 2,
+              "session.device.model": 6,
+              "session.player.platform": 5,
+              "session_id": 0,
+              "user_ip": 1
             },
             "renameByName": {
               "@timestamp": "",
-              "Log": "",
-              "data.log": "Logs",
-              "data.message": "Message",
-              "data.name": "Name",
-              "data.position": "Position",
-              "session.browser.name": "Browser Name",
-              "session.browser.version": "Browser Version",
-              "session.device.model": "Device Model",
-              "session.media.id": "Media ID",
-              "session.os.name": "OS Name",
-              "session.os.version": "OS Version",
+              "@timestamp (firstNotNull)": "Started",
+              "@timestamp (lastNotNull)": "Last Updated",
+              "@timestamp 1": "Start",
+              "@timestamp 2": "Last Updated",
+              "All values": "Browser",
+              "All values 2": "OS",
+              "browser": "Browser",
+              "data.bandwidth (lastNotNull)": "Last Bandwidth",
+              "data.bitrate (lastNotNull)": "Last Bitrate",
+              "data.block_reason": "Block Reason",
+              "data.business_error": "Blocked",
+              "data.error_type": "Error Type",
+              "data.log": "",
+              "data.playback_duration (firstNotNull)": "Playback Duration",
+              "data.playback_duration (lastNotNull)": "Playback Duration",
+              "from": "Timestamp",
+              "os": "OS",
+              "session.browser.name": "",
+              "session.browser.name (lastNotNull)": "",
+              "session.browser.name (lastNotNull) + session.browser.version (lastNotNull)": "Browser",
+              "session.browser.version": "",
+              "session.browser.version (lastNotNull)": "",
+              "session.device.id": "Device",
+              "session.device.model": "Device",
+              "session.device.model (lastNotNull)": "Device Model",
+              "session.device.type (lastNotNull)": "Device Type",
+              "session.media.id": "Media",
+              "session.media.id (lastNotNull)": "Media Id",
+              "session.media.origin": "Origin",
+              "session.media.origin (lastNotNull)": "Origin",
+              "session.os.version": "",
+              "session.os.version (lastNotNull)": "",
               "session.player.platform": "Platform",
-              "session.player.version": "Player Version",
+              "session.player.platform (lastNotNull)": "Platform",
               "session_id": "Session",
               "user_ip": "IP"
             }
           }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Timestamp"
+              }
+            ],
+            "fields": {}
+          }
         }
       ],
-      "type": "logs"
+      "type": "table"
     }
   ],
   "preload": false,
@@ -1344,6 +1610,16 @@
         },
         "name": "interval",
         "options": [
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
           {
             "selected": false,
             "text": "1m",
@@ -1401,30 +1677,68 @@
       },
       {
         "current": {
-          "text": "urn:swisstxt:video:srf:1813084",
-          "value": "urn:swisstxt:video:srf:1813084"
+          "text": "*",
+          "value": "*"
         },
         "label": "Media ID",
         "name": "media_id",
         "options": [
           {
             "selected": true,
-            "text": "urn:swisstxt:video:srf:1813084",
-            "value": "urn:swisstxt:video:srf:1813084"
+            "text": "*",
+            "value": "*"
           }
         ],
-        "query": "urn:swisstxt:video:srf:1814697",
+        "query": "urn:swisstxt:video:srf:1834934",
         "type": "textbox"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "*",
+          "value": "*"
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "cef4oofzuaayof"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "media_id_lucene",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "columns": [],
+            "data": "[{ \"value\": \"${media_id:raw}\" }]",
+            "filters": [],
+            "format": "table",
+            "parser": "backend",
+            "refId": "",
+            "root_selector": "$[0].value = \"*\" ? \"*\" : $replace($[0].value, \":\", \"\\\\:\")",
+            "source": "inline",
+            "type": "json",
+            "url": "",
+            "url_options": {
+              "data": "",
+              "method": "GET"
+            }
+          },
+          "queryType": "infinity",
+          "refId": "variable"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2025-07-21T09:07:57.672Z",
-    "to": "2025-07-22T09:07:57.672Z"
+    "from": "now-24h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Block reason breakdown by media",
   "uid": "bec87qxee87wgd",
-  "version": 13
+  "version": 20
 }

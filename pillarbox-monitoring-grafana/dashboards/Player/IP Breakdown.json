@@ -33,124 +33,64 @@
       "url": "https://ip-api.com/#${user_ip}"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "Wether the IP has been detected as a VPN by the player.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 1.1,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "true",
-                "result": {
-                  "color": "orange",
-                  "index": 0,
-                  "text": "Yes"
-                }
-              },
-              "type": "special"
-            },
-            {
-              "options": {
-                "match": "false",
-                "result": {
-                  "color": "blue",
-                  "index": 1,
-                  "text": "No"
-                }
-              },
-              "type": "special"
-            }
-          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "blue",
                 "value": 0
               }
             ]
           },
-          "unit": "bool_yes_no"
-        },
-        "overrides": []
+          "unit": "short"
+        }
       },
       "gridPos": {
         "h": 9,
-        "w": 10,
+        "w": 5,
         "x": 0,
         "y": 0
       },
-      "id": 13,
+      "id": 16,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
-          "alias": "VPN",
+          "alias": "Total",
           "bucketAggs": [
             {
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
+                "interval": "$interval"
               },
               "type": "date_histogram"
             }
@@ -160,23 +100,48 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "luceneQueryType": "Metric",
           "metrics": [
             {
-              "field": "data.vpn",
               "id": "1",
-              "settings": {},
-              "type": "max"
+              "type": "count"
             }
           ],
-          "query": "user_ip:\"${user_ip}\" \nAND event_name:ERROR",
+          "query": "event_name:START\nAND user_ip:${user_ip}",
           "queryType": "lucene",
-          "refId": "vpn",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Blocked",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND user_ip:${user_ip}\nAND data.business_error:true\nAND data.block_reason:(GEOBLOCK OR VPNORPROXYDETECTED)",
+          "queryType": "lucene",
+          "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "VPN Status",
-      "type": "timeseries"
+      "title": "",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -213,6 +178,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -295,17 +261,61 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VPN Detected"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "VPN Detected",
+                  "Geoblock"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
       "gridPos": {
         "h": 9,
-        "w": 14,
-        "x": 10,
+        "w": 19,
+        "x": 5,
         "y": 0
       },
       "id": 9,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -318,7 +328,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "Starts",
@@ -365,7 +375,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -394,7 +403,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -403,7 +411,35 @@
           ],
           "query": "user_ip:\"${user_ip}\" \nAND event_name:ERROR \nAND data.business_error:false",
           "queryType": "lucene",
-          "refId": "A",
+          "refId": "Errors",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "VPN Detected",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.block_reason:VPNORPROXYDETECTED",
+          "queryType": "lucene",
+          "refId": "vpn_detected",
           "timeField": "@timestamp"
         }
       ],
@@ -426,9 +462,11 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -465,7 +503,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -480,7 +519,8 @@
                 "value": 163
               },
               {
-                "id": "custom.filterable"
+                "id": "custom.filterable",
+                "value": null
               }
             ]
           },
@@ -588,15 +628,7 @@
       "id": 10,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -605,7 +637,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -664,7 +696,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -875,90 +906,7 @@
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
-      },
-      "description": "The total number of sessions for the selected period.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 6,
-        "x": 0,
-        "y": 19
-      },
-      "id": 11,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.1.1",
-      "targets": [
-        {
-          "alias": "Sessions",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND user_ip:${user_ip}",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Total number of sessions",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "name": "user-events",
-        "type": "grafana-opensearch-datasource"
+        "uid": "fef4oi750u39cd"
       },
       "fieldConfig": {
         "defaults": {
@@ -989,6 +937,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -998,7 +947,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1049,12 +997,16 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 11,
-        "x": 6,
+        "w": 17,
+        "x": 0,
         "y": 19
       },
       "id": 14,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1068,7 +1020,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "Bandwidth",
@@ -1083,23 +1035,27 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
-            "type": "grafana-opensearch-datasource"
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "data.bandwidth",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             }
           ],
-          "query": "event_name:(HEARTBEAT OR STOP) AND user_ip:\"${user_ip}\"",
+          "query": "event_name:(HEARTBEAT OR STOP)\nAND user_ip:${user_ip}",
           "refId": "B",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Average bandwidth",
+      "title": "Median bandwidth",
       "type": "timeseries"
     },
     {
@@ -1113,7 +1069,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1128,8 +1083,7 @@
             ]
           },
           "unit": "percentunit"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 9,
@@ -1139,6 +1093,14 @@
       },
       "id": 15,
       "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
@@ -1149,11 +1111,16 @@
           "fields": "",
           "values": false
         },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto"
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "playing",
@@ -1174,7 +1141,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -1204,7 +1170,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -1303,10 +1268,6 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -1320,12 +1281,17 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
+        "showFieldSelector": false,
         "showLabels": false,
+        "showLevel": true,
         "showTime": true,
         "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -1528,7 +1494,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "hidden"
   ],
@@ -1540,16 +1506,11 @@
           "value": "81.13.173.52"
         },
         "description": "The user IP address.",
+        "hide": 0,
         "label": "IP",
         "name": "user_ip",
-        "options": [
-          {
-            "selected": true,
-            "text": "81.13.173.52",
-            "value": "81.13.173.52"
-          }
-        ],
-        "query": "194.230.161.102",
+        "query": "117.200.116.92",
+        "skipUrlSync": false,
         "type": "textbox"
       },
       {
@@ -1560,6 +1521,7 @@
           "text": "$__auto",
           "value": "$__auto"
         },
+        "hide": 0,
         "name": "interval",
         "options": [
           {
@@ -1614,7 +1576,7 @@
           }
         ],
         "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       }
     ]
@@ -1623,9 +1585,22 @@
     "from": "2025-06-24T08:53:42.255Z",
     "to": "2025-07-24T08:53:42.255Z"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 21
+  "version": 25
 }

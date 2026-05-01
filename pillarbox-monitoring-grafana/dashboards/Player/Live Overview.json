@@ -41,6 +41,7 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -57,9 +58,11 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -124,8 +127,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "",
-                    "url": "/d/cegsn2q0xrncwb/live-breakdown?var-platform=${platform}&from=${__from}&to=${__to}&var-bu=${__value.raw}&var-interval=$__auto\n"
+                    "title": "${__value.raw} Live Breakdown",
+                    "url": "/d/cegsn2q0xrncwb/live-breakdown?var-platform=${platform}&from=${__from}&to=${__to}&var-bu=${__value.raw}&var-interval=${interval}&var-type=${type}\n"
                   }
                 ]
               }
@@ -139,7 +142,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 120
+                "value": 90
               }
             ]
           },
@@ -178,37 +181,75 @@
                 "value": 108
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "load_time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 6,
-        "w": 9,
+        "h": 7,
+        "w": 10,
         "x": 0,
         "y": 0
       },
       "id": 1,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": false,
         "frameIndex": 2,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Business Unit"
+            "displayName": "Sessions"
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [
@@ -231,6 +272,11 @@
               "selector": "starts.doc_count",
               "text": "sessions",
               "type": "number"
+            },
+            {
+              "selector": "starts.p50.values.50\\.0",
+              "text": "load_time",
+              "type": "number"
             }
           ],
           "datasource": {
@@ -249,7 +295,7 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"range\": {\n      \"@timestamp\": {\n        \"gte\": \"${__from}\",\n        \"lte\": \"${__to}\"\n      }\n    }\n  },\n  \"aggs\": {\n    \"by_bu\": {\n      \"filters\": {\n        \"filters\": {\n          \"srf\": {\n            \"terms\": {\n              \"session.media.id\": ${live_ids_srf:json}\n            }\n          },\n          \"rts\": {\n            \"terms\": {\n              \"session.media.id\": ${live_ids_rts:json}\n            }\n          },\n          \"rsi\": {\n            \"terms\": {\n              \"session.media.id\": ${live_ids_rsi:json}\n            }\n          },\n          \"rtr\": {\n            \"terms\": {\n              \"session.media.id\": ${live_ids_rtr:json}\n            }\n          }\n        }\n      },\n      \"aggs\": {\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } },\n                { \"wildcard\": { \"session.player.platform\": \"${platform}\" } }\n              ]\n            }\n          }\n        },\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"term\": { \"data.error_type\": \"DRM_NOT_SUPPORTED\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"errors\": \"errors._count\",\n              \"starts\": \"starts._count\"\n            },\n            \"script\": \"params.starts > 0 ? params.errors / params.starts : 0\"\n          }\n        }\n      }\n    }\n  }\n}\n",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_bu\": {\n      \"filters\": {\n        \"filters\": {\n          \"srf\": { \"terms\": { \"session.media.id\": ${live_ids_srf:json} } },\n          \"rts\": { \"terms\": { \"session.media.id\": ${live_ids_rts:json} } },\n          \"rsi\": { \"terms\": { \"session.media.id\": ${live_ids_rsi:json} } },\n          \"rtr\": { \"terms\": { \"session.media.id\": ${live_ids_rtr:json} } }\n        }\n      },\n      \"aggs\": {\n        \"starts\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"p50\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        },\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"term\": { \"data.error_type\": \"DRM_NOT_SUPPORTED\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"errors\": \"errors._count\",\n              \"starts\": \"starts._count\"\n            },\n            \"script\": \"params.starts > 0 ? params.errors / params.starts : 0\"\n          }\n        }\n      }\n    }\n  }\n}",
             "method": "POST"
           }
         }
@@ -271,6 +317,7 @@
               "bu": "Business Unit",
               "error_rate": "Error Rate",
               "errors": "Errors",
+              "load_time": "Load Time",
               "sessions": "Sessions"
             }
           }
@@ -289,7 +336,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -300,13 +346,12 @@
             ]
           },
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 5,
-        "x": 9,
+        "x": 10,
         "y": 0
       },
       "id": 4,
@@ -327,7 +372,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "Sessions",
@@ -374,7 +419,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -409,7 +453,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -536,9 +579,9 @@
         ]
       },
       "gridPos": {
-        "h": 6,
-        "w": 10,
-        "x": 14,
+        "h": 7,
+        "w": 9,
+        "x": 15,
         "y": 0
       },
       "id": 5,
@@ -559,13 +602,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -613,7 +657,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -628,17 +671,24 @@
             ]
           },
           "unit": "percentunit"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 6
+        "y": 7
       },
       "id": 2,
       "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
@@ -649,11 +699,16 @@
           "fields": "",
           "values": false
         },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto"
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "playing",
@@ -674,7 +729,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -706,7 +760,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -781,10 +834,9 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -817,6 +869,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -826,7 +879,6 @@
               "mode": "dashed+area"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -895,6 +947,16 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
               }
             ]
           }
@@ -904,10 +966,14 @@
         "h": 8,
         "w": 19,
         "x": 5,
-        "y": 6
+        "y": 7
       },
       "id": 3,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -920,16 +986,14 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
             "uid": "__expr__"
           },
           "expression": "1 - ($error / $playing)",
-          "hide": false,
           "refId": "Success rate",
           "type": "math"
         },
@@ -952,7 +1016,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -997,11 +1060,346 @@
       ],
       "title": "Success rate over time",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "The median quality of experience loading time, i.e., how long the user perceives the video to load.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "orange",
+                "value": 2000
+              },
+              {
+                "color": "red",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "text"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Sessions"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50.0 session.qoe_timings.total"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Median"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 6,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "1",
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
+            },
+            {
+              "id": "3",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Perceived delay",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "Distribution of sessions across perceived loading times, capped at the 95th percentile to exclude outliers.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "displayName",
+                "value": "Sessions"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "session.qoe_timings.total",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "2",
+              "settings": {
+                "interval": "10",
+                "min_doc_count": "10"
+              },
+              "type": "histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND (\n  session.media.id:${live_ids_srf} OR\n  session.media.id:${live_ids_rts} OR\n  session.media.id:${live_ids_rsi} OR\n  session.media.id:${live_ids_rtr}\n)\nAND session.qoe_timings.total:[* TO $p95]",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Perceived delay historgram",
+      "type": "barchart"
     }
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "pillarbox"
   ],
@@ -1009,13 +1407,16 @@
     "list": [
       {
         "allValue": "*",
+        "allowCustomValue": true,
         "current": {
           "text": "$__all",
           "value": "$__all"
         },
         "description": "Filter by player platform.",
+        "hide": 0,
         "includeAll": true,
         "label": "Player Platform",
+        "multi": false,
         "name": "platform",
         "options": [
           {
@@ -1035,7 +1436,37 @@
           }
         ],
         "query": "Android, Apple, Web",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "$__all",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "type",
+        "options": [
+          {
+            "selected": false,
+            "text": "audio",
+            "value": "audio"
+          },
+          {
+            "selected": false,
+            "text": "video",
+            "value": "video"
+          }
+        ],
+        "query": "audio, video",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "auto": true,
@@ -1045,8 +1476,19 @@
           "text": "10m",
           "value": "10m"
         },
+        "hide": 0,
         "name": "interval",
         "options": [
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
           {
             "selected": false,
             "text": "1m",
@@ -1099,7 +1541,7 @@
           }
         ],
         "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       },
       {
@@ -1115,6 +1557,7 @@
         "definition": "",
         "hide": 2,
         "includeAll": true,
+        "multi": false,
         "name": "live_ids_srf",
         "options": [],
         "query": {
@@ -1124,23 +1567,30 @@
             "format": "table",
             "parser": "backend",
             "refId": "variable",
-            "root_selector": "aggregations.top_ids.buckets.key",
+            "root_selector": "aggregations.top_ids.buckets",
             "source": "url",
             "type": "json",
             "url": "",
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"srf\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"srf\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 50\n      }\n    }\n  }\n}\n",
               "headers": [],
               "method": "POST"
             }
           },
+          "meta": {
+            "valueField": "key"
+          },
           "query": "",
-          "queryType": "infinity"
+          "queryType": "infinity",
+          "refId": "variable"
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -1156,6 +1606,7 @@
         "definition": "",
         "hide": 2,
         "includeAll": true,
+        "multi": false,
         "name": "live_ids_rts",
         "options": [],
         "query": {
@@ -1165,23 +1616,30 @@
             "format": "table",
             "parser": "backend",
             "refId": "variable",
-            "root_selector": "aggregations.top_ids.buckets.key",
+            "root_selector": "aggregations.top_ids.buckets",
             "source": "url",
             "type": "json",
             "url": "",
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"rts\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"rts\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 50\n      }\n    }\n  }\n}\n",
               "headers": [],
               "method": "POST"
             }
           },
+          "meta": {
+            "valueField": "key"
+          },
           "query": "",
-          "queryType": "infinity"
+          "queryType": "infinity",
+          "refId": "variable"
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -1197,6 +1655,7 @@
         "definition": "",
         "hide": 2,
         "includeAll": true,
+        "multi": false,
         "name": "live_ids_rsi",
         "options": [],
         "query": {
@@ -1206,23 +1665,30 @@
             "format": "table",
             "parser": "backend",
             "refId": "variable",
-            "root_selector": "aggregations.top_ids.buckets.key",
+            "root_selector": "aggregations.top_ids.buckets",
             "source": "url",
             "type": "json",
             "url": "",
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"rsi\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"rsi\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 50\n      }\n    }\n  }\n}\n",
               "headers": [],
               "method": "POST"
             }
           },
+          "meta": {
+            "valueField": "key"
+          },
           "query": "",
-          "queryType": "infinity"
+          "queryType": "infinity",
+          "refId": "variable"
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -1238,6 +1704,7 @@
         "definition": "",
         "hide": 2,
         "includeAll": true,
+        "multi": false,
         "name": "live_ids_rtr",
         "options": [],
         "query": {
@@ -1247,23 +1714,78 @@
             "format": "table",
             "parser": "backend",
             "refId": "variable",
-            "root_selector": "aggregations.top_ids.buckets.key",
+            "root_selector": "aggregations.top_ids.buckets",
             "source": "url",
             "type": "json",
             "url": "",
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"rtr\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 25\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"rtr\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 50\n      }\n    }\n  }\n}\n",
               "headers": [],
               "method": "POST"
             }
           },
+          "meta": {
+            "valueField": "key"
+          },
           "query": "",
-          "queryType": "infinity"
+          "queryType": "infinity",
+          "refId": "variable"
         },
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "4984.90140391392",
+          "value": "4984.90140391392"
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "cepet3yzpalfke"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "p95",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "columns": [],
+            "filters": [],
+            "format": "table",
+            "parser": "backend",
+            "refId": "variable",
+            "root_selector": "",
+            "source": "url",
+            "type": "json",
+            "url": "",
+            "url_options": {
+              "body_content_type": "application/json",
+              "body_type": "raw",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        { \n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\": { \"event_name\": \"START\" } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"p95\": {\n      \"percentiles\": {\n        \"field\": \"session.qoe_timings.total\",\n        \"percents\": [95]\n      }\n    }\n  }\n}\n",
+              "method": "POST"
+            }
+          },
+          "meta": {
+            "valueField": "aggregations"
+          },
+          "query": "",
+          "queryType": "infinity",
+          "refId": "variable"
+        },
+        "refresh": 1,
+        "regex": "/\"95\\.0\":([\\d.]+)/",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       }
     ]
@@ -1272,9 +1794,22 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Zurich",
   "title": "Live Overview",
   "uid": "deskzjgmnpn28b",
-  "version": 11
+  "version": 21
 }

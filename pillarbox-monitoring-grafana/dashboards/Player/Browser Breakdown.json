@@ -19,7 +19,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 40,
-  "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
@@ -29,15 +29,14 @@
         "x": 0,
         "y": 0
       },
-      "id": 41,
-      "panels": [],
+      "id": 55,
       "title": "$browser Breakdown",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
       "description": "The percentage of sessions using the selected browser.",
       "fieldConfig": {
@@ -46,7 +45,6 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -57,8 +55,7 @@
             ]
           },
           "unit": "percentunit"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 3,
@@ -84,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -110,7 +107,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.media.id:${media_id:raw}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.media.id:${media_id_lucene:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -139,19 +136,17 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${media_id_lucene:raw}",
           "queryType": "lucene",
           "refId": "total",
           "timeField": "@timestamp"
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
             "uid": "__expr__"
           },
           "expression": "$playing / $total",
-          "hide": false,
           "refId": "A",
           "type": "math"
         }
@@ -171,7 +166,6 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -182,8 +176,7 @@
             ]
           },
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 3,
@@ -209,7 +202,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -228,14 +221,13 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.media.id:${media_id:raw}",
+          "query": "event_name:START\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.media.id:${media_id_lucene:raw}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -246,10 +238,9 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -282,6 +273,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -291,7 +283,6 @@
               "mode": "dashed+area"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -373,6 +364,10 @@
       },
       "id": 37,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -385,16 +380,14 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
             "uid": "__expr__"
           },
           "expression": "1 - ($error / $playing)",
-          "hide": false,
           "refId": "Success rate",
           "type": "math"
         },
@@ -417,7 +410,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -425,7 +417,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
+          "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -454,7 +446,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -474,7 +466,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -489,8 +480,7 @@
             ]
           },
           "unit": "percentunit"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 7,
@@ -500,6 +490,14 @@
       },
       "id": 38,
       "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
@@ -510,11 +508,16 @@
           "fields": "",
           "values": false
         },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto"
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "playing",
@@ -535,7 +538,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -543,7 +545,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
+          "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -567,14 +569,13 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND session.player.platform:Web",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -676,7 +677,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -827,13 +827,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -861,7 +862,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.media.id:${media_id:raw}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.media.id:${media_id_lucene:raw}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -872,10 +873,9 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -906,6 +906,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -915,7 +916,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1062,6 +1062,10 @@
       },
       "id": 48,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [
             "sum"
@@ -1076,7 +1080,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "error",
@@ -1113,7 +1117,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${media_id:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1143,19 +1147,17 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${media_id:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
+          "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
             "uid": "__expr__"
           },
           "expression": "$error / $playing",
-          "hide": false,
           "refId": "Error Rate",
           "type": "math"
         }
@@ -1174,8 +1176,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
       "fieldConfig": {
         "defaults": {
@@ -1187,9 +1189,12 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 100
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1208,39 +1213,32 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Sessions"
+              "options": "starts"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Errors"
+              "options": "errors"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 89
               }
             ]
           },
@@ -1253,10 +1251,6 @@
               {
                 "id": "unit",
                 "value": "percentunit"
-              },
-              {
-                "id": "custom.width",
-                "value": 105
               },
               {
                 "id": "custom.cellOptions",
@@ -1279,6 +1273,64 @@
                     }
                   ]
                 }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50_load_time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "#EF843C",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 105
               }
             ]
           }
@@ -1290,18 +1342,10 @@
         "x": 0,
         "y": 20
       },
-      "id": 47,
+      "id": 52,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -1310,213 +1354,59 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.browser.version",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
+          "columns": [],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
-          "refId": "errors",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.browser.version",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}",
-          "refId": "sessions",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$map(aggregations.by_browser.buckets, function($bucket) {\n  {\n    \"browser_name\": $bucket.key[0],\n    \"browser_version\": $bucket.key[1],\n    \"starts\": $bucket.starts.doc_count,\n    \"errors\": $bucket.errors.doc_count,\n    \"error_rate\": $bucket.error_rate.value,\n    \"p50_load_time\": $bucket.p50_load_time.percentile.values.\"50.0\"\n  }\n})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\":  { \"session.player.platform\": \"Web\" } },\n        { \"wildcard\": { \"session.browser.name\": \"${browser}\" } },\n        { \"wildcard\": { \"session.media.id\": \"${media_id}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_browser\": {\n      \"multi_terms\": {\n        \"terms\": [\n          { \"field\": \"session.browser.name\" },\n          { \"field\": \"session.browser.version\" }\n        ],\n        \"size\": 3000\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
       "title": "Most conflicting ${browser} versions",
       "transformations": [
         {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*[.]browser[.](version)",
-            "renamePattern": "$1"
-          }
-        },
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "session.browser.version",
-            "mode": "outer"
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Count 2": false,
-              "session.device.type": true,
-              "session.player.platform": true
+              "browser_name": true,
+              "os_name": true
             },
             "includeByName": {},
             "indexByName": {
-              "Count 1": 1,
-              "Count 2": 2,
-              "media": 0
+              "browser_name": 0,
+              "browser_version": 1,
+              "error_rate": 5,
+              "errors": 2,
+              "p50_load_time": 4,
+              "starts": 3
             },
             "renameByName": {
-              "Count 1": "errors",
-              "Count 2": "sessions_raw",
-              "media": "Media",
-              "name": "browser",
-              "session.device.type": "type",
-              "session.player.platform": "platform"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "total_errors",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors"
-              ],
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "sessions",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "sessions_raw",
-                "errors"
-              ],
-              "reducer": "max"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "error_rate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "total_errors"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "sessions"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions"
-              ],
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "errors": true,
-              "sessions": false,
-              "sessions_raw": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "error_rate": 4,
-              "errors": 1,
-              "sessions": 3,
-              "sessions_raw": 5,
-              "total_errors": 2,
-              "version": 0
-            },
-            "renameByName": {
-              "browser": "Browser",
-              "demo": "",
+              "browser_name": "Name",
+              "browser_version": "Version",
               "error_rate": "Error Rate",
-              "errors": "",
-              "model": "Device",
-              "platform": "",
-              "sessions": "Sessions",
-              "total_errors": "Errors",
-              "type": "",
-              "version": "Version"
+              "errors": "Errors",
+              "os_name": "Name",
+              "os_version": "Version",
+              "p50_load_time": "Load Time",
+              "starts": "Sessions"
             }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "Errors"
-              }
-            ],
-            "match": "any",
-            "type": "include"
           }
         }
       ],
@@ -1524,8 +1414,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
       "fieldConfig": {
         "defaults": {
@@ -1537,9 +1427,12 @@
             "cellOptions": {
               "type": "auto"
             },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1554,18 +1447,22 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "session.media.id"
+              "options": "media_id"
             },
             "properties": [
               {
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
-                    "title": "Filter by media",
-                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${browser}﻿&from=﻿${__from}﻿&to=﻿${__to}﻿&var-media_id=﻿${__value.raw:lucene}﻿&interval=${interval}\n"
+                    "targetBlank": false,
+                    "title": "See Error Breakdown ",
+                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${browser}&from=${__from}&to=${__to}&var-media_id=${__value.raw}&interval=${interval}\n"
                   }
                 ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -1576,39 +1473,32 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Sessions"
+              "options": "sessions"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Errors"
+              "options": "errors"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 89
               }
             ]
           },
@@ -1621,10 +1511,6 @@
               {
                 "id": "unit",
                 "value": "percentunit"
-              },
-              {
-                "id": "custom.width",
-                "value": 105
               },
               {
                 "id": "custom.cellOptions",
@@ -1653,7 +1539,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Demo"
+              "options": "demo"
             },
             "properties": [
               {
@@ -1683,7 +1569,65 @@
               },
               {
                 "id": "custom.width",
-                "value": 118
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "ms"
               }
             ]
           }
@@ -1695,236 +1639,97 @@
         "x": 10,
         "y": 20
       },
-      "id": 39,
+      "id": 54,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Errors"
+            "displayName": "Sessions"
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
+          "columns": [
             {
-              "field": "session.media.id",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "key",
+              "text": "media_id",
+              "type": "string"
+            },
+            {
+              "selector": "p50_load_time.percentile.values.50\\.0",
+              "text": "p50",
+              "type": "number"
+            },
+            {
+              "selector": "error_rate.value",
+              "text": "error_rate",
+              "type": "number"
+            },
+            {
+              "selector": "starts.doc_count",
+              "text": "sessions",
+              "type": "number"
+            },
+            {
+              "selector": "errors.doc_count",
+              "text": "errors",
+              "type": "number"
+            },
+            {
+              "selector": "key",
+              "text": "demo",
+              "type": "string"
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
-          "refId": "errors",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.media.id",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}",
-          "refId": "sessions",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "aggregations.by_media_id.buckets",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\":  { \"session.player.platform\": \"Web\" } },\n        { \"wildcard\": { \"session.browser.name\": \"${browser}\" } },\n        { \"wildcard\": { \"session.media.id\": \"${media_id}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_media_id\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
       "title": "Most conflicting media",
       "transformations": [
         {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*[.](media)[.]id",
-            "renamePattern": "$1"
-          }
-        },
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "media",
-            "mode": "outer"
-          }
-        },
-        {
           "id": "organize",
           "options": {
-            "excludeByName": {
-              "Count 2": false,
-              "session.device.type": true,
-              "session.player.platform": true
-            },
+            "excludeByName": {},
             "includeByName": {},
             "indexByName": {
-              "Count 1": 1,
-              "Count 2": 2,
-              "media": 0
-            },
-            "renameByName": {
-              "Count 1": "errors",
-              "Count 2": "sessions_raw",
-              "media": "Media",
-              "name": "browser",
-              "session.device.type": "type",
-              "session.player.platform": "platform"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "total_errors",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors"
-              ],
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "sessions",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "sessions_raw",
-                "errors"
-              ],
-              "reducer": "max"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "error_rate",
-            "binary": {
-              "left": "total_errors",
-              "operator": "/",
-              "right": "sessions"
-            },
-            "mode": "binary",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions"
-              ],
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Demo",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "Media"
-              ],
-              "reducer": "lastNotNull"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "errors": true,
-              "sessions": false,
-              "sessions_raw": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Demo": 1,
-              "Media": 0,
+              "demo": 1,
               "error_rate": 5,
               "errors": 2,
-              "sessions": 4,
-              "sessions_raw": 6,
-              "total_errors": 3
+              "media_id": 0,
+              "p50": 4,
+              "sessions": 3
             },
             "renameByName": {
-              "browser": "Browser",
-              "demo": "",
+              "demo": "Demo",
               "error_rate": "Error Rate",
-              "errors": "",
-              "model": "Device",
-              "platform": "",
-              "sessions": "Sessions",
-              "total_errors": "Errors",
-              "type": ""
+              "errors": "Errors",
+              "media_id": "Media",
+              "p50": "Load Time",
+              "sessions": "Sessions"
             }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "Errors"
-              }
-            ],
-            "match": "any",
-            "type": "include"
           }
         }
       ],
@@ -1949,7 +1754,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -2055,13 +1859,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -2082,14 +1887,13 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
           "refId": "errors",
           "timeField": "@timestamp"
         }
@@ -2099,10 +1903,9 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2113,9 +1916,12 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 100
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2142,32 +1948,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sessions"
+              "options": "starts"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Errors"
+              "options": "errors"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 89
               }
             ]
           },
@@ -2180,10 +1978,6 @@
               {
                 "id": "unit",
                 "value": "percentunit"
-              },
-              {
-                "id": "custom.width",
-                "value": 105
               },
               {
                 "id": "thresholds",
@@ -2212,7 +2006,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Name"
+              "options": "player_name"
             },
             "properties": [
               {
@@ -2224,16 +2018,58 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Version"
+              "options": "player_version"
             },
             "properties": [
               {
                 "id": "custom.filterable",
                 "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50_load_time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
               },
               {
-                "id": "custom.width",
-                "value": 96
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -2245,274 +2081,71 @@
         "x": 10,
         "y": 32
       },
-      "id": 49,
+      "id": 53,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Errors"
+            "displayName": "Sessions"
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "2"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.version",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
+          "columns": [],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
-          "refId": "errors",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.name",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "2"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.version",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}",
-          "refId": "sessions",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$map(aggregations.by_player_combo.buckets, function($bucket) {\n  {\n    \"player_name\": $bucket.key[0],\n    \"player_version\": $bucket.key[1],\n    \"player_platform\": $bucket.key[2],\n    \"starts\": $bucket.starts.doc_count,\n    \"errors\": $bucket.errors.doc_count,\n    \"error_rate\": $bucket.error_rate.value,\n    \"p50_load_time\": $bucket.p50_load_time.percentile.values.\"50.0\"\n  }\n})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n    \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\":  { \"session.player.platform\": \"Web\" } },\n        { \"wildcard\": { \"session.browser.name\": \"${browser}\" } },\n        { \"wildcard\": { \"session.media.id\": \"${media_id}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_player_combo\": {\n      \"multi_terms\": {\n        \"terms\": [\n          { \"field\": \"session.player.name\" },\n          { \"field\": \"session.player.version\" },\n          { \"field\": \"session.player.platform\" }\n        ],\n        \"size\": 3000\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
-      "title": "Most conflicting player versions",
+      "title": "Most Conflicting Player Versions",
       "transformations": [
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "player",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.player.name",
-                "session.player.version"
-              ],
-              "reducer": "allValues"
-            }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "string",
-                "targetField": "player"
-              }
-            ],
-            "fields": {}
-          }
-        },
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "player",
-            "mode": "outer"
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "player": true,
-              "session.player.name 1": true,
-              "session.player.name 2": false,
-              "session.player.platform 1": true,
-              "session.player.platform 2": false,
-              "session.player.version 1": true,
-              "session.player.version 2": false
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Count 1": "errors",
-              "Count 2": "sessions_raw",
-              "session.player.version 2": ""
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "total_errors",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors"
-              ],
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "sessions",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions_raw"
-              ],
-              "reducer": "max"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "error_rate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "total_errors"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "sessions"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions"
-              ],
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "errors": true,
-              "session.player.platform 1": true,
-              "sessions_raw": true
+              "player_platform": true
             },
             "includeByName": {},
             "indexByName": {
-              "error_rate": 7,
+              "error_rate": 6,
               "errors": 3,
-              "session.player.name 2": 0,
-              "session.player.platform 2": 2,
-              "session.player.version 2": 1,
-              "sessions": 6,
-              "sessions_raw": 4,
-              "total_errors": 5
+              "p50_load_time": 5,
+              "player_name": 0,
+              "player_platform": 1,
+              "player_version": 2,
+              "starts": 4
             },
             "renameByName": {
               "error_rate": "Error Rate",
-              "session.player.name 1": "Name",
-              "session.player.name 2": "Name",
-              "session.player.platform 1": "Platform",
-              "session.player.platform 2": "Platform",
-              "session.player.version 1": "Version",
-              "session.player.version 2": "Version",
-              "sessions": "Sessions",
-              "sessions_raw": "",
-              "total_errors": "Errors"
+              "errors": "Errors",
+              "p50_load_time": "Load Time",
+              "player_name": "Name",
+              "player_platform": "Platform",
+              "player_version": "Version",
+              "starts": "Sessions"
             }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "Sessions"
-              }
-            ],
-            "match": "any",
-            "type": "include"
           }
         }
       ],
@@ -2551,7 +2184,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "noValue": "0",
           "thresholds": {
             "mode": "absolute",
@@ -2729,7 +2361,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -2761,14 +2393,13 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "id": "1",
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
           "refId": "errors",
           "timeField": "@timestamp"
         }
@@ -2813,9 +2444,11 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2852,7 +2485,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -2929,7 +2563,8 @@
             },
             "properties": [
               {
-                "id": "actions"
+                "id": "actions",
+                "value": null
               }
             ]
           },
@@ -2974,19 +2609,11 @@
       "id": 36,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -3011,7 +2638,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -3165,17 +2792,344 @@
         "x": 0,
         "y": 61
       },
-      "id": 42,
-      "panels": [],
+      "id": 56,
       "title": "$browser Metrics",
       "type": "row"
     },
     {
       "datasource": {
-        "name": "user-events",
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "The median quality of experience loading time, i.e., how long the user perceives the video to load.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "orange",
+                "value": 2000
+              },
+              {
+                "color": "red",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "text"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Sessions"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50.0 session.qoe_timings.total"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Median"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 62
+      },
+      "id": 50,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "1",
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
+            },
+            {
+              "id": "3",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Perceived delay",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "Distribution of sessions across perceived loading times, capped at the 95th percentile to exclude outliers.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "displayName",
+                "value": "Sessions"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 62
+      },
+      "id": 51,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "session.qoe_timings.total",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "2",
+              "settings": {
+                "interval": "10",
+                "min_doc_count": "10"
+              },
+              "type": "histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}\nAND session.qoe_timings.total:[* TO $p95]",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Perceived delay historgram",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
         "type": "grafana-opensearch-datasource"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3214,7 +3168,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3229,14 +3182,13 @@
             ]
           },
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 62
+        "y": 70
       },
       "id": 45,
       "options": {
@@ -3268,31 +3220,32 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "data.frame_drops",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             }
           ],
-          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${media_id:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
+          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Average Frame Drops",
+      "title": "Median Frame Drops",
       "type": "timeseries"
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3331,7 +3284,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3346,14 +3298,13 @@
             ]
           },
           "unit": "ms"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 62
+        "y": 70
       },
       "id": 44,
       "options": {
@@ -3385,31 +3336,32 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "data.stall.duration",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             }
           ],
-          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${media_id:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
+          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Average Stall Duration",
+      "title": "Median Stall Duration",
       "type": "timeseries"
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3448,7 +3400,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3462,14 +3413,13 @@
               }
             ]
           }
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 62
+        "y": 70
       },
       "id": 43,
       "options": {
@@ -3501,29 +3451,32 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "data.stall.count",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             }
           ],
-          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${media_id:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
+          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:Web\nAND session.browser.name:${browser}",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Average Stall Count",
+      "title": "Median Stall Count",
       "type": "timeseries"
     }
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "hidden"
   ],
@@ -3531,9 +3484,10 @@
     "list": [
       {
         "allValue": "*",
+        "allowCustomValue": true,
         "current": {
-          "text": "Safari",
-          "value": "Safari"
+          "text": "Chrome",
+          "value": "Chrome"
         },
         "datasource": {
           "type": "grafana-opensearch-datasource",
@@ -3541,13 +3495,18 @@
         },
         "definition": "{\n  \"find\": \"terms\",\n  \"field\": \"session.browser.name\",\n  \"query\": \"event_name:START AND session.player.platform:Web\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "description": "Filter by browser.",
+        "hide": 0,
         "includeAll": false,
         "label": "Browser",
+        "multi": false,
         "name": "browser",
         "options": [],
         "query": "{\n  \"find\": \"terms\",\n  \"field\": \"session.browser.name\",\n  \"query\": \"event_name:START AND session.player.platform:Web\",\n  \"size\": 10,\n  \"orderBy\": \"doc_count\"\n}\n",
         "refresh": 2,
         "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3555,18 +3514,29 @@
         "auto_count": 30,
         "auto_min": "5s",
         "current": {
-          "text": "$__auto",
-          "value": "$__auto"
+          "text": "10m",
+          "value": "10m"
         },
+        "hide": 0,
         "name": "interval",
         "options": [
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
           {
             "selected": false,
             "text": "1m",
             "value": "1m"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "10m",
             "value": "10m"
           },
@@ -3612,35 +3582,134 @@
           }
         ],
         "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       },
       {
         "current": {
-          "text": "*\\:*\\:**",
-          "value": "*\\:*\\:**"
+          "text": "*",
+          "value": "*"
         },
+        "hide": 0,
         "label": "Media ID",
         "name": "media_id",
-        "options": [
-          {
-            "selected": true,
-            "text": "*\\:*\\:**",
-            "value": "*\\:*\\:**"
-          }
-        ],
-        "query": "*\\:*\\:**",
+        "query": "*:*:**",
+        "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "4385",
+          "value": "4385"
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "cepet3yzpalfke"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "p95",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "columns": [],
+            "filters": [],
+            "format": "table",
+            "parser": "backend",
+            "refId": "variable",
+            "root_selector": "",
+            "source": "url",
+            "type": "json",
+            "url": "",
+            "url_options": {
+              "body_content_type": "application/json",
+              "body_type": "raw",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\": { \"event_name\": \"START\" } },\n        { \"term\": { \"session.player.platform\": \"Web\" } },\n        { \"wildcard\": { \"session.browser.name\": \"${browser}\" } }\n\n      ]\n    }\n  },\n  \"aggs\": {\n    \"p95\": {\n      \"percentiles\": {\n        \"field\": \"session.qoe_timings.total\",\n        \"percents\": [95]\n      }\n    }\n  }\n}\n",
+              "method": "POST"
+            }
+          },
+          "meta": {
+            "valueField": "aggregations"
+          },
+          "query": "",
+          "queryType": "infinity",
+          "refId": "variable"
+        },
+        "refresh": 1,
+        "regex": "/\"95\\.0\":([\\d.]+)/",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "*",
+          "value": "*"
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "cef4oofzuaayof"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "media_id_lucene",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "columns": [],
+            "data": "[{ \"value\": \"${media_id:raw}\" }]",
+            "filters": [],
+            "format": "table",
+            "parser": "backend",
+            "refId": "",
+            "root_selector": "$[0].value = \"*\" ? \"*\" : $replace($[0].value, \":\", \"\\\\:\")",
+            "source": "inline",
+            "type": "json",
+            "url": "",
+            "url_options": {
+              "data": "",
+              "method": "GET"
+            }
+          },
+          "queryType": "infinity",
+          "refId": "variable"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2025-10-07T13:41:43.888Z",
-    "to": "2025-10-08T13:41:43.888Z"
+    "from": "now-24h",
+    "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Zurich",
   "title": "Browser Breakdown",
   "uid": "cerwrzn7ypzwga",
-  "version": 33
+  "version": 44
 }

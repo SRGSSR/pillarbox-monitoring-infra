@@ -35,6 +35,7 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
@@ -44,8 +45,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 48,
-      "panels": [],
+      "id": 61,
       "repeat": "platform",
       "title": "${platform} Player Metrics",
       "type": "row"
@@ -55,7 +55,6 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -69,7 +68,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -131,13 +129,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -176,10 +175,9 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -190,9 +188,12 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 100
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -219,32 +220,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sessions"
+              "options": "starts"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Errors"
+              "options": "errors"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 89
               }
             ]
           },
@@ -257,10 +250,6 @@
               {
                 "id": "unit",
                 "value": "percentunit"
-              },
-              {
-                "id": "custom.width",
-                "value": 105
               },
               {
                 "id": "thresholds",
@@ -289,7 +278,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Name"
+              "options": "player_name"
             },
             "properties": [
               {
@@ -301,12 +290,70 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Version"
+              "options": "player_version"
             },
             "properties": [
               {
                 "id": "custom.filterable",
                 "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50_load_time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
               }
             ]
           }
@@ -321,279 +368,63 @@
       "id": 33,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "frameIndex": 1,
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Sessions"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "2"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.version",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.platform",
-              "id": "5",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "3"
-              },
-              "type": "terms"
-            }
-          ],
+          "columns": [],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
-          "refId": "errors",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.player.name",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "2"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.version",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "session.player.platform",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "3"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
-          "refId": "sessions",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$map(aggregations.by_player_combo.buckets, function($bucket) {\n  {\n    \"player_name\": $bucket.key[0],\n    \"player_version\": $bucket.key[1],\n    \"player_platform\": $bucket.key[2],\n    \"starts\": $bucket.starts.doc_count,\n    \"errors\": $bucket.errors.doc_count,\n    \"error_rate\": $bucket.error_rate.value,\n    \"p50_load_time\": $bucket.p50_load_time.percentile.values.\"50.0\"\n  }\n})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_player_combo\": {\n      \"multi_terms\": {\n        \"terms\": [\n          { \"field\": \"session.player.name\" },\n          { \"field\": \"session.player.version\" },\n          { \"field\": \"session.player.platform\" }\n        ],\n        \"size\": 3000\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
       "title": "Most Conflicting ${platform} Player Versions",
       "transformations": [
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "player",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "session.player.name",
-                "session.player.version",
-                "session.player.platform"
-              ],
-              "reducer": "allValues"
-            }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "string",
-                "targetField": "player"
-              }
-            ],
-            "fields": {}
-          }
-        },
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "player",
-            "mode": "outer"
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "player": true,
-              "session.player.name 2": true,
-              "session.player.platform 2": true,
-              "session.player.version 2": true
+              "player_platform": true
             },
             "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Count 1": "errors",
-              "Count 2": "sessions_raw",
-              "session.player.version 2": ""
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "total_errors",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors"
-              ],
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "sessions",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions_raw"
-              ],
-              "reducer": "max"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "error_rate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "total_errors"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "sessions"
-                }
-              }
+            "indexByName": {
+              "error_rate": 6,
+              "errors": 3,
+              "p50_load_time": 5,
+              "player_name": 0,
+              "player_platform": 1,
+              "player_version": 2,
+              "starts": 4
             },
-            "mode": "binary",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions"
-              ],
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "errors": true,
-              "session.player.platform 1": true,
-              "sessions_raw": true
-            },
-            "includeByName": {},
-            "indexByName": {},
             "renameByName": {
               "error_rate": "Error Rate",
-              "session.player.name 1": "Name",
-              "session.player.platform 1": "Platform",
-              "session.player.version 1": "Version",
-              "sessions": "Sessions",
-              "sessions_raw": "",
-              "total_errors": "Errors"
+              "errors": "Errors",
+              "p50_load_time": "Load Time",
+              "player_name": "Name",
+              "player_platform": "Platform",
+              "player_version": "version",
+              "starts": "Sessions"
             }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "Errors"
-              }
-            ],
-            "match": "any",
-            "type": "include"
           }
         }
       ],
@@ -611,7 +442,6 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -622,8 +452,7 @@
             ]
           },
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 4,
@@ -649,7 +478,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -668,7 +497,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -686,8 +514,8 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
       "description": "The percentage of sessions using the selected browser.",
       "fieldConfig": {
@@ -696,7 +524,6 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -707,8 +534,7 @@
             ]
           },
           "unit": "percentunit"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 4,
@@ -734,7 +560,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -796,12 +622,10 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
             "uid": "__expr__"
           },
           "expression": "$playing / $total",
-          "hide": false,
           "refId": "A",
           "type": "math"
         }
@@ -820,7 +644,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -835,8 +658,7 @@
             ]
           },
           "unit": "percentunit"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 10,
@@ -846,6 +668,14 @@
       },
       "id": 52,
       "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
         "minVizHeight": 75,
         "minVizWidth": 75,
         "orientation": "auto",
@@ -856,11 +686,16 @@
           "fields": "",
           "values": false
         },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "sizing": "auto"
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "playing",
@@ -881,7 +716,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -913,7 +747,6 @@
             "uid": "deoqp3q289nnkd"
           },
           "format": "table",
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -1008,7 +841,6 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1037,7 +869,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1115,7 +946,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 200
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -1189,7 +1020,6 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1203,10 +1033,8 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 7,
@@ -1234,13 +1062,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -1290,10 +1119,9 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "fegaynyd0mz9cc"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1304,9 +1132,11 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1325,39 +1155,32 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Sessions"
+              "options": "sessions"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Errors"
+              "options": "errors"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 89
               }
             ]
           },
@@ -1370,10 +1193,6 @@
               {
                 "id": "unit",
                 "value": "percentunit"
-              },
-              {
-                "id": "custom.width",
-                "value": 105
               },
               {
                 "id": "custom.cellOptions",
@@ -1402,7 +1221,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Application"
+              "options": "application"
             },
             "properties": [
               {
@@ -1411,9 +1230,67 @@
                   {
                     "targetBlank": true,
                     "title": "Application breakdown",
-                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=$__auto&orgId=1&from=${__from}﻿&to=﻿${__to}﻿&var-platform=﻿${platform}﻿﻿﻿&var-application=﻿﻿${__value.text}﻿&interval=auto"
+                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=$__auto&orgId=1&from=${__from}&to=${__to}&var-platform=${platform}&var-application=${__value.text}&interval=auto"
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -1425,301 +1302,92 @@
         "x": 11,
         "y": 15
       },
-      "id": 59,
+      "id": 60,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Errors"
+            "displayName": "Sessions"
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
+          "columns": [
             {
-              "field": "session.media.short_origin",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "application",
+              "text": "application",
+              "type": "string"
+            },
+            {
+              "selector": "errors",
+              "text": "errors",
+              "type": "number"
+            },
+            {
+              "selector": "starts",
+              "text": "sessions",
+              "type": "number"
+            },
+            {
+              "selector": "p50_load_time",
+              "text": "p50",
+              "type": "number"
+            },
+            {
+              "selector": "error_rate",
+              "text": "error_rate",
+              "type": "number"
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "fegaynyd0mz9cc"
           },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
-          "refId": "errors_origin",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.media.short_origin",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
-          "refId": "sessions_origin",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.application.id",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:(Android OR Apple)\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
-          "refId": "errors_application",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.application.id",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:(Android OR Apple)",
-          "refId": "sessions_application",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$append(\n  $map(aggregations.web_apps.by_application.buckets, function($b) {\n    {\n      \"application\": $b.key,\n      \"starts\": $b.starts.doc_count,\n      \"errors\": $b.errors.doc_count,\n      \"error_rate\": $b.error_rate.value,\n      \"p50_load_time\": $b.p50_load_time.percentile.values.\"50.0\"\n    }\n  }),\n  $map(aggregations.mobile_apps.by_application.buckets, function($b) {\n    {\n      \"application\": $b.key,\n      \"starts\": $b.starts.doc_count,\n      \"errors\": $b.errors.doc_count,\n      \"error_rate\": $b.error_rate.value,\n      \"p50_load_time\": $b.p50_load_time.percentile.values.\"50.0\"\n    }\n  })\n)",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"web_apps\": {\n      \"filter\": {\n        \"bool\": {\n          \"must_not\": [\n            { \"terms\": { \"session.player.platform\": [\"Android\", \"android\", \"Apple\"] } }\n          ]\n        }\n      },\n      \"aggs\": {\n        \"by_application\": {\n          \"terms\": {\n            \"field\": \"session.media.short_origin\",\n            \"size\": 500\n          },\n          \"aggs\": {\n            \"errors\": {\n              \"filter\": {\n                \"bool\": {\n                  \"filter\": [\n                    { \"term\": { \"event_name\": \"ERROR\" } },\n                    { \"term\": { \"data.business_error\": false } }\n                  ],\n                  \"must_not\": [\n                    { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n                  ]\n                }\n              }\n            },\n            \"starts\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } }\n            },\n            \"error_rate\": {\n              \"bucket_script\": {\n                \"buckets_path\": { \"err\": \"errors>_count\", \"sess\": \"starts>_count\" },\n                \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n              }\n            },\n            \"p50_load_time\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } },\n              \"aggs\": {\n                \"percentile\": {\n                  \"percentiles\": {\n                    \"field\": \"session.qoe_timings.total\",\n                    \"percents\": [50]\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    },\n\n    \"mobile_apps\": {\n      \"filter\": {\n        \"terms\": { \"session.player.platform\": [\"Android\", \"android\", \"Apple\"] }\n      },\n      \"aggs\": {\n        \"by_application\": {\n          \"terms\": {\n            \"field\": \"session.application.id\",\n            \"size\": 500\n          },\n          \"aggs\": {\n            \"errors\": {\n              \"filter\": {\n                \"bool\": {\n                  \"filter\": [\n                    { \"term\": { \"event_name\": \"ERROR\" } },\n                    { \"term\": { \"data.business_error\": false } }\n                  ],\n                  \"must_not\": [\n                    { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n                  ]\n                }\n              }\n            },\n            \"starts\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } }\n            },\n            \"error_rate\": {\n              \"bucket_script\": {\n                \"buckets_path\": { \"err\": \"errors>_count\", \"sess\": \"starts>_count\" },\n                \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n              }\n            },\n            \"p50_load_time\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } },\n              \"aggs\": {\n                \"percentile\": {\n                  \"percentiles\": {\n                    \"field\": \"session.qoe_timings.total\",\n                    \"percents\": [50]\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
       "title": "Most conflicting Applications",
       "transformations": [
         {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*[.]application[.]id",
-            "renamePattern": "application"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*[.]media[.]short_origin",
-            "renamePattern": "application"
-          }
-        },
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "application",
-            "mode": "outer"
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Count 2": false,
-              "session.device.type": true,
-              "session.player.platform": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Count 1": 0,
-              "Count 2": 1,
-              "origin": 2
-            },
-            "renameByName": {
-              "Count 1": "errors",
-              "Count 2": "sessions_raw",
-              "Count 3": "errors",
-              "Count 4": "sessions_raw",
-              "name": "browser",
-              "session.device.type": "type",
-              "session.player.platform": "platform"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "total_errors",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors"
-              ],
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "sessions",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "sessions_raw",
-                "errors"
-              ],
-              "reducer": "max"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "error_rate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "total_errors"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "sessions"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions"
-              ],
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "errors": true,
-              "sessions": false,
-              "sessions_raw": true
+              "p50": false
             },
             "includeByName": {},
             "indexByName": {
               "application": 0,
               "error_rate": 4,
               "errors": 1,
-              "sessions": 3,
-              "sessions_raw": 5,
-              "total_errors": 2
+              "p50": 3,
+              "sessions": 2
             },
             "renameByName": {
               "application": "Application",
-              "browser": "Browser",
               "error_rate": "Error Rate",
-              "errors": "",
-              "model": "Device",
-              "origin": "Origin",
-              "platform": "",
-              "sessions": "Sessions",
-              "total_errors": "Errors",
-              "type": ""
+              "errors": "Errors",
+              "p50": "Load Time",
+              "sessions": "Sessions"
             }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "Sessions"
-              }
-            ],
-            "match": "any",
-            "type": "include"
           }
         }
       ],
@@ -1758,8 +1426,6 @@
               "mode": "off"
             }
           },
-          "fieldMinMax": false,
-          "mappings": [],
           "noValue": "0",
           "thresholds": {
             "mode": "absolute",
@@ -1948,7 +1614,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -1980,7 +1646,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -2034,9 +1699,11 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2073,7 +1740,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -2088,7 +1756,8 @@
                 "value": 166
               },
               {
-                "id": "custom.filterable"
+                "id": "custom.filterable",
+                "value": null
               }
             ]
           },
@@ -2175,19 +1844,11 @@
       "id": 55,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -2362,7 +2023,6 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2376,10 +2036,8 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
@@ -2407,13 +2065,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -2494,8 +2153,6 @@
               "mode": "off"
             }
           },
-          "fieldMinMax": false,
-          "mappings": [],
           "noValue": "0",
           "thresholds": {
             "mode": "absolute",
@@ -2684,7 +2341,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -2716,7 +2373,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -2757,7 +2413,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "pillarbox"
   ],
@@ -2770,8 +2426,10 @@
           "value": "$__all"
         },
         "description": "Filter by platform.",
+        "hide": 0,
         "includeAll": true,
         "label": "Platform",
+        "multi": false,
         "name": "platform",
         "options": [
           {
@@ -2791,7 +2449,9 @@
           }
         ],
         "query": "Web, Apple, Android",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
@@ -2800,8 +2460,10 @@
           "text": "$__all",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Business Unit",
+        "multi": false,
         "name": "bu",
         "options": [
           {
@@ -2836,7 +2498,9 @@
           }
         ],
         "query": "srf, rts, rsi, rtr, swi, playsuisse",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
@@ -2845,8 +2509,10 @@
           "text": "$__all",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Type",
+        "multi": false,
         "name": "type",
         "options": [
           {
@@ -2861,7 +2527,9 @@
           }
         ],
         "query": "audio, video",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "auto": true,
@@ -2871,6 +2539,7 @@
           "text": "10m",
           "value": "10m"
         },
+        "hide": 0,
         "name": "interval",
         "options": [
           {
@@ -2925,7 +2594,7 @@
           }
         ],
         "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       },
       {
@@ -2934,6 +2603,9 @@
           "text": "(true OR false)",
           "value": "(true OR false)"
         },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
         "name": "swisstxt",
         "options": [
           {
@@ -2953,7 +2625,9 @@
           }
         ],
         "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       }
     ]
   },
@@ -2961,9 +2635,22 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Zurich",
   "title": "Player Fragmentation",
   "uid": "eessxg1prer5sf",
-  "version": 23
+  "version": 27
 }

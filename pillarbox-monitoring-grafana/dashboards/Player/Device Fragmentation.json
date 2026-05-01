@@ -237,10 +237,10 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
-      "description": "",
+      "description": "Apple and Android Players Only",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -268,7 +268,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "session.device.model"
+              "options": "device_model"
             },
             "properties": [
               {
@@ -276,8 +276,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "",
-                    "url": "/d/des44th87qarke/device-breakdown?var-device=${__value.raw}&from=${__from}&to=${__to}&var-platform=${platform}&var-media_id=*\\:${bu}\\:${type}*&var-interval=$__auto"
+                    "title": "${__value.raw} Breakdown",
+                    "url": "/d/des44th87qarke/device-breakdown?var-device=${__value.raw}&from=${__from}&to=${__to}&var-platform=${platform}&var-media_id=*:${bu}:${type}*"
                   }
                 ]
               },
@@ -301,32 +301,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sessions"
+              "options": "sessions"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Errors"
+              "options": "errors"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 89
               }
             ]
           },
@@ -339,10 +331,6 @@
               {
                 "id": "unit",
                 "value": "percentunit"
-              },
-              {
-                "id": "custom.width",
-                "value": 105
               },
               {
                 "id": "custom.cellOptions",
@@ -370,17 +358,59 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "total_drm_not_supported"
+              "id": "byType",
+              "options": "number"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 180
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 500
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1000
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2000
+                    },
+                    {
+                      "color": "red",
+                      "value": 5000
+                    }
+                  ]
+                }
               },
               {
                 "id": "unit",
-                "value": "short"
+                "value": "ms"
               }
             ]
           }
@@ -392,7 +422,7 @@
         "x": 9,
         "y": 0
       },
-      "id": 33,
+      "id": 45,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -415,216 +445,77 @@
       "pluginVersion": "12.1.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
+          "columns": [
             {
-              "field": "session.device.model",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "key",
+              "text": "device_model",
+              "type": "string"
+            },
+            {
+              "selector": "errors.doc_count",
+              "text": "errors",
+              "type": "number"
+            },
+            {
+              "selector": "starts.doc_count",
+              "text": "sessions",
+              "type": "number"
+            },
+            {
+              "selector": "error_rate.value",
+              "text": "error_rate",
+              "type": "number"
+            },
+            {
+              "selector": "p50_load_time.percentile.values.50\\.0",
+              "text": "p50",
+              "type": "number"
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)",
-          "refId": "errors",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "session.device.model",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "hide": false,
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND NOT session.player.platform:Web\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}",
-          "refId": "sessions",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "aggregations.by_device_model.buckets",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ],\n      \"must_not\": [\n        { \"term\":  { \"session.player.platform\": \"Web\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_device_model\": {\n      \"terms\": {\n        \"field\": \"session.device.model\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
       "title": "Most conflicting devices",
       "transformations": [
         {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*[.]device[.](model)",
-            "renamePattern": "$1"
-          }
-        },
-        {
-          "id": "joinByField",
-          "options": {
-            "byField": "model",
-            "mode": "outer"
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Count 2": false,
-              "session.device.type": true,
-              "session.player.platform": true
+              "p50": false
             },
             "includeByName": {},
             "indexByName": {
-              "Count 1": 5,
-              "Count 2": 6,
-              "model": 0,
-              "session.device.type": 2,
-              "session.player.platform": 1
-            },
-            "renameByName": {
-              "Count": "",
-              "Count 1": "errors",
-              "Count 2": "sessions_raw",
-              "Count 3": "drm_not_supported",
-              "model": "",
-              "name": "browser",
-              "session.device.type": "type",
-              "session.player.platform": "platform"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "total_errors",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors"
-              ],
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "sessions",
-            "mode": "reduceRow",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions_raw"
-              ],
-              "reducer": "max"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "error_rate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "total_errors"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "sessions"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "include": [
-                "errors",
-                "sessions"
-              ],
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "drm_not_supported": true,
-              "errors": true,
-              "sessions": false,
-              "sessions_and_errors": false,
-              "sessions_raw": true
-            },
-            "includeByName": {},
-            "indexByName": {
+              "device_model": 0,
               "error_rate": 4,
-              "errors": 0,
-              "model": 1,
-              "sessions": 3,
-              "sessions_raw": 5,
-              "total_errors": 2
+              "errors": 1,
+              "p50": 3,
+              "sessions": 2
             },
             "renameByName": {
-              "browser": "Browser",
-              "drm_not_supported": "",
+              "device_model": "Device",
               "error_rate": "Error Rate",
-              "errors": "",
-              "model": "Device",
-              "platform": "",
-              "sessions": "Sessions",
-              "total_drm_not_supported": "DRM Not Supported",
-              "total_errors": "Errors",
-              "type": ""
+              "errors": "Errors",
+              "p50": "Load Time",
+              "sessions": "Sessions"
             }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
-                },
-                "fieldName": "Errors"
-              }
-            ],
-            "match": "any",
-            "type": "include"
           }
         }
       ],
@@ -1658,5 +1549,5 @@
   "timezone": "Europe/Zurich",
   "title": "Device Fragmentation",
   "uid": "des41og1b0074e",
-  "version": 19
+  "version": 21
 }

@@ -47,7 +47,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The average quality of experience loading time, i.e., how long the user perceives the video to load.",
+      "description": "The median quality of experience loading time, i.e., how long the user perceives the video to load.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -93,6 +93,22 @@
               {
                 "color": "blue",
                 "value": 0
+              },
+              {
+                "color": "green",
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "orange",
+                "value": 2000
+              },
+              {
+                "color": "red",
+                "value": 5000
               }
             ]
           },
@@ -131,6 +147,36 @@
                   "fixedColor": "blue",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Sessions"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50.0 session.qoe_timings.total"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Median"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
               }
             ]
           }
@@ -148,11 +194,11 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -179,7 +225,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             },
             {
               "id": "3",
@@ -298,7 +349,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average"
+              "options": "Median"
             },
             "properties": [
               {
@@ -364,7 +415,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 12,
         "w": 17,
         "x": 0,
         "y": 11
@@ -415,7 +466,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             },
             {
               "id": "2",
@@ -455,6 +511,7 @@
             },
             "renameByName": {
               "Count": "Sessions",
+              "p50.0 session.qoe_timings.total": "Median",
               "session.media.id": "Media"
             }
           }
@@ -480,6 +537,22 @@
               {
                 "color": "blue",
                 "value": 0
+              },
+              {
+                "color": "green",
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "#EF843C",
+                "value": 2000
+              },
+              {
+                "color": "#E24D42",
+                "value": 5000
               }
             ]
           },
@@ -512,6 +585,134 @@
         "w": 7,
         "x": 17,
         "y": 11
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "1",
+              "settings": {
+                "percents": [
+                  "90"
+                ]
+              },
+              "type": "percentiles"
+            }
+          ],
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "90 percentile perceived delay",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "#EF843C",
+                "value": 2000
+              },
+              {
+                "color": "#E24D42",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 7,
+        "x": 17,
+        "y": 15
       },
       "id": 16,
       "options": {
@@ -557,7 +758,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             }
           ],
           "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
@@ -566,8 +772,260 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Average perceived delay",
+      "title": "Median perceived delay",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "#EF843C",
+                "value": 2000
+              },
+              {
+                "color": "#E24D42",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 7,
+        "x": 17,
+        "y": 19
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "event_name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "1",
+              "settings": {
+                "percents": [
+                  "25"
+                ]
+              },
+              "type": "percentiles"
+            }
+          ],
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "25 percentile perceived delay",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "Distribution of sessions across perceived loading times, capped at the 95th percentile to exclude outliers.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 19,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "session.qoe_timings.total",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.qoe_timings.total",
+              "id": "2",
+              "settings": {
+                "interval": "10",
+                "min_doc_count": "10"
+              },
+              "type": "histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND session.player.platform:${platform}\nAND session.qoe_timings.total:[* TO $p95]",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Perceived delay historgram",
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -611,7 +1069,7 @@
                   {
                     "targetBlank": true,
                     "title": "Device Breakdown",
-                    "url": "/d/des44th87qarke/device-breakdown?var-device=${__value.raw}&from=${__from}&to=${__to}&var-platform=${platform}&var-media_id=*\\:${bu}\\:${type}*&var-interval=$__auto"
+                    "url": "/d/des44th87qarke/device-breakdown?var-device=${__value.raw}&from=${__from}&to=${__to}&var-platform=${platform}&var-media_id=*:${bu}:${type}*&var-interval=${interval}"
                   }
                 ]
               },
@@ -672,7 +1130,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average"
+              "options": "Median"
             },
             "properties": [
               {
@@ -741,7 +1199,7 @@
         "h": 11,
         "w": 8,
         "x": 0,
-        "y": 22
+        "y": 35
       },
       "id": 14,
       "options": {
@@ -789,7 +1247,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             },
             {
               "id": "2",
@@ -815,6 +1278,7 @@
             },
             "renameByName": {
               "Count": "Sessions",
+              "p50.0 session.qoe_timings.total": "Median",
               "session.device.id": "Device",
               "session.device.model": "Device",
               "session.media.id": "Media"
@@ -866,7 +1330,7 @@
                   {
                     "targetBlank": true,
                     "title": "Application breakdown",
-                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=$__auto&orgId=1&from=${__from}﻿&to=﻿${__to}﻿&var-platform=﻿${platform}﻿﻿﻿&var-application=﻿﻿${__value.text}﻿&interval=auto"
+                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=${interval}&orgId=1&from=${__from}﻿&to=﻿${__to}﻿&var-platform=﻿${platform}﻿﻿﻿&var-application=﻿﻿${__value.text}"
                   }
                 ]
               },
@@ -890,7 +1354,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average"
+              "options": "Median"
             },
             "properties": [
               {
@@ -959,7 +1423,7 @@
         "h": 11,
         "w": 8,
         "x": 8,
-        "y": 22
+        "y": 35
       },
       "id": 13,
       "options": {
@@ -1007,7 +1471,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             },
             {
               "id": "2",
@@ -1042,7 +1511,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             },
             {
               "id": "2",
@@ -1114,11 +1588,12 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "total_average",
+            "alias": "total_median",
             "mode": "reduceRow",
             "reduce": {
               "include": [
-                "average"
+                "average",
+                "p50.0 session.qoe_timings.total"
               ],
               "reducer": "sum"
             },
@@ -1130,13 +1605,16 @@
           "options": {
             "excludeByName": {
               "average": true,
+              "p50.0 session.qoe_timings.total": true,
               "sessions": true
             },
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
               "application": "Application",
+              "p50.0 session.qoe_timings.total": "",
               "total_average": "Average",
+              "total_median": "Median",
               "total_sessions": "Sessions"
             }
           }
@@ -1186,7 +1664,7 @@
                   {
                     "targetBlank": true,
                     "title": "Browser Breakdown",
-                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${__value.raw}&from=${__from}&to=${__to}&var-media_id=*\\:${bu}\\:${type}*&var-interval=$__auto"
+                    "url": "/d/cerwrzn7ypzwga/browser-breakdown?var-browser=${__value.raw}&from=${__from}&to=${__to}&var-media_id=*:${bu}:${type}*&var-interval=${interval}"
                   }
                 ]
               },
@@ -1210,44 +1688,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Demo"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "",
-                    "url": "https://demo.pillarbox.ch/?src=${__value.raw}&type=srgssr%2Furn"
-                  }
-                ]
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": ".*",
-                      "result": {
-                        "index": 0,
-                        "text": "Play media"
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 118
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average"
+              "options": "Median"
             },
             "properties": [
               {
@@ -1316,7 +1757,7 @@
         "h": 11,
         "w": 8,
         "x": 16,
-        "y": 22
+        "y": 35
       },
       "id": 15,
       "options": {
@@ -1364,7 +1805,12 @@
             {
               "field": "session.qoe_timings.total",
               "id": "1",
-              "type": "avg"
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
             },
             {
               "id": "2",
@@ -1390,6 +1836,7 @@
             },
             "renameByName": {
               "Count": "Sessions",
+              "p50.0 session.qoe_timings.total": "Median",
               "session.browser.name": "Bowser",
               "session.device.id": "Device",
               "session.device.model": "Device",
@@ -1611,6 +2058,50 @@
         ],
         "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
         "type": "custom"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "4865",
+          "value": "4865"
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "cepet3yzpalfke"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "p95",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "columns": [],
+            "filters": [],
+            "format": "table",
+            "parser": "backend",
+            "refId": "variable",
+            "root_selector": "",
+            "source": "url",
+            "type": "json",
+            "url": "",
+            "url_options": {
+              "body_content_type": "application/json",
+              "body_type": "raw",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"filter\": {\n      \"must\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\": { \"event_name\": \"START\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"p95\": {\n      \"percentiles\": {\n        \"field\": \"session.qoe_timings.total\",\n        \"percents\": [95]\n      }\n    }\n  }\n}\n",
+              "method": "POST"
+            }
+          },
+          "meta": {
+            "valueField": "aggregations"
+          },
+          "query": "",
+          "queryType": "infinity",
+          "refId": "variable"
+        },
+        "refresh": 2,
+        "regex": "/\"95\\.0\":([\\d.]+)/",
+        "type": "query"
       }
     ]
   },
@@ -1620,7 +2111,7 @@
   },
   "timepicker": {},
   "timezone": "Europe/Zurich",
-  "title": "Service Loading Times",
+  "title": "Perceived Load Times",
   "uid": "e1b0dfcc-d811-43cf-b25d-0be6e34bb06e",
-  "version": 4
+  "version": 16
 }

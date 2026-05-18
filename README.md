@@ -193,4 +193,4 @@ This project is licensed under the [MIT License](LICENSE).
 [route-53]: /pillarbox-monitoring-terraform/10-pillarbox-monitoring-route-53
 [ecr]: /pillarbox-monitoring-terraform/11-pillarbox-monitoring-ecr
 [app]: /pillarbox-monitoring-terraform/20-pillarbox-monitoring-app
-[cd]: /pillarbox-monitoring-terraform/21-continuous-delivery
+[cd]: /pillarbox-monitoring-terraform/30-continuous-delivery

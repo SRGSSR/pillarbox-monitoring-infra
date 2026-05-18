@@ -29,7 +29,7 @@ locals {
   transfer = {
     task = {
       cpu         = local.is_prod ? 2048 : 256
-      memory      = local.is_prod ? 16384 : 1024
+      memory      = local.is_prod ? 8192 : 1024
       sse_timeout = local.is_prod ? "12000" : "86400000"
     }
   }

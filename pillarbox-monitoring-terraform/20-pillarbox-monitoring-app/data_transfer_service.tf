@@ -48,50 +48,61 @@ resource "aws_ecs_task_definition" "transfer_task" {
 
   # Define the container and its configuration
   container_definitions = jsonencode([
-    {
-      name                   = "pillarbox-monitoring-transfer"
-      image                  = "${local.ecr_repository}/pillarbox-monitoring-transfer:${local.ecr_image_tag}"
-      readonlyRootFilesystem = true
+    merge(
+      {
+        name                   = "pillarbox-monitoring-transfer"
+        image                  = "${local.ecr_repository}/pillarbox-monitoring-transfer:${local.ecr_image_tag}"
+        readonlyRootFilesystem = true
 
-      # Port mapping for the container
-      portMappings = [
-        {
-          hostPort      = 8081
-          containerPort = 8081
-          protocol      = "tcp"
-        }
-      ]
+        # Port mapping for the container
+        portMappings = [
+          {
+            hostPort      = 8081
+            containerPort = 8081
+            protocol      = "tcp"
+          }
+        ]
 
-      # Environment variables for connecting to SSE and OpenSearch services
-      environment = [
-        {
-          name  = "config__override__dispatcher-client__uri"
-          value = "http://${aws_service_discovery_service.dispatch_service_discovery.name}.${aws_service_discovery_private_dns_namespace.service_discovery_namespace.name}:8080/events"
-        },
-        {
-          name  = "config__override__open-search__uri"
-          value = "http://${aws_instance.opensearch.private_ip}:9200"
-        },
-        {
-          name  = "config__override__dispatcher-client__sse-timeout"
-          value = local.transfer.task.sse_timeout
-        },
-        {
-          name  = "PILLARBOX_PROFILE"
-          value = local.is_prod ? "prod" : "local"
-        }
-      ]
+        # Environment variables for connecting to SSE and OpenSearch services
+        environment = [
+          {
+            name  = "config__override__dispatcher-client__uri"
+            value = "http://${aws_service_discovery_service.dispatch_service_discovery.name}.${aws_service_discovery_private_dns_namespace.service_discovery_namespace.name}:8080/events"
+          },
+          {
+            name  = "config__override__open-search__uri"
+            value = "http://${aws_instance.opensearch.private_ip}:9200"
+          },
+          {
+            name  = "config__override__dispatcher-client__sse-timeout"
+            value = local.transfer.task.sse_timeout
+          },
+          {
+            name  = "PILLARBOX_PROFILE"
+            value = local.is_prod ? "prod" : "local"
+          }
+        ]
 
-      # Log configuration to use AWS CloudWatch
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group         = aws_cloudwatch_log_group.transfer_log_group.name
-          awslogs-region        = data.aws_region.current.name
-          awslogs-stream-prefix = "ecs"
+        # Log configuration to use AWS CloudWatch
+        logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            awslogs-group         = aws_cloudwatch_log_group.transfer_log_group.name
+            awslogs-region        = data.aws_region.current.name
+            awslogs-stream-prefix = "ecs"
+          }
         }
-      }
-    }
+      },
+      local.is_prod ? {
+        healthCheck = {
+          command     = ["CMD-SHELL", "wget -q -O /dev/null http://localhost:8081/health || exit 1"]
+          interval    = 30
+          timeout     = 5
+          retries     = 3
+          startPeriod = 60
+        }
+      } : {}
+    )
   ])
 
   tags = {

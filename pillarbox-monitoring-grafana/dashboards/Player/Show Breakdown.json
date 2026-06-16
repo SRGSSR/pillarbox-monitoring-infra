@@ -7,16 +7,10 @@
           "type": "grafana",
           "uid": "-- Grafana --"
         },
-        "enable": false,
+        "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
@@ -24,9 +18,152 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 34,
+  "id": 4391663294926848,
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cef4oofzuaayof"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Thumbnail",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "image"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# Episodes",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "lg",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "imageUrl",
+              "text": "Thumbnail",
+              "type": "string"
+            },
+            {
+              "selector": "title",
+              "text": "Title",
+              "type": "string"
+            },
+            {
+              "selector": "numberOfEpisodes",
+              "text": "# Episodes",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cef4oofzuaayof"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "show",
+          "source": "url",
+          "type": "json",
+          "url": "https://il.srgssr.ch/integrationlayer/2.0/episodeComposition/latestByShow/byUrn/${show}?vector=srgplay&pageSize=1",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "# Episodes": 3,
+              "Thumbnail": 0,
+              "Title": 2,
+              "URN": 1
+            },
+            "renameByName": {
+              "URN": "Show"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
@@ -54,7 +191,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 0
+        "y": 3
       },
       "id": 5,
       "options": {
@@ -99,7 +236,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -127,7 +264,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
           "timeField": "@timestamp"
@@ -167,9 +304,9 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 0
+        "y": 3
       },
-      "id": 3,
+      "id": 2,
       "options": {
         "barShape": "flat",
         "barWidthFactor": 0.5,
@@ -226,7 +363,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${live_ids}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${urns}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -256,7 +393,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.player.platform:${platform}\nAND session.media.id:${urns}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -284,9 +421,19 @@
           "options": {
             "alias": "errorRate",
             "binary": {
-              "left": "error",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "error"
+                }
+              },
               "operator": "/",
-              "right": "playing"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "playing"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -299,9 +446,16 @@
           "options": {
             "alias": "successRate",
             "binary": {
-              "left": "1",
+              "left": {
+                "fixed": "1"
+              },
               "operator": "-",
-              "right": "errorRate"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "errorRate"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -360,7 +514,7 @@
             },
             "showPoints": "never",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -457,7 +611,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 0
+        "y": 3
       },
       "id": 4,
       "options": {
@@ -514,7 +668,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${live_ids}",
+          "query": "event_name:START\nAND session.player.platform:${platform}\nAND session.media.id:${urns}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -543,7 +697,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -913,9 +1067,9 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 11
       },
-      "id": 10,
+      "id": 3,
       "options": {
         "cellHeight": "sm",
         "enablePagination": true,
@@ -974,7 +1128,7 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } },\n        { \"terms\": { \"session.media.id\": ${live_ids:json} }}\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_media_id\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 500,\n        \"order\": { \"errors\": \"desc\" }\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } },\n        { \"terms\": { \"session.media.id\": ${urns:json} }}\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_media_id\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
             "method": "POST"
           }
         },
@@ -1018,7 +1172,7 @@
           "root_selector": "mediaList",
           "source": "url",
           "type": "json",
-          "url": "/integrationlayer/2.0/mediaList/byUrns?urns=${live_ids_str}",
+          "url": "/integrationlayer/2.0/mediaList/byUrns?urns=${urns_str}",
           "url_options": {
             "body_content_type": "text/plain",
             "body_type": "raw",
@@ -1027,7 +1181,7 @@
           }
         }
       ],
-      "title": "Livestreams",
+      "title": "Episodes",
       "transformations": [
         {
           "id": "joinByField",
@@ -1068,7 +1222,7 @@
               "sessions A": "Sessions",
               "thumbnail metadata": " ",
               "title metadata": "Title",
-              "validFrom metadata": "Start Date"
+              "validFrom metadata": "Date"
             }
           }
         }
@@ -1223,7 +1377,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 22
+        "y": 25
       },
       "id": 6,
       "options": {
@@ -1279,7 +1433,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -1324,7 +1478,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -1475,9 +1629,9 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 22
+        "y": 25
       },
-      "id": 9,
+      "id": 7,
       "options": {
         "annotations": {
           "clustering": -1,
@@ -1534,7 +1688,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "error",
           "timeField": "@timestamp"
@@ -1564,7 +1718,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "playing",
           "timeField": "@timestamp"
@@ -1751,7 +1905,7 @@
                 "value": [
                   {
                     "title": "Filter by ${__value.raw}",
-                    "url": "/d/cegsn2q0xrncwb/live-breakdowna?var-bu=${bu}&from=${__from}h&to=${__to}to&var-interval=${interval}&var-platform=${__value.raw}&var-type=${type}"
+                    "url": "/d/jo4n98m/show-breakdown?var-show${show}&from=${__from}h&to=${__to}to&var-interval=${interval}&var-platform=${__value.raw}"
                   }
                 ]
               }
@@ -1763,9 +1917,9 @@
         "h": 9,
         "w": 10,
         "x": 0,
-        "y": 31
+        "y": 34
       },
-      "id": 11,
+      "id": 8,
       "options": {
         "cellHeight": "sm",
         "enablePagination": true,
@@ -1793,7 +1947,7 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"terms\": { \"session.media.id\": ${live_ids:json} }},\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_platform\": {\n      \"terms\": {\n        \"field\": \"session.player.platform\",\n        \"size\": 500,\n        \"order\": { \"errors\": \"desc\" }\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"terms\": { \"session.media.id\": ${urns:json} }},\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_platform\": {\n      \"terms\": {\n        \"field\": \"session.player.platform\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
             "method": "POST"
           }
         }
@@ -1833,7 +1987,7 @@
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
-        "uid": "cepet3yzpalfke"
+        "uid": "fegaynyd0mz9cc"
       },
       "fieldConfig": {
         "defaults": {
@@ -1848,8 +2002,7 @@
             "footer": {
               "reducers": []
             },
-            "inspect": false,
-            "minWidth": 100
+            "inspect": false
           },
           "thresholds": {
             "mode": "absolute",
@@ -1870,14 +2023,14 @@
             "properties": [
               {
                 "id": "filterable",
-                "value": false
+                "value": null
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "starts"
+              "options": "sessions"
             },
             "properties": [
               {
@@ -1909,6 +2062,12 @@
                 "value": "percentunit"
               },
               {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
                 "id": "thresholds",
                 "value": {
                   "mode": "absolute",
@@ -1923,54 +2082,54 @@
                     }
                   ]
                 }
-              },
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "application"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "${__value.raw} breakdown",
+                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=${interval}&orgId=1&from=${__from}&to=${__to}&var-platform=${platform}&var-application=${__value.text}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50"
+            },
+            "properties": [
               {
                 "id": "custom.cellOptions",
                 "value": {
                   "type": "color-text"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "player_name"
-            },
-            "properties": [
-              {
-                "id": "custom.filterable",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "player_version"
-            },
-            "properties": [
-              {
-                "id": "custom.filterable",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "p50_load_time"
-            },
-            "properties": [
+              },
               {
                 "id": "unit",
                 "value": "ms"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
               },
               {
                 "id": "thresholds",
@@ -2008,13 +2167,12 @@
         "h": 9,
         "w": 14,
         "x": 10,
-        "y": 31
+        "y": 34
       },
-      "id": 14,
+      "id": 9,
       "options": {
         "cellHeight": "sm",
         "enablePagination": true,
-        "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
@@ -2026,54 +2184,76 @@
       "pluginVersion": "13.0.1",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "application",
+              "text": "application",
+              "type": "string"
+            },
+            {
+              "selector": "errors",
+              "text": "errors",
+              "type": "number"
+            },
+            {
+              "selector": "starts",
+              "text": "sessions",
+              "type": "number"
+            },
+            {
+              "selector": "p50_load_time",
+              "text": "p50",
+              "type": "number"
+            },
+            {
+              "selector": "error_rate",
+              "text": "error_rate",
+              "type": "number"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
-            "uid": "cepet3yzpalfke"
+            "uid": "fegaynyd0mz9cc"
           },
           "filters": [],
           "format": "table",
           "global_query_id": "",
           "parser": "backend",
           "refId": "A",
-          "root_selector": "$map(aggregations.by_player_combo.buckets, function($bucket) {\n  {\n    \"player_name\": $bucket.key[0],\n    \"player_version\": $bucket.key[1],\n    \"player_platform\": $bucket.key[2],\n    \"starts\": $bucket.starts.doc_count,\n    \"errors\": $bucket.errors.doc_count,\n    \"error_rate\": $bucket.error_rate.value,\n    \"p50_load_time\": $bucket.p50_load_time.percentile.values.\"50.0\"\n  }\n})",
+          "root_selector": "$append(\n  $map(aggregations.web_apps.by_application.buckets, function($b) {\n    {\n      \"application\": $b.key,\n      \"starts\": $b.starts.doc_count,\n      \"errors\": $b.errors.doc_count,\n      \"error_rate\": $b.error_rate.value,\n      \"p50_load_time\": $b.p50_load_time.percentile.values.\"50.0\"\n    }\n  }),\n  $map(aggregations.mobile_apps.by_application.buckets, function($b) {\n    {\n      \"application\": $b.key,\n      \"starts\": $b.starts.doc_count,\n      \"errors\": $b.errors.doc_count,\n      \"error_rate\": $b.error_rate.value,\n      \"p50_load_time\": $b.p50_load_time.percentile.values.\"50.0\"\n    }\n  })\n)",
           "source": "url",
           "type": "json",
           "url": "",
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"terms\": { \"session.media.id\": ${live_ids:json} } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_player_combo\": {\n      \"multi_terms\": {\n        \"terms\": [\n          { \"field\": \"session.player.name\" },\n          { \"field\": \"session.player.version\" },\n          { \"field\": \"session.player.platform\" }\n        ],\n        \"size\": 3000,\n        \"order\": { \"errors\": \"desc\" }\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"terms\": { \"session.media.id\": ${urns:json} }},\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"web_apps\": {\n      \"filter\": {\n        \"bool\": {\n          \"must_not\": [\n            { \"terms\": { \"session.player.platform\": [\"Android\", \"android\", \"Apple\"] } }\n          ]\n        }\n      },\n      \"aggs\": {\n        \"by_application\": {\n          \"terms\": {\n            \"field\": \"session.media.short_origin\",\n            \"size\": 500\n          },\n          \"aggs\": {\n            \"errors\": {\n              \"filter\": {\n                \"bool\": {\n                  \"filter\": [\n                    { \"term\": { \"event_name\": \"ERROR\" } },\n                    { \"term\": { \"data.business_error\": false } }\n                  ],\n                  \"must_not\": [\n                    { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n                  ]\n                }\n              }\n            },\n            \"starts\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } }\n            },\n            \"error_rate\": {\n              \"bucket_script\": {\n                \"buckets_path\": { \"err\": \"errors>_count\", \"sess\": \"starts>_count\" },\n                \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n              }\n            },\n            \"p50_load_time\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } },\n              \"aggs\": {\n                \"percentile\": {\n                  \"percentiles\": {\n                    \"field\": \"session.qoe_timings.total\",\n                    \"percents\": [50]\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    },\n\n    \"mobile_apps\": {\n      \"filter\": {\n        \"terms\": { \"session.player.platform\": [\"Android\", \"android\", \"Apple\"] }\n      },\n      \"aggs\": {\n        \"by_application\": {\n          \"terms\": {\n            \"field\": \"session.application.id\",\n            \"size\": 500\n          },\n          \"aggs\": {\n            \"errors\": {\n              \"filter\": {\n                \"bool\": {\n                  \"filter\": [\n                    { \"term\": { \"event_name\": \"ERROR\" } },\n                    { \"term\": { \"data.business_error\": false } }\n                  ],\n                  \"must_not\": [\n                    { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n                  ]\n                }\n              }\n            },\n            \"starts\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } }\n            },\n            \"error_rate\": {\n              \"bucket_script\": {\n                \"buckets_path\": { \"err\": \"errors>_count\", \"sess\": \"starts>_count\" },\n                \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n              }\n            },\n            \"p50_load_time\": {\n              \"filter\": { \"term\": { \"event_name\": \"START\" } },\n              \"aggs\": {\n                \"percentile\": {\n                  \"percentiles\": {\n                    \"field\": \"session.qoe_timings.total\",\n                    \"percents\": [50]\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
             "method": "POST"
           }
         }
       ],
-      "title": "Most Conflicting Player Versions",
+      "title": "Most conflicting Applications",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "player_platform": false
+              "p50": false
             },
             "includeByName": {},
             "indexByName": {
-              "error_rate": 6,
-              "errors": 3,
-              "p50_load_time": 5,
-              "player_name": 0,
-              "player_platform": 1,
-              "player_version": 2,
-              "starts": 4
+              "application": 0,
+              "error_rate": 4,
+              "errors": 1,
+              "p50": 3,
+              "sessions": 2
             },
             "renameByName": {
+              "application": "Application",
               "error_rate": "Error Rate",
               "errors": "Errors",
-              "p50_load_time": "Load Time",
-              "player_name": "Name",
-              "player_platform": "Platform",
-              "player_version": "version",
-              "starts": "Sessions"
+              "p50": "Load Time",
+              "sessions": "Sessions"
             }
           }
         }
@@ -2260,9 +2440,9 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 43
       },
-      "id": 7,
+      "id": 10,
       "options": {
         "cellHeight": "sm",
         "enablePagination": true,
@@ -2299,7 +2479,7 @@
               "type": "logs"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${live_ids}\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.media.id:${urns}\nAND data.business_error:false",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -2463,18 +2643,6 @@
       "type": "table"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 52
-      },
-      "id": 20,
-      "title": "Metrics",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
@@ -2510,7 +2678,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -2618,9 +2786,9 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 53
+        "y": 55
       },
-      "id": 13,
+      "id": 11,
       "options": {
         "annotations": {
           "clustering": -1,
@@ -2673,7 +2841,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
+          "query": "event_name:START\nAND session.media.id:${urns}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -2748,7 +2916,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 53
+        "y": 55
       },
       "id": 12,
       "options": {
@@ -2800,7 +2968,7 @@
               "type": "count"
             }
           ],
-          "query": "event_name:START\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}\nAND session.qoe_timings.total:[* TO $p95]",
+          "query": "event_name:START\nAND session.media.id:${urns}\nAND session.player.platform:${platform}\nAND session.qoe_timings.total:[* TO $p95]",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -2810,377 +2978,23 @@
       "type": "barchart"
     },
     {
-      "datasource": {
-        "type": "grafana-opensearch-datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        }
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 0,
-        "y": 63
-      },
-      "id": 17,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "maxHeight": 600,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "Average stall duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource"
-          },
-          "metrics": [
-            {
-              "field": "data.frame_drops",
-              "id": "1",
-              "settings": {
-                "percents": [
-                  "50"
-                ]
-              },
-              "type": "percentiles"
-            }
-          ],
-          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Median Frame Drops",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        }
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 8,
-        "y": 63
-      },
-      "id": 18,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "maxHeight": 600,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "Average stall duration",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource"
-          },
-          "metrics": [
-            {
-              "field": "data.stall.duration",
-              "id": "1",
-              "settings": {
-                "percents": [
-                  "50"
-                ]
-              },
-              "type": "percentiles"
-            }
-          ],
-          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Median Stall Duration",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        }
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 8,
-        "x": 16,
-        "y": 63
-      },
-      "id": 19,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "maxHeight": 600,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "Average stall count",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource"
-          },
-          "metrics": [
-            {
-              "field": "data.stall.count",
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "(event_name:HEARTBEAT OR event_name:STOP)\nAND session.media.id:${live_ids}\nAND session.player.platform:${platform}",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Median Stall Count",
-      "type": "timeseries"
+      "collapsed": false,
+      "id": 13,
+      "title": "Metrics",
+      "type": "row"
     }
   ],
   "preload": false,
   "refresh": "",
   "schemaVersion": 42,
-  "tags": [
-    "hidden"
-  ],
   "templating": {
     "list": [
       {
         "allValue": "*",
         "allowCustomValue": true,
         "current": {
-          "text": "Web",
-          "value": "Web"
+          "text": "Android",
+          "value": "Android"
         },
         "description": "Filter by player platform.",
         "hide": 0,
@@ -3188,92 +3002,8 @@
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": true,
-            "text": "Web",
-            "value": "Web"
-          }
-        ],
+        "options": [],
         "query": "Android, Apple, Web",
-        "skipUrlSync": false,
-        "type": "custom",
-        "valuesFormat": "csv"
-      },
-      {
-        "allValue": "*",
-        "allowCustomValue": false,
-        "current": {
-          "text": "rts",
-          "value": "rts"
-        },
-        "hide": 0,
-        "includeAll": true,
-        "label": "Business Unit",
-        "multi": false,
-        "name": "bu",
-        "options": [
-          {
-            "selected": false,
-            "text": "srf",
-            "value": "srf"
-          },
-          {
-            "selected": true,
-            "text": "rts",
-            "value": "rts"
-          },
-          {
-            "selected": false,
-            "text": "rsi",
-            "value": "rsi"
-          },
-          {
-            "selected": false,
-            "text": "rtr",
-            "value": "rtr"
-          }
-        ],
-        "query": "srf, rts, rsi, rtr",
-        "skipUrlSync": false,
-        "type": "custom",
-        "valuesFormat": "csv"
-      },
-      {
-        "allValue": "*",
-        "allowCustomValue": false,
-        "current": {
-          "text": "$__all",
-          "value": "$__all"
-        },
-        "hide": 0,
-        "includeAll": true,
-        "label": "Type",
-        "multi": false,
-        "name": "type",
-        "options": [
-          {
-            "selected": false,
-            "text": "audio",
-            "value": "audio"
-          },
-          {
-            "selected": false,
-            "text": "video",
-            "value": "video"
-          }
-        ],
-        "query": "audio, video",
         "skipUrlSync": false,
         "type": "custom",
         "valuesFormat": "csv"
@@ -3289,16 +3019,6 @@
         "hide": 0,
         "name": "interval",
         "options": [
-          {
-            "selected": false,
-            "text": "10s",
-            "value": "10s"
-          },
-          {
-            "selected": false,
-            "text": "30s",
-            "value": "30s"
-          },
           {
             "selected": false,
             "text": "1m",
@@ -3350,9 +3070,26 @@
             "value": "30d"
           }
         ],
-        "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "skipUrlSync": false,
         "type": "interval"
+      },
+      {
+        "allowCustomValue": true,
+        "current": {
+          "text": "urn:rts:show:tv:5917099",
+          "value": "urn:rts:show:tv:5917099"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Show",
+        "multi": false,
+        "name": "show",
+        "options": [],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allowCustomValue": false,
@@ -3362,34 +3099,34 @@
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
-          "uid": "fegaynyd0mz9cc"
+          "uid": "cef4oofzuaayof"
         },
         "definition": "",
         "hide": 2,
         "includeAll": true,
         "multi": false,
-        "name": "live_ids",
+        "name": "urns",
         "options": [],
         "query": {
           "infinityQuery": {
             "columns": [],
+            "data": "values\nfoo\nbar\nbaz",
             "filters": [],
             "format": "table",
             "parser": "backend",
-            "refId": "variable",
-            "root_selector": "aggregations.top_ids.buckets.key",
+            "refId": "",
+            "root_selector": "episodeList.fullLengthUrn",
             "source": "url",
             "type": "json",
-            "url": "",
+            "url": "https://il.srgssr.ch/integrationlayer/2.0/episodeComposition/latestByShow/byUrn/${show}?vector=srgplay&pageSize=50",
             "url_options": {
-              "body_content_type": "application/json",
-              "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\",\"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 50\n      }\n    }\n  }\n}\n",
-              "headers": [],
-              "method": "POST"
+              "data": "",
+              "method": "GET"
             }
           },
-          "query": "",
+          "meta": {
+            "valueField": "variable"
+          },
           "queryType": "infinity",
           "refId": "variable"
         },
@@ -3403,8 +3140,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "urn:rts:audio:3262320,urn:rts:audio:3262363,urn:rts:video:3608506,urn:rts:video:8841634,urn:rts:ssatr:audio:rsc-fr,urn:rts:ssatr:audio:rsj,urn:rts:ssatr:audio:rsp,urn:rts:video:3608517,urn:rts:audio:3262364,urn:swisstxt:video:rts:d5b598b31f82456fbd84ec4cc3a77479,urn:rts:audio:3262362,urn:swisstxt:video:rts:247fcc18b7ff412797ad107f36e7a7cd,urn:rts:video:1967124,urn:rts:video:ceadd256-9537-32d3-84cf-dc2d9511e898,urn:rts:video:daff63b8-a038-3764-9669-2cbfe357614b,urn:rts:video:e2a8d148-2a65-34c9-b8cf-05bbc18de3e7,urn:rts:video:87b5963c-0062-310a-ad7f-4da1fbd7d159,urn:rts:scheduled_livestream:video:1b05bf9b-2c5b-4159-be90-0619ce84c795,urn:rts:video:91ed3d9e-1e18-3495-b98b-03a06fe2ce57,urn:rts:scheduled_livestream:video:d5b598b3-1f82-456f-bd84-ec4cc3a77479,urn:rts:scheduled_livestream:video:247fcc18-b7ff-4127-97ad-107f36e7a7cd,urn:rts:video:3f680179-7f28-3f5f-8c03-690e6177e7d9,urn:rts:scheduled_livestream:video:e5027f97-0cf8-4d61-bc73-a33a2683abdf,urn:rts:video:f36d4003-71ed-3dd3-b110-4903cd62901f",
-          "value": "urn:rts:audio:3262320,urn:rts:audio:3262363,urn:rts:video:3608506,urn:rts:video:8841634,urn:rts:ssatr:audio:rsc-fr,urn:rts:ssatr:audio:rsj,urn:rts:ssatr:audio:rsp,urn:rts:video:3608517,urn:rts:audio:3262364,urn:swisstxt:video:rts:d5b598b31f82456fbd84ec4cc3a77479,urn:rts:audio:3262362,urn:swisstxt:video:rts:247fcc18b7ff412797ad107f36e7a7cd,urn:rts:video:1967124,urn:rts:video:ceadd256-9537-32d3-84cf-dc2d9511e898,urn:rts:video:daff63b8-a038-3764-9669-2cbfe357614b,urn:rts:video:e2a8d148-2a65-34c9-b8cf-05bbc18de3e7,urn:rts:video:87b5963c-0062-310a-ad7f-4da1fbd7d159,urn:rts:scheduled_livestream:video:1b05bf9b-2c5b-4159-be90-0619ce84c795,urn:rts:video:91ed3d9e-1e18-3495-b98b-03a06fe2ce57,urn:rts:scheduled_livestream:video:d5b598b3-1f82-456f-bd84-ec4cc3a77479,urn:rts:scheduled_livestream:video:247fcc18-b7ff-4127-97ad-107f36e7a7cd,urn:rts:video:3f680179-7f28-3f5f-8c03-690e6177e7d9,urn:rts:scheduled_livestream:video:e5027f97-0cf8-4d61-bc73-a33a2683abdf,urn:rts:video:f36d4003-71ed-3dd3-b110-4903cd62901f"
+          "text": "urn:rts:video:a257a166-9308-3db3-9c77-8d21c473ac47,urn:rts:video:05db3f8a-1967-3552-9564-4061b3d461a8,urn:rts:video:855dbd3a-2480-3adf-b84e-6e65643387eb,urn:rts:video:14c418e6-e296-3aac-b4e1-abc319391fb1,urn:rts:video:5f9c7830-a41b-33fa-80ec-3d55f8971582,urn:rts:video:0a8b8cd3-bff9-3e9e-8ac8-dc77bd1f95fa,urn:rts:video:fc97c07a-6665-38af-9640-5a30ee4dcf18,urn:rts:video:8be3d4df-ce46-3852-b62a-63e65b62f755,urn:rts:video:4472a3b0-b153-380e-9cb0-cb9268c6245b,urn:rts:video:c6fb2b89-28dd-3e9a-9053-b7968f9871ff,urn:rts:video:9928ae59-0c09-387e-aaf4-ef76eec5dc7e,urn:rts:video:69720a72-9a63-3388-aefa-3e0a445461ce,urn:rts:video:ff1b5ed5-9eb5-3379-bcd1-b684ac4870f8,urn:rts:video:3cd98958-6638-36b7-b390-0730399de03b,urn:rts:video:374ca194-ddea-34cd-b9d7-abd24ee8034a,urn:rts:video:e743a9c9-cb05-3a76-93e9-4c8cbf343427,urn:rts:video:72d0c898-8a14-3ad5-9d5b-645a6c198afa,urn:rts:video:1028a958-dd74-3149-8828-fbeb0ed9a12d,urn:rts:video:b227ab6b-18df-37af-a781-eb70a2c517e3,urn:rts:video:11dca5a5-408b-3f63-bbda-67a890f7a451,urn:rts:video:8f809ab4-cf30-3fe7-a08b-be16918bde6f,urn:rts:video:0ce0eea9-aa98-32e9-b9fa-20631742659d,urn:rts:video:d6ef9dc2-fdb4-3935-8fba-98ca328b5436,urn:rts:video:063f9f75-bd11-3b4e-9573-fa3af185e28a,urn:rts:video:76870878-327b-383b-b785-1c68405e0de9,urn:rts:video:343dd1fb-6ecb-3244-82fb-ed9f6bdd5bdc,urn:rts:video:c32720c8-2b1c-3fdc-851c-636459be2af5,urn:rts:video:e94dc925-807b-3a0b-9700-2e4890014fd8,urn:rts:video:b00dd9af-80bd-3409-9bcd-50de54ca5b75,urn:rts:video:8b3c0671-3664-3518-ac33-f8d52854cdbd,urn:rts:video:622c4174-3a9f-3a6b-ade8-6975932fc5b7,urn:rts:video:eaa59321-e295-39ba-9864-903b580cd801,urn:rts:video:d23314d1-ec0f-3b4b-b71a-f6b9ea4fa6a1,urn:rts:video:ca35353f-4a6a-3561-92b0-ef6c822fd60a,urn:rts:video:1b614e27-f076-3189-aed1-9c25686ce4e9,urn:rts:video:23f044b9-863d-3b7e-bac8-914581d96e23,urn:rts:video:aa0b50a0-08c1-3fce-acce-9e006470d6c5,urn:rts:video:a4147b51-a93c-38ad-99be-7599e47bb49c,urn:rts:video:cda82905-5fc1-37eb-877b-e972bdd0b337,urn:rts:video:4a82abdf-5f40-31fa-b62b-c6565c61a045,urn:rts:video:f28d4fd7-310d-3f7c-9916-2896a2da08fc,urn:rts:video:791ebae7-2454-33ea-b470-e406ff8429d7,urn:rts:video:958f1c85-ae5c-376e-aac8-bf7bed2c612b,urn:rts:video:908f1eea-b419-396c-8735-079e3de69656,urn:rts:video:36e90933-8ad4-3455-9f36-95119a73604a,urn:rts:video:1bcf8129-ae22-3d46-9500-9ae6a0df4059,urn:rts:video:15529320,urn:rts:video:15522843,urn:rts:video:15514974,urn:rts:video:15503072",
+          "value": "urn:rts:video:a257a166-9308-3db3-9c77-8d21c473ac47,urn:rts:video:05db3f8a-1967-3552-9564-4061b3d461a8,urn:rts:video:855dbd3a-2480-3adf-b84e-6e65643387eb,urn:rts:video:14c418e6-e296-3aac-b4e1-abc319391fb1,urn:rts:video:5f9c7830-a41b-33fa-80ec-3d55f8971582,urn:rts:video:0a8b8cd3-bff9-3e9e-8ac8-dc77bd1f95fa,urn:rts:video:fc97c07a-6665-38af-9640-5a30ee4dcf18,urn:rts:video:8be3d4df-ce46-3852-b62a-63e65b62f755,urn:rts:video:4472a3b0-b153-380e-9cb0-cb9268c6245b,urn:rts:video:c6fb2b89-28dd-3e9a-9053-b7968f9871ff,urn:rts:video:9928ae59-0c09-387e-aaf4-ef76eec5dc7e,urn:rts:video:69720a72-9a63-3388-aefa-3e0a445461ce,urn:rts:video:ff1b5ed5-9eb5-3379-bcd1-b684ac4870f8,urn:rts:video:3cd98958-6638-36b7-b390-0730399de03b,urn:rts:video:374ca194-ddea-34cd-b9d7-abd24ee8034a,urn:rts:video:e743a9c9-cb05-3a76-93e9-4c8cbf343427,urn:rts:video:72d0c898-8a14-3ad5-9d5b-645a6c198afa,urn:rts:video:1028a958-dd74-3149-8828-fbeb0ed9a12d,urn:rts:video:b227ab6b-18df-37af-a781-eb70a2c517e3,urn:rts:video:11dca5a5-408b-3f63-bbda-67a890f7a451,urn:rts:video:8f809ab4-cf30-3fe7-a08b-be16918bde6f,urn:rts:video:0ce0eea9-aa98-32e9-b9fa-20631742659d,urn:rts:video:d6ef9dc2-fdb4-3935-8fba-98ca328b5436,urn:rts:video:063f9f75-bd11-3b4e-9573-fa3af185e28a,urn:rts:video:76870878-327b-383b-b785-1c68405e0de9,urn:rts:video:343dd1fb-6ecb-3244-82fb-ed9f6bdd5bdc,urn:rts:video:c32720c8-2b1c-3fdc-851c-636459be2af5,urn:rts:video:e94dc925-807b-3a0b-9700-2e4890014fd8,urn:rts:video:b00dd9af-80bd-3409-9bcd-50de54ca5b75,urn:rts:video:8b3c0671-3664-3518-ac33-f8d52854cdbd,urn:rts:video:622c4174-3a9f-3a6b-ade8-6975932fc5b7,urn:rts:video:eaa59321-e295-39ba-9864-903b580cd801,urn:rts:video:d23314d1-ec0f-3b4b-b71a-f6b9ea4fa6a1,urn:rts:video:ca35353f-4a6a-3561-92b0-ef6c822fd60a,urn:rts:video:1b614e27-f076-3189-aed1-9c25686ce4e9,urn:rts:video:23f044b9-863d-3b7e-bac8-914581d96e23,urn:rts:video:aa0b50a0-08c1-3fce-acce-9e006470d6c5,urn:rts:video:a4147b51-a93c-38ad-99be-7599e47bb49c,urn:rts:video:cda82905-5fc1-37eb-877b-e972bdd0b337,urn:rts:video:4a82abdf-5f40-31fa-b62b-c6565c61a045,urn:rts:video:f28d4fd7-310d-3f7c-9916-2896a2da08fc,urn:rts:video:791ebae7-2454-33ea-b470-e406ff8429d7,urn:rts:video:958f1c85-ae5c-376e-aac8-bf7bed2c612b,urn:rts:video:908f1eea-b419-396c-8735-079e3de69656,urn:rts:video:36e90933-8ad4-3455-9f36-95119a73604a,urn:rts:video:1bcf8129-ae22-3d46-9500-9ae6a0df4059,urn:rts:video:15529320,urn:rts:video:15522843,urn:rts:video:15514974,urn:rts:video:15503072"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -3414,29 +3151,25 @@
         "hide": 2,
         "includeAll": false,
         "multi": false,
-        "name": "live_ids_str",
+        "name": "urns_str",
         "options": [],
         "query": {
           "infinityQuery": {
             "columns": [],
-            "data": "${live_ids:json}",
+            "data": "${urns:json}",
             "filters": [],
             "format": "table",
             "parser": "backend",
-            "refId": "variable",
+            "refId": "",
             "root_selector": "$join($, \",\")",
             "source": "inline",
             "type": "json",
             "url": "",
             "url_options": {
-              "body_content_type": "application/json",
-              "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\"HEARTBEAT\", \"STOP\"]\n          }\n        },\n        {\n          \"terms\": {\n            \"session.player.platform\": [\"Android\", \"Apple\"]\n          }\n        },\n        {\n          \"term\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.stream_type\": \"Live\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"top_ids\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 50\n      }\n    }\n  }\n}\n",
-              "headers": [],
-              "method": "POST"
+              "data": "",
+              "method": "GET"
             }
           },
-          "query": "",
           "queryType": "infinity",
           "refId": "variable"
         },
@@ -3450,8 +3183,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "6055.657721881325",
-          "value": "6055.657721881325"
+          "text": "4863.3180500125245",
+          "value": "4863.3180500125245"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -3478,7 +3211,7 @@
             "url_options": {
               "body_content_type": "application/json",
               "body_type": "raw",
-              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\": { \"event_name\": \"START\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"p95\": {\n      \"percentiles\": {\n        \"field\": \"session.qoe_timings.total\",\n        \"percents\": [95]\n      }\n    }\n  }\n}\n",
+              "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"term\": { \"event_name\": \"START\" } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"p95\": {\n      \"percentiles\": {\n        \"field\": \"session.qoe_timings.total\",\n        \"percents\": [95]\n      }\n    }\n  }\n}\n",
               "method": "POST"
             }
           },
@@ -3515,8 +3248,8 @@
       "1d"
     ]
   },
-  "timezone": "Europe/Zurich",
-  "title": "Live Breakdown",
-  "uid": "cegsn2q0xrncwb",
-  "version": 47
+  "timezone": "browser",
+  "title": "Show Breakdown",
+  "uid": "jo4n98m",
+  "version": 8
 }

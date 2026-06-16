@@ -23,6 +23,664 @@
   "panels": [
     {
       "datasource": {
+        "type": "grafana-opensearch-datasource"
+      },
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "playing",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "3",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "playing",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "error",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "error",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Success Rate",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "rowsToFields",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "errorRate",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "error"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "playing"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "successRate",
+            "binary": {
+              "left": {
+                "fixed": "1"
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "errorRate"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "successRate"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0.3
+              }
+            ]
+          },
+          "unit": "percentunit"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 3,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "playing",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "3",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "playing",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "block",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "block",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Block Rate",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "rowsToFields",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "blockRate",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "block"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "playing"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "blockRate"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "This timeline illustrates the specific time intervals during which access to media by the current IP address was restricted based on its geographical location.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "ERROR": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Geoblocked"
+                },
+                "HEARTBEAT": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Unrestricted"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Activity"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Geoblock"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VPN Detected"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 18,
+        "x": 6,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "Starts",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "Sessions",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Geoblock",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.block_reason:GEOBLOCK",
+          "queryType": "lucene",
+          "refId": "geoblock",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "user_ip:\"${user_ip}\" \nAND event_name:ERROR \nAND data.business_error:false",
+          "queryType": "lucene",
+          "refId": "Errors",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "VPN Detected",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.block_reason:VPNORPROXYDETECTED",
+          "queryType": "lucene",
+          "refId": "vpn_detected",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Restriction Timeline",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
@@ -51,7 +709,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 0
+        "y": 5
       },
       "id": 4,
       "options": {
@@ -253,467 +911,6 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The total number of sessions for the selected period.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "short"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      },
-      "id": 1,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "Sessions",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Total number of sessions",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource"
-      },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "green",
-                "value": 0.95
-              }
-            ]
-          },
-          "unit": "percentunit"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "barShape": "flat",
-        "barWidthFactor": 0.5,
-        "effects": {
-          "barGlow": false,
-          "centerGlow": false,
-          "gradient": false
-        },
-        "endpointMarker": "point",
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "segmentCount": 1,
-        "segmentSpacing": 0.3,
-        "shape": "gauge",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto",
-        "sparkline": false,
-        "textMode": "value"
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "playing",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource"
-          },
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "3",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "playing",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "error",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "error",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Success Rate",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "sum"
-            ]
-          }
-        },
-        {
-          "id": "rowsToFields",
-          "options": {}
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "errorRate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "error"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "playing"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "successRate",
-            "binary": {
-              "left": {
-                "fixed": "1"
-              },
-              "operator": "-",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "errorRate"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "successRate"
-              ]
-            }
-          }
-        }
-      ],
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 0.3
-              }
-            ]
-          },
-          "unit": "percentunit"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 0
-      },
-      "id": 5,
-      "options": {
-        "barShape": "flat",
-        "barWidthFactor": 0.5,
-        "effects": {
-          "barGlow": false,
-          "centerGlow": false,
-          "gradient": false
-        },
-        "endpointMarker": "point",
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "segmentCount": 1,
-        "segmentSpacing": 0.3,
-        "shape": "gauge",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto",
-        "sparkline": false,
-        "textMode": "value"
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "playing",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "3",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "playing",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "block",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "block",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Block Rate",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "sum"
-            ]
-          }
-        },
-        {
-          "id": "rowsToFields",
-          "options": {}
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "blockRate",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "block"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "playing"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "blockRate"
-              ]
-            }
-          }
-        }
-      ],
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -902,7 +1099,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 13
       },
       "id": 3,
       "options": {
@@ -1132,6 +1329,190 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
+      "description": "The breakdown of blocking reasons for the selected period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "STARTDATE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "GEOBLOCK"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ENDDATE"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AGERATING12"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LEGAL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "UNKNOWN"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "data.block_reason",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "0",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.device.id:${device_id}",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Block Reason Breakdown",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
       "description": "Error Type Breakdown for the selected browser and time range.",
       "fieldConfig": {
         "defaults": {
@@ -1272,16 +1653,16 @@
         ]
       },
       "gridPos": {
-        "h": 13,
-        "w": 8,
-        "x": 0,
-        "y": 20
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 25
       },
       "id": 6,
       "options": {
         "legend": {
           "displayMode": "table",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true,
           "values": [
             "percent",
@@ -1345,415 +1726,11 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The breakdown of blocking reasons for the selected period.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "STARTDATE"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "GEOBLOCK"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ENDDATE"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AGERATING12"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "LEGAL"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 8,
-        "x": 8,
-        "y": 20
-      },
-      "id": 7,
-      "options": {
-        "displayLabels": [],
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "values": [
-            "percent",
-            "value"
-          ]
-        },
-        "pieType": "donut",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "sort": "desc",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "data.block_reason",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "0",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND data.business_error:true\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Block Reason Breakdown",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
-      },
-      "description": "This timeline illustrates the specific time intervals during which access to media by the current IP address was restricted based on its geographical location.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [
-            {
-              "options": {
-                "ERROR": {
-                  "color": "red",
-                  "index": 1,
-                  "text": "Geoblocked"
-                },
-                "HEARTBEAT": {
-                  "color": "green",
-                  "index": 0,
-                  "text": "Unrestricted"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Errors"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Activity"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Geoblock"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 8,
-        "x": 16,
-        "y": 20
-      },
-      "id": 8,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "alias": "Starts",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "Sessions",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Geoblock",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND data.block_reason:GEOBLOCK\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "geoblock",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "Errors",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR \nAND data.business_error:false\nAND session.device.id:${device_id}",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "Restriction Timeline",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
-      },
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 34
       },
       "id": 9,
       "options": {
@@ -2084,5 +2061,5 @@
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 20
+  "version": 24
 }

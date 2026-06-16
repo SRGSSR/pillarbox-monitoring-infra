@@ -35,13 +35,13 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
         "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -55,7 +55,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -177,13 +176,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -227,9 +227,11 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -270,7 +272,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -401,15 +404,7 @@
       "id": 44,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -418,7 +413,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [
@@ -464,7 +459,7 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ],\n      \"must_not\": [\n        { \"terms\":  { \"session.player.platform\": [\"Android\", \"android\", \"Apple\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_browser_name\": {\n      \"terms\": {\n        \"field\": \"session.browser.name\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ],\n      \"must_not\": [\n        { \"terms\":  { \"session.player.platform\": [\"Android\", \"android\", \"Apple\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_browser_name\": {\n      \"terms\": {\n        \"field\": \"session.browser.name\",\n        \"size\": 500,\n        \"order\": { \"errors\": \"desc\" }\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": false } }\n              ],\n              \"must_not\": [\n                { \"terms\": { \"data.error_type\": [\"DRM_NOT_SUPPORTED\", \"CONNECTION_ERROR\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        },\n        \"p50_load_time\": {\n          \"filter\": {\n            \"term\": { \"event_name\": \"START\" }\n          },\n          \"aggs\": {\n            \"percentile\": {\n              \"percentiles\": {\n                \"field\": \"session.qoe_timings.total\",\n                \"percents\": [50]\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
             "method": "POST"
           }
         }
@@ -517,7 +512,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -639,13 +633,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -678,7 +673,6 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -692,7 +686,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -804,7 +797,7 @@
                 "id": "custom.hideFrom",
                 "value": {
                   "legend": false,
-                  "tooltip": false,
+                  "tooltip": true,
                   "viz": true
                 }
               }
@@ -838,13 +831,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -905,7 +899,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "noValue": "0",
           "thresholds": {
             "mode": "absolute",
@@ -1071,7 +1064,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -1103,7 +1096,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -1146,7 +1138,6 @@
         "type": "yesoreyeram-infinity-datasource",
         "uid": "cepet3yzpalfke"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1160,7 +1151,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "unit": "short"
         },
         "overrides": [
@@ -1282,13 +1272,14 @@
           "fields": "",
           "values": true
         },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "columns": [],
@@ -1349,7 +1340,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1360,8 +1350,7 @@
             ]
           },
           "unit": "short"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
@@ -1393,7 +1382,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -1425,7 +1414,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "id": "1",
@@ -1465,7 +1453,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "pillarbox"
   ],
@@ -1478,8 +1466,10 @@
           "text": "$__all",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Business Unit",
+        "multi": false,
         "name": "bu",
         "options": [
           {
@@ -1519,7 +1509,9 @@
           }
         ],
         "query": "srf, rts, rsi, rtr, swi, playsuisse",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
@@ -1528,8 +1520,10 @@
           "text": "$__all",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Type",
+        "multi": false,
         "name": "type",
         "options": [
           {
@@ -1544,7 +1538,9 @@
           }
         ],
         "query": "audio, video",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allowCustomValue": false,
@@ -1553,6 +1549,8 @@
           "value": "(true OR false)"
         },
         "hide": 1,
+        "includeAll": false,
+        "multi": false,
         "name": "swisstxt",
         "options": [
           {
@@ -1572,7 +1570,9 @@
           }
         ],
         "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       }
     ]
   },
@@ -1580,9 +1580,22 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Zurich",
   "title": "Browser Fragmentation",
   "uid": "berwlriqtgkcgd",
-  "version": 31
+  "version": 32
 }

@@ -645,8 +645,8 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
+        "h": 11,
+        "w": 13,
         "x": 0,
         "y": 10
       },
@@ -655,7 +655,12 @@
         "cellHeight": "sm",
         "enablePagination": true,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Sessions"
+          }
+        ]
       },
       "pluginVersion": "13.0.1",
       "targets": [
@@ -703,7 +708,7 @@
           "url_options": {
             "body_content_type": "application/json",
             "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_media_id\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": true } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        }\n      }\n    }\n  }\n}",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_media_id\": {\n      \"terms\": {\n        \"field\": \"session.media.id\",\n        \"size\": 500,\n        \"order\": { \"errors\": \"desc\" }\n      },\n      \"aggs\": {\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": true } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"error_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"err\": \"errors>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.err / params.sess : 0\"\n          }\n        }\n      }\n    }\n  }\n}",
             "method": "POST"
           }
         }
@@ -732,176 +737,6 @@
               "media_id": "Media",
               "p50": "Load Time",
               "sessions": "Sessions"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "cepet3yzpalfke"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ip"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "${__value.raw} Breakdown ",
-                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.raw}&from=${__from}&to=${__to}&var-interval=${interval}&var-platform=${platform}"
-                  }
-                ]
-              },
-              {
-                "id": "custom.filterable",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*/"
-            },
-            "properties": [
-              {
-                "id": "filterable",
-                "value": null
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byType",
-              "options": "number"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "custom.width",
-                "value": 130
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 8,
-        "y": 10
-      },
-      "id": 11,
-      "options": {
-        "cellHeight": "sm",
-        "enablePagination": true,
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "13.0.1",
-      "targets": [
-        {
-          "columns": [
-            {
-              "selector": "key",
-              "text": "ip",
-              "type": "string"
-            },
-            {
-              "selector": "geoblock.doc_count",
-              "text": "geoblock",
-              "type": "number"
-            },
-            {
-              "selector": "vpn.doc_count",
-              "text": "vpn",
-              "type": "number"
-            }
-          ],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "cepet3yzpalfke"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "aggregations.by_ip.buckets",
-          "source": "url",
-          "type": "json",
-          "url": "",
-          "url_options": {
-            "body_content_type": "application/json",
-            "body_type": "raw",
-            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        { \"term\": { \"event_name\": \"ERROR\" } },\n        { \"terms\":  { \"data.block_reason\": [\"GEOBLOCK\", \"VPNORPROXYDETECTED\"] }},\n        { \"term\": { \"data.business_error\": true } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_ip\": {\n      \"terms\": {\n        \"field\": \"user_ip\",\n        \"size\": 500\n      },\n      \"aggs\": {\n        \"geoblock\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"terms\":  { \"data.block_reason\": [\"GEOBLOCK\"] }}\n              ]\n            }\n          }\n        },\n        \"vpn\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"terms\":  { \"data.block_reason\": [\"VPNORPROXYDETECTED\"] }}\n              ]\n            }\n          }\n        }\n      }\n    }\n  }\n}",
-            "method": "POST"
-          }
-        }
-      ],
-      "title": "Blocked VPN IPs",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "demo": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "demo": 1,
-              "error_rate": 4,
-              "errors": 2,
-              "ip": 0,
-              "sessions": 3
-            },
-            "renameByName": {
-              "demo": "Demo",
-              "error_rate": "Block Rate",
-              "errors": "VPN Detected",
-              "geoblock": "Geoblocked",
-              "ip": "Ip",
-              "media_id": "Media",
-              "p50": "Load Time",
-              "sessions": "Sessions",
-              "vpn": "VPN Detected"
             }
           }
         }
@@ -1077,9 +912,9 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 16,
+        "h": 11,
+        "w": 11,
+        "x": 13,
         "y": 10
       },
       "id": 6,
@@ -1088,7 +923,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "table",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true,
           "values": [
             "percent",
@@ -1146,6 +981,413 @@
       ],
       "title": "Block Reason Breakdown",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ip"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "${__value.raw} Breakdown ",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.raw}&from=${__from}&to=${__to}&var-interval=${interval}&var-platform=${platform}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "geoblock",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "geoblock_rate",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sessions",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Geoblocked"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "key",
+              "text": "ip",
+              "type": "string"
+            },
+            {
+              "selector": "geoblock.doc_count",
+              "text": "geoblock",
+              "type": "number"
+            },
+            {
+              "selector": "geoblock_rate.value",
+              "text": "geoblock_rate",
+              "type": "number"
+            },
+            {
+              "selector": "starts.doc_count",
+              "text": "sessions",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "aggregations.by_ip.buckets",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        { \"range\": { \"@timestamp\": { \"gte\": \"${__from}\", \"lte\": \"${__to}\" } } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        { \"query_string\": { \"query\": \"session.media.swisstxt:${swisstxt:raw}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_ip\": {\n      \"terms\": {\n        \"field\": \"user_ip\",\n        \"size\": 500,\n        \"order\": { \"geoblock\": \"desc\" }\n      },\n      \"aggs\": {\n        \"geoblock\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": true } },\n                { \"terms\": { \"data.block_reason\": [\"GEOBLOCK\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"geoblock_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"num\": \"geoblock>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.num / params.sess : 0\"\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Most geoblocked IPs",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "demo": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "geoblock": 1,
+              "geoblock_rate": 3,
+              "ip": 0,
+              "sessions": 2
+            },
+            "renameByName": {
+              "demo": "Demo",
+              "error_rate": "Block Rate",
+              "errors": "VPN Detected",
+              "geoblock": "Geoblocked",
+              "geoblock_rate": "Geoblocked Rate",
+              "ip": "Ip",
+              "media_id": "Media",
+              "p50": "Load Time",
+              "sessions": "Sessions",
+              "vpn": "VPN Detected"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ip"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "${__value.raw} Breakdown ",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.raw}&from=${__from}&to=${__to}&var-interval=${interval}&var-platform=${platform}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vpn",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vpn_rate",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sessions",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "VPN Detected"
+          }
+        ]
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "key",
+              "text": "ip",
+              "type": "string"
+            },
+            {
+              "selector": "vpn.doc_count",
+              "text": "vpn",
+              "type": "number"
+            },
+            {
+              "selector": "vpn_rate.value",
+              "text": "vpn_rate",
+              "type": "number"
+            },
+            {
+              "selector": "starts.doc_count",
+              "text": "sessions",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "aggregations.by_ip.buckets",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        { \"range\": { \"@timestamp\": { \"gte\": \"${__from}\", \"lte\": \"${__to}\" } } },\n        { \"wildcard\": { \"session.player.platform\": \"${platform}\" } },\n        { \"wildcard\": { \"session.media.bu\": \"${bu}\" } },\n        { \"wildcard\": { \"session.media.type\": \"${type}\" } },\n        { \"query_string\": { \"query\": \"session.media.swisstxt:${swisstxt:raw}\" } },\n        { \"terms\": { \"event_name\": [\"ERROR\", \"START\"] } }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_ip\": {\n      \"terms\": {\n        \"field\": \"user_ip\",\n        \"size\": 500,\n        \"order\": { \"vpn\": \"desc\" }\n      },\n      \"aggs\": {\n        \"vpn\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                { \"term\": { \"event_name\": \"ERROR\" } },\n                { \"term\": { \"data.business_error\": true } },\n                { \"terms\": { \"data.block_reason\": [\"VPNORPROXYDETECTED\"] } }\n              ]\n            }\n          }\n        },\n        \"starts\": {\n          \"filter\": {\n            \"bool\": {\n              \"must\": [\n                { \"term\": { \"event_name\": \"START\" } }\n              ]\n            }\n          }\n        },\n        \"vpn_rate\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"num\": \"vpn>_count\",\n              \"sess\": \"starts>_count\"\n            },\n            \"script\": \"params.sess > 0 ? params.num / params.sess : 0\"\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Most geoblocked IPs",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "demo": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "ip": 0,
+              "sessions": 2,
+              "vpn": 1,
+              "vpn_rate": 3
+            },
+            "renameByName": {
+              "demo": "Demo",
+              "error_rate": "Block Rate",
+              "errors": "VPN Detected",
+              "geoblock": "Geoblocked",
+              "geoblock_rate": "Rate",
+              "ip": "Ip",
+              "media_id": "Media",
+              "p50": "Load Time",
+              "sessions": "Sessions",
+              "vpn": "VPN Detected",
+              "vpn_rate": "VPN Block Rate"
+            }
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "preload": false,
@@ -1391,5 +1633,5 @@
   "timezone": "Europe/Zurich",
   "title": "Block Reason Report",
   "uid": "cec4zkjaqmdj4e",
-  "version": 29
+  "version": 32
 }

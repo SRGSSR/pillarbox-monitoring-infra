@@ -35,6 +35,7 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -52,9 +53,11 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -78,7 +81,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&var-session_id=${__value.text}﻿&from=﻿${__from}﻿&to=﻿${__to}&var-interval=$__auto"
+                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&var-session_id=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto"
                   }
                 ]
               }
@@ -91,7 +94,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -106,7 +110,8 @@
                 "value": 166
               },
               {
-                "id": "custom.filterable"
+                "id": "custom.filterable",
+                "value": null
               }
             ]
           },
@@ -134,7 +139,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}﻿&from=﻿${__from}﻿&to=${__to}&var-interval=$__auto"
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__from}&to=${__to}&var-interval=$__auto"
                   }
                 ]
               }
@@ -230,6 +235,56 @@
                 ]
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session.media.id",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Play Media",
+                    "url": "https://demo.pillarbox.ch/?src=${__value.raw}&type=srgssr%2Furn"
+                  }
+                ]
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "pattern": ".*",
+                      "result": {
+                        "index": 0,
+                        "text": "Play Media"
+                      }
+                    },
+                    "type": "regex"
+                  }
+                ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": false
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Media"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
           }
         ]
       },
@@ -242,15 +297,7 @@
       "id": 11,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -259,7 +306,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
@@ -357,7 +404,7 @@
               "session.browser.version": false,
               "session.browser.version (lastNotNull)": true,
               "session.device.type": false,
-              "session.media.id": true,
+              "session.media.id": false,
               "session.os.name": true,
               "session.os.name (lastNotNull)": true,
               "session.os.version": false,
@@ -365,14 +412,14 @@
             },
             "includeByName": {},
             "indexByName": {
-              "@timestamp": 3,
+              "@timestamp": 4,
               "data.block_reason": 10,
               "data.business_error": 8,
               "data.error_type": 9,
-              "from": 4,
+              "from": 5,
               "session.device.id": 2,
               "session.device.model": 7,
-              "session.media.id": 5,
+              "session.media.id": 3,
               "session.player.platform": 6,
               "session_id": 0,
               "user_ip": 1
@@ -435,7 +482,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "pillarbox",
     "sessions"
@@ -444,13 +491,16 @@
     "list": [
       {
         "allValue": "*",
+        "allowCustomValue": true,
         "current": {
           "text": "$__all",
           "value": "$__all"
         },
         "description": "Filter by player platform.",
+        "hide": 0,
         "includeAll": true,
         "label": "Platform",
+        "multi": false,
         "name": "platform",
         "options": [
           {
@@ -470,7 +520,9 @@
           }
         ],
         "query": "Android, Apple, Web",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
@@ -479,8 +531,10 @@
           "text": "srf",
           "value": "srf"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Business Unit",
+        "multi": false,
         "name": "bu",
         "options": [
           {
@@ -520,7 +574,9 @@
           }
         ],
         "query": "srf, rts, rsi, rtr, swi, playsuisse",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
@@ -529,8 +585,10 @@
           "text": "video",
           "value": "video"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Type",
+        "multi": false,
         "name": "type",
         "options": [
           {
@@ -545,16 +603,21 @@
           }
         ],
         "query": "audio, video",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
+        "allowCustomValue": true,
         "current": {
           "text": "$__all",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Blocked",
+        "multi": false,
         "name": "business_error",
         "options": [
           {
@@ -569,16 +632,20 @@
           }
         ],
         "query": "Yes : true, No : false",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
-        "baseFilters": [],
+        "allowCustomValue": true,
         "datasource": {
-          "name": "user-events",
-          "type": "grafana-opensearch-datasource"
+          "type": "grafana-opensearch-datasource",
+          "uid": "fef4oi750u39cd"
         },
-        "filters": [],
+        "enableGroupBy": false,
+        "hide": 0,
         "name": "Filter",
+        "skipUrlSync": false,
         "type": "adhoc"
       }
     ]
@@ -587,9 +654,22 @@
     "from": "now-1h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 12
+  "version": 14
 }

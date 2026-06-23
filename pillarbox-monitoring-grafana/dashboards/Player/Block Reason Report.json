@@ -1356,7 +1356,7 @@
           }
         }
       ],
-      "title": "Most geoblocked IPs",
+      "title": "Most Blocked VPN IPs",
       "transformations": [
         {
           "id": "organize",
@@ -1633,5 +1633,5 @@
   "timezone": "Europe/Zurich",
   "title": "Block Reason Report",
   "uid": "cec4zkjaqmdj4e",
-  "version": 32
+  "version": 33
 }

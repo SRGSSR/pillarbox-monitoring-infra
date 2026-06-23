@@ -406,7 +406,7 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "This timeline illustrates the specific time intervals during which access to media by the current IP address was restricted based on its geographical location.",
+      "description": "This timeline illustrates the specific time intervals during which access to media by the current device was restricted based on its geographical location.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -614,7 +614,7 @@
               "type": "count"
             }
           ],
-          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.block_reason:GEOBLOCK",
+          "query": "event_name:ERROR\nAND session.device.id:${device_id}\nAND data.block_reason:GEOBLOCK",
           "queryType": "lucene",
           "refId": "geoblock",
           "timeField": "@timestamp"
@@ -642,7 +642,7 @@
               "type": "count"
             }
           ],
-          "query": "user_ip:\"${user_ip}\" \nAND event_name:ERROR \nAND data.business_error:false",
+          "query": "event_name:ERROR \nAND session.device.id:${device_id}\nAND data.business_error:false",
           "queryType": "lucene",
           "refId": "Errors",
           "timeField": "@timestamp"
@@ -670,7 +670,7 @@
               "type": "count"
             }
           ],
-          "query": "user_ip:\"${user_ip}\"\nAND event_name:ERROR\nAND data.block_reason:VPNORPROXYDETECTED",
+          "query": "event_name:ERROR\nAND session.device.id:${device_id}\nAND data.block_reason:VPNORPROXYDETECTED",
           "queryType": "lucene",
           "refId": "vpn_detected",
           "timeField": "@timestamp"
@@ -2061,5 +2061,5 @@
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 24
+  "version": 26
 }

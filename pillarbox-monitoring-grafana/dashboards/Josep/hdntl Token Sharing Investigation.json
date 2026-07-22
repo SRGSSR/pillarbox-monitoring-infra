@@ -1,0 +1,1543 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Investigation dashboard for shared/replayed Akamai hdntl session tokens. Extracts the hmac from error URLs, counts distinct IPs/sessions per token, and drills down into a single token via the $token variable.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3913825516974080,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "description": "Exact totals computed server-side over ALL shared tokens (bucket_selector + pipeline aggs, up to 10k tokens), not just the rows shown in the table. 'Distinct tokens' is uncapped (cardinality).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "shared_tokens",
+              "text": "Shared tokens",
+              "type": "number"
+            },
+            {
+              "selector": "affected_sessions",
+              "text": "Affected sessions",
+              "type": "number"
+            },
+            {
+              "selector": "affected_ips",
+              "text": "Affected IPs",
+              "type": "number"
+            },
+            {
+              "selector": "total_tokens",
+              "text": "Distinct tokens",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "[{\"shared_tokens\": aggregations.shared_tokens.count, \"affected_sessions\": aggregations.affected_sessions.value, \"affected_ips\": aggregations.affected_ips.value, \"total_tokens\": aggregations.total_tokens.value}]",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.id\": \"${media_id}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.player.platform\": \"${platform}\"\n          }\n        },\n        {\n          \"term\": {\n            \"event_name\": \"ERROR\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.business_error\": false\n          }\n        },\n        {\n          \"wildcard\": {\n            \"data.url\": \"*hdntl=*\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_token\": {\n      \"terms\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('hmac='); if (i < 0) { return 'no-hmac'; } int s = i + 5; int e = u.indexOf('/', s); if (e < 0) { e = u.length(); } return u.substring(s, e);\"\n        },\n        \"size\": 10000,\n        \"order\": {\n          \"ips\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"sessions\": {\n          \"cardinality\": {\n            \"field\": \"session_id\"\n          }\n        },\n        \"ips\": {\n          \"cardinality\": {\n            \"field\": \"user_ip\"\n          }\n        },\n        \"shared_only\": {\n          \"bucket_selector\": {\n            \"buckets_path\": {\n              \"nips\": \"ips\"\n            },\n            \"script\": \"params.nips > 1\"\n          }\n        }\n      }\n    },\n    \"total_tokens\": {\n      \"cardinality\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('hmac='); if (i < 0) { return 'no-hmac'; } int s = i + 5; int e = u.indexOf('/', s); if (e < 0) { e = u.length(); } return u.substring(s, e);\"\n        },\n        \"precision_threshold\": 40000\n      }\n    },\n    \"shared_tokens\": {\n      \"stats_bucket\": {\n        \"buckets_path\": \"by_token>ips\"\n      }\n    },\n    \"affected_sessions\": {\n      \"sum_bucket\": {\n        \"buckets_path\": \"by_token>sessions\"\n      }\n    },\n    \"affected_ips\": {\n      \"sum_bucket\": {\n        \"buckets_path\": \"by_token>ips\"\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Token sharing summary",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "description": "Distribution of hdntl tokens by how many distinct IPs errored with them. Anything right of the first bar is token replay.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 7,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.85,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "IPs per token",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "group",
+              "text": "IPs per token",
+              "type": "string"
+            },
+            {
+              "selector": "tokens",
+              "text": "Tokens",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "($b := aggregations.by_token.buckets; [{\"group\": \"1 IP (not shared)\", \"tokens\": aggregations.total_tokens.value - aggregations.shared_tokens.count}, {\"group\": \"2 IPs\", \"tokens\": $count([$filter($b, function($x) { $x.ips.value = 2 })])}, {\"group\": \"3-5 IPs\", \"tokens\": $count([$filter($b, function($x) { $x.ips.value >= 3 and $x.ips.value <= 5 })])}, {\"group\": \"6-10 IPs\", \"tokens\": $count([$filter($b, function($x) { $x.ips.value >= 6 and $x.ips.value <= 10 })])}, {\"group\": \"11+ IPs\", \"tokens\": $count([$filter($b, function($x) { $x.ips.value > 10 })])}])",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.id\": \"${media_id}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.player.platform\": \"${platform}\"\n          }\n        },\n        {\n          \"term\": {\n            \"event_name\": \"ERROR\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.business_error\": false\n          }\n        },\n        {\n          \"wildcard\": {\n            \"data.url\": \"*hdntl=*\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_token\": {\n      \"terms\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('hmac='); if (i < 0) { return 'no-hmac'; } int s = i + 5; int e = u.indexOf('/', s); if (e < 0) { e = u.length(); } return u.substring(s, e);\"\n        },\n        \"size\": 10000,\n        \"order\": {\n          \"ips\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"sessions\": {\n          \"cardinality\": {\n            \"field\": \"session_id\"\n          }\n        },\n        \"ips\": {\n          \"cardinality\": {\n            \"field\": \"user_ip\"\n          }\n        },\n        \"shared_only\": {\n          \"bucket_selector\": {\n            \"buckets_path\": {\n              \"nips\": \"ips\"\n            },\n            \"script\": \"params.nips > 1\"\n          }\n        }\n      }\n    },\n    \"total_tokens\": {\n      \"cardinality\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('hmac='); if (i < 0) { return 'no-hmac'; } int s = i + 5; int e = u.indexOf('/', s); if (e < 0) { e = u.length(); } return u.substring(s, e);\"\n        },\n        \"precision_threshold\": 40000\n      }\n    },\n    \"shared_tokens\": {\n      \"stats_bucket\": {\n        \"buckets_path\": \"by_token>ips\"\n      }\n    },\n    \"affected_sessions\": {\n      \"sum_bucket\": {\n        \"buckets_path\": \"by_token>sessions\"\n      }\n    },\n    \"affected_ips\": {\n      \"sum_bucket\": {\n        \"buckets_path\": \"by_token>ips\"\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Tokens by number of sharing IPs",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "Errors whose data.url carries an hdntl token, against all errors. A widening hdntl share under load points at token/manifest problems.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "hdntl URL errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "all errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "alias": "hdntl URL errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.url:*hdntl*\nAND data.business_error:false\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "all errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Errors over time: tokenized URLs vs all",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "description": "TOP 500 tokens only - see the summary stat for exact totals. Each row is one hdntl (hmac) from error URLs; IPs > 1 means replayed across users. 'Minted' = exp - 24h. Click a token to drill down.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IPs"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 2
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Token (hmac)"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": false,
+                    "title": "Drill into this token",
+                    "url": "/d/jock5q4/hdntl-token-sharing-investigation?var-token=${__value.text}&from=${__from}&to=${__to}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 560
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "IPs"
+          }
+        ]
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "token",
+              "text": "Token (hmac)",
+              "type": "string"
+            },
+            {
+              "selector": "ips",
+              "text": "IPs",
+              "type": "number"
+            },
+            {
+              "selector": "sessions",
+              "text": "Sessions",
+              "type": "number"
+            },
+            {
+              "selector": "errors",
+              "text": "Errors",
+              "type": "number"
+            },
+            {
+              "selector": "minted",
+              "text": "Minted",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "first_seen",
+              "text": "First error",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "last_seen",
+              "text": "Last error",
+              "type": "timestamp_epoch"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$map(aggregations.by_token.buckets, function($b) {{\"token\": $b.key, \"errors\": $b.doc_count, \"sessions\": $b.sessions.value, \"ips\": $b.ips.value, \"first_seen\": $b.first_seen.value, \"last_seen\": $b.last_seen.value, \"minted\": $b.minted.value}})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.id\": \"${media_id}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.player.platform\": \"${platform}\"\n          }\n        },\n        {\n          \"term\": {\n            \"event_name\": \"ERROR\"\n          }\n        },\n        {\n          \"term\": {\n            \"data.business_error\": false\n          }\n        },\n        {\n          \"wildcard\": {\n            \"data.url\": \"*hdntl=*\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_token\": {\n      \"terms\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('hmac='); if (i < 0) { return 'no-hmac'; } int s = i + 5; int e = u.indexOf('/', s); if (e < 0) { e = u.length(); } return u.substring(s, e);\"\n        },\n        \"size\": 500,\n        \"order\": {\n          \"ips\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"sessions\": {\n          \"cardinality\": {\n            \"field\": \"session_id\"\n          }\n        },\n        \"ips\": {\n          \"cardinality\": {\n            \"field\": \"user_ip\"\n          }\n        },\n        \"first_seen\": {\n          \"min\": {\n            \"field\": \"@timestamp\"\n          }\n        },\n        \"last_seen\": {\n          \"max\": {\n            \"field\": \"@timestamp\"\n          }\n        },\n        \"minted\": {\n          \"max\": {\n            \"script\": {\n              \"lang\": \"painless\",\n              \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('exp='); if (i < 0) { return 0L; } int s = i + 4; int e = u.indexOf('~', s); if (e < 0) { return 0L; } return (Long.parseLong(u.substring(s, e)) - 86400L) * 1000L;\"\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Top 500 hdntl tokens by distinct IPs",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "All events whose data.url contains the selected token, grouped by IP. Media/platform filters are intentionally NOT applied (acl=/* tokens work on any stream).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "user_ip"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "IP Breakdown",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__from}&to=${__to}&var-interval=${interval}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 9,
+        "x": 0,
+        "y": 17
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Count"
+          }
+        ]
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "user_ip",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "100"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            },
+            {
+              "field": "session_id",
+              "id": "3",
+              "type": "cardinality"
+            }
+          ],
+          "query": "data.url:*${token}*",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "IPs using selected token ($token)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "Raw error events whose URL contains the selected token.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "session_id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Session Breakdown",
+                    "url": "/d/bdrf82ou9416ob/session-breakdown?orgId=1&var-session_id=${__value.text}&from=${__from}&to=${__to}&var-interval=${interval}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data.url"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 420
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 15,
+        "x": 9,
+        "y": 17
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "1",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "logs"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.url:*${token}*",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Error events for selected token ($token)",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "@timestamp",
+                "session_id",
+                "user_ip",
+                "session.player.platform",
+                "session.device.model",
+                "data.error_type",
+                "data.message",
+                "data.url"
+              ]
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "@timestamp"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 11,
+      "title": "Token lifetime - ALL media (time range only)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "description": "Events whose hdntl was older than 24h at use, vs all hdntl events (ALL media, time-range only).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "All hdntl events"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 28
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "past_expiry_events",
+              "text": "Past-expiry events",
+              "type": "number"
+            },
+            {
+              "selector": "total_events",
+              "text": "All hdntl events",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "[{\"past_expiry_events\": $sum([$map($filter(aggregations.age.buckets, function($b) { $b.key >= 86400000 }), function($b) { $b.doc_count })]), \"total_events\": $sum([$map(aggregations.age.buckets, function($b) { $b.doc_count })])}]",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"data.url\": \"*hdntl=*\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"age\": {\n      \"histogram\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('exp='); if (i < 0) { return -1L; } int s = i + 4; int e = u.indexOf('~', s); if (e < 0) { return -1L; } long mint = (Long.parseLong(u.substring(s, e)) - 86400L) * 1000L; long ts = doc['@timestamp'].value.toInstant().toEpochMilli(); return ts - mint;\"\n        },\n        \"interval\": 3600000,\n        \"min_doc_count\": 1\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Requests made with expired tokens",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "description": "Every hdntl-carrying event, bucketed by how old its token was when used (event time - mint time). The hdntl lives 24h: bars at >= 24h are requests made with an ALREADY-EXPIRED token.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 6,
+        "y": 28
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.9,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Age (h)",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "age_h",
+              "text": "Age (h)",
+              "type": "number"
+            },
+            {
+              "selector": "events",
+              "text": "Events",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$map(aggregations.age.buckets, function($b) {{\"age_h\": $b.key / 3600000, \"events\": $b.doc_count}})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"data.url\": \"*hdntl=*\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"age\": {\n      \"histogram\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('exp='); if (i < 0) { return -1L; } int s = i + 4; int e = u.indexOf('~', s); if (e < 0) { return -1L; } long mint = (Long.parseLong(u.substring(s, e)) - 86400L) * 1000L; long ts = doc['@timestamp'].value.toInstant().toEpochMilli(); return ts - mint;\"\n        },\n        \"interval\": 3600000,\n        \"min_doc_count\": 1\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Events by token age at use (hours since mint) - ALL media",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "description": "Only time-range filtered (media/platform ignored). Tokens seen in >1 session. 'Active span' = last use - first use. 'Used past exp by' > 0 means the token was still presented AFTER its 24h expiry - the expired_token mechanism.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active span"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Used past exp by"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Token (hmac)"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": false,
+                    "title": "Drill into this token",
+                    "url": "/d/jock5q4/hdntl-token-sharing-investigation?var-token=${__value.text}&from=${__from}&to=${__to}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 520
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Used past exp by"
+          }
+        ]
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "token",
+              "text": "Token (hmac)",
+              "type": "string"
+            },
+            {
+              "selector": "sessions",
+              "text": "Sessions",
+              "type": "number"
+            },
+            {
+              "selector": "ips",
+              "text": "IPs",
+              "type": "number"
+            },
+            {
+              "selector": "medias",
+              "text": "Medias",
+              "type": "number"
+            },
+            {
+              "selector": "events",
+              "text": "Events",
+              "type": "number"
+            },
+            {
+              "selector": "minted",
+              "text": "Minted",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "first_seen",
+              "text": "First use",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "last_seen",
+              "text": "Last use",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "span",
+              "text": "Active span",
+              "type": "number"
+            },
+            {
+              "selector": "past_exp",
+              "text": "Used past exp by",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$map(aggregations.by_token.buckets, function($b) {{\"token\": $b.key, \"sessions\": $b.sessions.value, \"ips\": $b.ips.value, \"medias\": $b.medias.value, \"events\": $b.doc_count, \"minted\": $b.minted.value, \"first_seen\": $b.first_seen.value, \"last_seen\": $b.last_seen.value, \"span\": $b.span.value, \"past_exp\": $b.past_exp.value}})",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"data.url\": \"*hdntl=*\"\n          }\n        }\n      ]\n    }\n  },\n  \"aggs\": {\n    \"by_token\": {\n      \"terms\": {\n        \"script\": {\n          \"lang\": \"painless\",\n          \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('hmac='); if (i < 0) { return 'no-hmac'; } int s = i + 5; int e = u.indexOf('/', s); if (e < 0) { e = u.length(); } return u.substring(s, e);\"\n        },\n        \"size\": 2000,\n        \"order\": {\n          \"past_exp\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"sessions\": {\n          \"cardinality\": {\n            \"field\": \"session_id\"\n          }\n        },\n        \"ips\": {\n          \"cardinality\": {\n            \"field\": \"user_ip\"\n          }\n        },\n        \"medias\": {\n          \"cardinality\": {\n            \"field\": \"session.media.id\"\n          }\n        },\n        \"first_seen\": {\n          \"min\": {\n            \"field\": \"@timestamp\"\n          }\n        },\n        \"last_seen\": {\n          \"max\": {\n            \"field\": \"@timestamp\"\n          }\n        },\n        \"minted\": {\n          \"max\": {\n            \"script\": {\n              \"lang\": \"painless\",\n              \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('exp='); if (i < 0) { return 0L; } int s = i + 4; int e = u.indexOf('~', s); if (e < 0) { return 0L; } return (Long.parseLong(u.substring(s, e)) - 86400L) * 1000L;\"\n            }\n          }\n        },\n        \"past_exp\": {\n          \"max\": {\n            \"script\": {\n              \"lang\": \"painless\",\n              \"source\": \"String u = doc['data.url'].value; int i = u.indexOf('exp='); if (i < 0) { return -9999999999999L; } int s = i + 4; int e = u.indexOf('~', s); if (e < 0) { return -9999999999999L; } long exp = Long.parseLong(u.substring(s, e)) * 1000L; long ts = doc['@timestamp'].value.toInstant().toEpochMilli(); return ts - exp;\"\n            }\n          }\n        },\n        \"span\": {\n          \"bucket_script\": {\n            \"buckets_path\": {\n              \"f\": \"first_seen\",\n              \"l\": \"last_seen\"\n            },\n            \"script\": \"params.l - params.f\"\n          }\n        },\n        \"repeated\": {\n          \"bucket_selector\": {\n            \"buckets_path\": {\n              \"s\": \"sessions\"\n            },\n            \"script\": \"params.s > 1\"\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Token lifetime - repeated tokens, ALL media (worst past-expiry first)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "IPs ordered by distinct devices behind them. An IP with hundreds of devices is a carrier gateway (e.g. mobile CGNAT), not one user - crucial when interpreting Akamai's per-IP counts.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "user_ip"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "IP Breakdown",
+                    "url": "/d/eec91oj0mcirka/ip-breakdown?var-user_ip=${__value.text}&from=${__from}&to=${__to}&var-interval=${interval}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unique Count"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 5
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "user_ip",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "2",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "50"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "field": "session.device.id",
+              "id": "1",
+              "type": "cardinality"
+            },
+            {
+              "field": "session_id",
+              "id": "3",
+              "type": "cardinality"
+            },
+            {
+              "id": "4",
+              "type": "count"
+            }
+          ],
+          "query": "session.device.id:*",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Devices per IP - shared egress / CGNAT detector (ALL media)",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "akamai",
+    "token"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": "*",
+        "allowCustomValue": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "Filter by player platform.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Player Platform",
+        "multi": false,
+        "name": "platform",
+        "options": [],
+        "query": "Android, Apple, Web",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "5s",
+        "current": {
+          "text": "5m",
+          "value": "5m"
+        },
+        "hide": 0,
+        "name": "interval",
+        "options": [],
+        "query": "10s,30s,1m,5m,10m,30m,1h,6h,12h,1d",
+        "skipUrlSync": false,
+        "type": "interval"
+      },
+      {
+        "current": {
+          "text": "urn:swisstxt:video:srf:1835735",
+          "value": "urn:swisstxt:video:srf:1835735"
+        },
+        "hide": 0,
+        "label": "Media ID",
+        "name": "media_id",
+        "query": "urn:swisstxt:video:srf:1835735",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "hdntl",
+          "value": "hdntl"
+        },
+        "hide": 0,
+        "label": "Token (hmac)",
+        "name": "token",
+        "query": "hdntl",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "urn\\:swisstxt\\:video\\:srf\\:1835735",
+          "value": "urn\\:swisstxt\\:video\\:srf\\:1835735"
+        },
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "cef4oofzuaayof"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "media_id_lucene",
+        "options": [],
+        "query": {
+          "infinityQuery": {
+            "columns": [],
+            "data": "[{ \"value\": \"${media_id:raw}\" }]",
+            "filters": [],
+            "format": "table",
+            "parser": "backend",
+            "refId": "",
+            "root_selector": "$[0].value = \"*\" ? \"*\" : $replace($[0].value, \":\", \"\\\\:\")",
+            "source": "inline",
+            "type": "json",
+            "url": "",
+            "url_options": {
+              "data": "",
+              "method": "GET"
+            }
+          },
+          "queryType": "infinity",
+          "refId": "variable"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2026-07-09T19:25:46.328Z",
+    "to": "2026-07-09T23:00:10.103Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "1h"
+    ]
+  },
+  "timezone": "browser",
+  "title": "hdntl Token Sharing Investigation",
+  "uid": "jock5q4",
+  "version": 5
+}

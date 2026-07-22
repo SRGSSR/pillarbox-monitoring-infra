@@ -262,7 +262,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -338,6 +338,16 @@
                       "value": 0.95
                     }
                   ]
+                }
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
                 }
               }
             ]
@@ -2445,7 +2455,12 @@
         "cellHeight": "sm",
         "enablePagination": true,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Timestamp"
+          }
+        ]
       },
       "pluginVersion": "13.0.1",
       "targets": [
@@ -3906,5 +3921,5 @@
   "timezone": "Europe/Zurich",
   "title": "Application Breakdown",
   "uid": "e457800d-b0d9-4531-9285-5ea745b98122",
-  "version": 31
+  "version": 33
 }

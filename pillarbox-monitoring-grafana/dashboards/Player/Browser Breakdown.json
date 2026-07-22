@@ -274,7 +274,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -350,6 +350,16 @@
                       "value": 0.95
                     }
                   ]
+                }
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
                 }
               }
             ]
@@ -3711,5 +3721,5 @@
   "timezone": "Europe/Zurich",
   "title": "Browser Breakdown",
   "uid": "cerwrzn7ypzwga",
-  "version": 45
+  "version": 47
 }

@@ -284,8 +284,8 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "VPN Detected",
-                  "Geoblock"
+                  "Geoblock",
+                  "VPN Detected"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -610,8 +610,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "",
-                    "url": "/d/ae4i3rgkvpdkwd/error-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=$__auto\n"
+                    "title": "Block Reason by Media",
+                    "url": "/d/bec87qxee87wgd/block-reason-breakdown-by-media?var-media_id=${__value.raw}&from=${__from}&to=${__to}&var-interval=${interval}"
                   }
                 ]
               }
@@ -633,7 +633,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Start time"
+            "displayName": "Status"
           }
         ]
       },
@@ -1602,5 +1602,5 @@
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 25
+  "version": 27
 }

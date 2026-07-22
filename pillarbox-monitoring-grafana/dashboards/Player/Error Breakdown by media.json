@@ -889,7 +889,7 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 5,
+        "w": 6,
         "x": 0,
         "y": 12
       },
@@ -1131,8 +1131,8 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 13,
-        "x": 5,
+        "w": 14,
+        "x": 6,
         "y": 12
       },
       "id": 42,
@@ -1229,8 +1229,8 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 6,
-        "x": 18,
+        "w": 4,
+        "x": 20,
         "y": 12
       },
       "id": 18,
@@ -1308,6 +1308,34 @@
           "query": "event_name:START\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
           "queryType": "lucene",
           "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND data.business_error:false\nAND session.media.id:${media_id_lucene:raw}\nAND session.player.platform:${platform}",
+          "queryType": "lucene",
+          "refId": "C",
           "timeField": "@timestamp"
         }
       ],
@@ -4281,5 +4309,5 @@
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 76
+  "version": 77
 }

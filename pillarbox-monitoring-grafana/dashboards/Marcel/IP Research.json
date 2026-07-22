@@ -19,7 +19,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 63,
-  "links": [],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -52,7 +52,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -66,8 +65,7 @@
               }
             ]
           }
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
@@ -98,21 +96,20 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.0.1",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [
             {
-              "field": "session_id",
+              "field": "@timestamp",
               "id": "3",
               "settings": {
-                "min_doc_count": "500",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
+                "interval": "auto",
+                "min_doc_count": "0",
+                "trimEdges": "0"
               },
-              "type": "terms"
+              "type": "date_histogram"
             }
           ],
           "datasource": {
@@ -120,37 +117,68 @@
             "uid": "fef4oi750u39cd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
+              "field": "session.device.id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
-          "query": "session.media.type:audio\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nevent_name:HEARTBEAT",
+          "query": "user_ip:$client_ip",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Start vs Stop/Error",
+      "title": "Unique Device IDs",
       "type": "barchart"
     }
   ],
   "preload": false,
-  "schemaVersion": 41,
-  "tags": [],
+  "refresh": "",
+  "schemaVersion": 42,
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allowCustomValue": true,
+        "current": {
+          "text": "152.89.162.228",
+          "value": "152.89.162.228"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "IP",
+        "multi": false,
+        "name": "client_ip",
+        "options": [],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
+      }
+    ]
   },
   "time": {
     "from": "now-7d",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "browser",
-  "title": "Heartbeats",
+  "title": "IP Research",
   "uid": "4455ec0e-bbba-436b-a68d-cb802b1c3bba",
-  "version": 1
+  "version": 2
 }

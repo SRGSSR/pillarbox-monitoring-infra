@@ -298,7 +298,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1303,7 +1303,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Sessions"
+            "displayName": "Error Rate"
           }
         ]
       },
@@ -2377,5 +2377,5 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 69
+  "version": 70
 }

@@ -86,7 +86,7 @@ data "aws_iam_policy_document" "gha_assume_policy" {
 ### Permissions Policy Document
 data "aws_iam_policy_document" "gha_policy" {
   # Define permissions for GitHub Actions to interact with ECR and ECS
-  for_each = local.services_with_policy
+  for_each = var.service_mappings
 
   # Allow Docker login to ECR
   dynamic "statement" {
@@ -121,22 +121,19 @@ data "aws_iam_policy_document" "gha_policy" {
       ]
     }
   }
-  # Allow pushing and pulling images to/from ECR
-  dynamic "statement" {
-    for_each = each.value.ecs ? [1] : []
 
-    content {
-      sid    = "AllowUpdateService"
-      effect = "Allow"
-      actions = [
-        "ecs:UpdateService",
-        "ecs:DescribeServices"
-      ]
-      resources = [
-        "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${local.ecs_cluster_name}",
-        "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${local.ecs_cluster_name}/${each.key}"
-      ]
-    }
+  # Allow ECS service updates
+  statement {
+    sid    = "AllowUpdateService"
+    effect = "Allow"
+    actions = [
+      "ecs:UpdateService",
+      "ecs:DescribeServices"
+    ]
+    resources = [
+      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${each.value.ecs_cluster_name}",
+      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${each.value.ecs_cluster_name}/${each.key}"
+    ]
   }
 }
 

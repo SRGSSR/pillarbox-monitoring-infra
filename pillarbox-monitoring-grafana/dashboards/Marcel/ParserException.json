@@ -1148,77 +1148,171 @@
     },
     {
       "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "fegaynyd0mz9cc"
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 38
+      },
+      "id": 13,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showControls": false,
+        "showFieldSelector": false,
+        "showLevel": true,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "13.0.1",
+      "targets": [
+        {
+          "alias": "ParserException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Logs",
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "10000"
+              },
+              "type": "logs"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND data.name:ParserException\nAND NOT data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND NOT data.block_reason:GEOBLOCK",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "New panel",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
           }
         }
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 38
+        "w": 16,
+        "x": 8,
+        "y": 46
       },
       "id": 12,
       "options": {
-        "cellHeight": "sm",
-        "showHeader": true
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "13.0.1",
       "targets": [
         {
-          "columns": [],
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.media.asset_url",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
           "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "fegaynyd0mz9cc"
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
           },
-          "filters": [],
           "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND (data.name:ParserException OR data.name:*EXTM3U header*)\nAND NOT data.error_type:PLAYBACK_UNSUPPORTED_MEDIA\nAND NOT data.block_reason:GEOBLOCK",
+          "queryType": "lucene",
           "refId": "A",
-          "root_selector": "",
-          "source": "url",
-          "type": "json",
-          "url": "",
-          "url_options": {
-            "body_content_type": "application/json",
-            "body_type": "raw",
-            "data": "{\r\n  \"aggs\": {\r\n    \"ip_counts\": {\r\n      \"terms\": {\r\n        \"field\": \"user_ip\",\r\n        \"size\": 10000,\r\n        \"order\": {\r\n          \"_count\": \"desc\"\r\n        }\r\n      }\r\n    }\r\n  },\r\n  \"size\": 0\r\n}",
-            "method": "POST"
-          }
+          "timeField": "@timestamp"
         }
       ],
-      "title": "New panel",
-      "type": "table"
+      "title": "ParserException",
+      "type": "piechart"
     }
   ],
   "preload": false,
@@ -1325,7 +1419,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "New dashboard",
+  "title": "ParserException",
   "uid": "mawgqkp",
-  "version": 37
+  "version": 40
 }

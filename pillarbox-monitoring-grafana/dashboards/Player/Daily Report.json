@@ -1070,7 +1070,12 @@
         "cellHeight": "sm",
         "enablePagination": true,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Sessions"
+          }
+        ]
       },
       "pluginVersion": "13.0.1",
       "targets": [
@@ -1303,7 +1308,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Error Rate"
+            "displayName": "Sessions"
           }
         ]
       },
@@ -2147,7 +2152,7 @@
         "allValue": "*",
         "allowCustomValue": true,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "description": "Filter by player platform.",
@@ -2156,23 +2161,7 @@
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": false,
-            "text": "Web",
-            "value": "Web"
-          }
-        ],
+        "options": [],
         "query": "Android, Apple, Web",
         "skipUrlSync": false,
         "type": "custom",
@@ -2182,7 +2171,7 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "hide": 0,
@@ -2190,38 +2179,7 @@
         "label": "Business Unit",
         "multi": false,
         "name": "bu",
-        "options": [
-          {
-            "selected": false,
-            "text": "srf",
-            "value": "srf"
-          },
-          {
-            "selected": false,
-            "text": "rts",
-            "value": "rts"
-          },
-          {
-            "selected": false,
-            "text": "rsi",
-            "value": "rsi"
-          },
-          {
-            "selected": false,
-            "text": "rtr",
-            "value": "rtr"
-          },
-          {
-            "selected": false,
-            "text": "swi",
-            "value": "swi"
-          },
-          {
-            "selected": false,
-            "text": "playsuisse",
-            "value": "playsuisse"
-          }
-        ],
+        "options": [],
         "query": "srf, rts, rsi, rtr, swi, playsuisse",
         "skipUrlSync": false,
         "type": "custom",
@@ -2231,7 +2189,7 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "hide": 0,
@@ -2239,18 +2197,7 @@
         "label": "Type",
         "multi": false,
         "name": "type",
-        "options": [
-          {
-            "selected": false,
-            "text": "audio",
-            "value": "audio"
-          },
-          {
-            "selected": false,
-            "text": "video",
-            "value": "video"
-          }
-        ],
+        "options": [],
         "query": "audio, video",
         "skipUrlSync": false,
         "type": "custom",
@@ -2267,6 +2214,16 @@
         "hide": 0,
         "name": "interval",
         "options": [
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
           {
             "selected": false,
             "text": "1m",
@@ -2325,30 +2282,14 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "(true OR false)",
+          "text": "Include SwissTXT",
           "value": "(true OR false)"
         },
         "hide": 1,
         "includeAll": false,
         "multi": false,
         "name": "swisstxt",
-        "options": [
-          {
-            "selected": true,
-            "text": "Include SwissTXT",
-            "value": "(true OR false)"
-          },
-          {
-            "selected": false,
-            "text": "Only SwissTXT",
-            "value": "true"
-          },
-          {
-            "selected": false,
-            "text": "Exclude SwissTXT",
-            "value": "false"
-          }
-        ],
+        "options": [],
         "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
         "skipUrlSync": false,
         "type": "custom",
@@ -2377,5 +2318,5 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 70
+  "version": 73
 }

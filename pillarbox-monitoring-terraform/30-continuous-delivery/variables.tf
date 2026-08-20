@@ -19,24 +19,24 @@ variable "service_mappings" {
   type = map(object({
     github_repo_name = string
     ecr_image_name   = string
-    ecs              = bool
+    ecs_cluster_name = string
   }))
 
   default = {
     "dispatch-service" = {
       github_repo_name = "SRGSSR/pillarbox-event-dispatcher"
       ecr_image_name   = "pillarbox-event-dispatcher"
-      ecs              = true
+      ecs_cluster_name = "pillarbox-monitoring-cluster"
     }
     "data-transfer-service" = {
       github_repo_name = "SRGSSR/pillarbox-monitoring-transfer"
       ecr_image_name   = "pillarbox-monitoring-transfer"
-      ecs              = true
+      ecs_cluster_name = "pillarbox-monitoring-cluster"
     }
-    "pillarbox-demo-backend" = {
+    "demo-backend-service" = {
       github_repo_name = "SRGSSR/pillarbox-demo-backend"
       ecr_image_name   = "pillarbox-demo-backend"
-      ecs              = false
+      ecs_cluster_name = "pillarbox-demo-backend-cluster"
     }
   }
 }

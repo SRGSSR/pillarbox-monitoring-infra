@@ -179,7 +179,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [
@@ -313,7 +313,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -601,6 +601,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true
         },
@@ -610,7 +612,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "datasource": {
@@ -694,6 +696,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -897,6 +900,7 @@
       "options": {
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true,
           "values": [
@@ -920,7 +924,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1148,7 +1152,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -1251,7 +1255,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Sessions",
@@ -1520,6 +1524,7 @@
       "options": {
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -1542,7 +1547,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1779,6 +1784,8 @@
             "sum"
           ],
           "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": false
         },
@@ -1788,7 +1795,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "error",
@@ -2068,7 +2075,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -2322,7 +2329,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [
@@ -2603,7 +2610,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [
@@ -2884,7 +2891,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [
@@ -3167,7 +3174,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -3526,6 +3533,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -3535,7 +3544,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -3656,6 +3665,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -3671,7 +3681,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -3780,6 +3790,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -3790,7 +3802,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Average stall duration",
@@ -3901,6 +3913,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -3911,7 +3925,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Average stall duration",
@@ -4021,6 +4035,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -4031,7 +4047,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Average stall count",
@@ -4309,5 +4325,5 @@
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 77
+  "version": 78
 }

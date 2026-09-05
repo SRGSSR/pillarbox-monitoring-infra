@@ -47,6 +47,7 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -59,7 +60,6 @@
             "fixedColor": "text",
             "mode": "fixed"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -73,8 +73,7 @@
               }
             ]
           }
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
@@ -104,7 +103,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -284,7 +283,6 @@
       },
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -409,7 +407,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -487,7 +485,6 @@
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
       "fieldConfig": {
@@ -519,6 +516,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -529,7 +527,6 @@
             }
           },
           "decimals": 0,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -611,9 +608,15 @@
       },
       "id": 3,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true
         },
@@ -623,7 +626,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -649,7 +652,6 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
           "metrics": [
@@ -693,7 +695,6 @@
             "fixedColor": "text",
             "mode": "fixed"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -839,7 +840,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -913,7 +914,6 @@
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
       "fieldConfig": {
@@ -921,7 +921,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1041,13 +1040,12 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
           "metrics": [
@@ -1135,7 +1133,6 @@
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
       "fieldConfig": {
@@ -1143,7 +1140,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1267,13 +1263,12 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
           "metrics": [
@@ -1364,7 +1359,6 @@
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
       "fieldConfig": {
@@ -1396,6 +1390,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1405,7 +1400,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1447,9 +1441,15 @@
       },
       "id": 6,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -1460,7 +1460,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Bitrate",
@@ -1475,7 +1475,6 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
           "metrics": [
@@ -1495,7 +1494,6 @@
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
       },
       "fieldConfig": {
@@ -1527,6 +1525,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1536,7 +1535,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1593,9 +1591,15 @@
       },
       "id": 10,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -1606,7 +1610,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Bandwidth",
@@ -1621,10 +1625,8 @@
             }
           ],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "data.bandwidth",
@@ -1642,12 +1644,7 @@
     },
     {
       "datasource": {
-        "name": "user-events",
         "type": "grafana-opensearch-datasource"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -1662,18 +1659,22 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
+        "showFieldSelector": false,
         "showLabels": false,
+        "showLevel": true,
         "showTime": true,
         "sortOrder": "Ascending",
+        "timestampResolution": "ms",
+        "unwrappedColumns": false,
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [],
           "datasource": {
-            "name": "user-events",
             "type": "grafana-opensearch-datasource"
           },
           "metrics": [
@@ -1702,38 +1703,43 @@
                 "data.position",
                 "data.url",
                 "event_name",
-                "session.browser.name",
-                "session.browser.user_agent",
-                "session.browser.version",
                 "session.device.id",
                 "session.device.model",
                 "session.device.type",
                 "session.media.asset_url",
                 "session.media.id",
-                "session.media.origin",
+                "session.media.metadata_url",
                 "session.os.name",
                 "session.os.version",
+                "session.player.language",
                 "session.player.name",
                 "session.player.platform",
                 "session.player.version",
                 "session.qoe_timings.asset",
+                "session.qoe_timings.metadata",
                 "session.qoe_timings.total",
-                "session.qos_timings.asset",
-                "session.robot",
                 "session.screen.height",
                 "session.screen.width",
                 "session_id",
                 "user_ip",
                 "version",
-                "data.name",
-                "data.message",
-                "data.log",
-                "data.error_type",
-                "data.business_error",
-                "data.block_reason",
-                "session.qos_timings.metadata",
-                "session.qoe_timings.metadata",
-                "session.media.metadata_url"
+                "session.media.bu",
+                "session.media.type",
+                "session.qos_timings",
+                "session.application.id",
+                "session.application.version",
+                "data.vpn",
+                "data.stream_type",
+                "data.stall.duration",
+                "data.stall.count",
+                "data.playback_duration",
+                "data.frame_drops",
+                "data.duration",
+                "data.buffered_duration",
+                "data.bitrate",
+                "data.bandwidth",
+                "data.audio",
+                "session.media.swisstxt"
               ]
             }
           }
@@ -1745,40 +1751,30 @@
             "includeByName": {},
             "indexByName": {
               "@timestamp": 0,
-              "data.business_error": 2,
-              "data.error_type": 3,
-              "data.log": 4,
-              "data.message": 5,
-              "data.name": 6,
-              "data.position": 7,
-              "data.url": 8,
+              "data": 24,
+              "data.position": 2,
+              "data.url": 3,
               "event_name": 1,
-              "session.browser.name": 9,
-              "session.browser.user_agent": 10,
-              "session.browser.version": 11,
-              "session.device.id": 12,
-              "session.device.model": 13,
-              "session.device.type": 14,
-              "session.media.asset_url": 15,
-              "session.media.id": 16,
-              "session.media.metadata_url": 17,
-              "session.media.origin": 18,
-              "session.os.name": 19,
-              "session.os.version": 20,
-              "session.player.name": 21,
-              "session.player.platform": 22,
-              "session.player.version": 23,
-              "session.qoe_timings.asset": 24,
-              "session.qoe_timings.metadata": 25,
-              "session.qoe_timings.total": 26,
-              "session.qos_timings.asset": 27,
-              "session.qos_timings.metadata": 28,
-              "session.robot": 29,
-              "session.screen.height": 30,
-              "session.screen.width": 31,
-              "session_id": 32,
-              "user_ip": 33,
-              "version": 34
+              "session.device.id": 4,
+              "session.device.model": 5,
+              "session.device.type": 6,
+              "session.media.asset_url": 7,
+              "session.media.id": 8,
+              "session.media.metadata_url": 9,
+              "session.os.name": 10,
+              "session.os.version": 11,
+              "session.player.language": 12,
+              "session.player.name": 13,
+              "session.player.platform": 14,
+              "session.player.version": 15,
+              "session.qoe_timings.asset": 16,
+              "session.qoe_timings.metadata": 17,
+              "session.qoe_timings.total": 18,
+              "session.screen.height": 19,
+              "session.screen.width": 20,
+              "session_id": 21,
+              "user_ip": 22,
+              "version": 23
             },
             "renameByName": {}
           }
@@ -1789,7 +1785,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "hidden"
   ],
@@ -1801,16 +1797,11 @@
           "value": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4"
         },
         "description": "The session id.",
+        "hide": 0,
         "label": "Session",
         "name": "session_id",
-        "options": [
-          {
-            "selected": true,
-            "text": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4",
-            "value": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4"
-          }
-        ],
         "query": "b5963b46-d520-4265-8c74-96f4d754787d",
+        "skipUrlSync": false,
         "type": "textbox"
       },
       {
@@ -1821,6 +1812,7 @@
           "text": "$__auto",
           "value": "$__auto"
         },
+        "hide": 0,
         "name": "interval",
         "options": [
           {
@@ -1875,7 +1867,7 @@
           }
         ],
         "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       }
     ]
@@ -1884,9 +1876,22 @@
     "from": "2025-07-21T07:46:05.579Z",
     "to": "2025-07-22T07:46:05.579Z"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 10
+  "version": 13
 }

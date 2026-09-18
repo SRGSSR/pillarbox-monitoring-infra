@@ -82,7 +82,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -282,7 +282,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -552,6 +552,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": true
         },
@@ -561,7 +563,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Starts",
@@ -733,7 +735,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1108,7 +1110,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1333,6 +1335,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -1449,6 +1452,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -1471,7 +1475,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1662,6 +1666,7 @@
       "options": {
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -1684,7 +1689,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1749,7 +1754,7 @@
         "unwrappedColumns": false,
         "wrapLogMessage": false
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1780,50 +1785,6 @@
       ],
       "title": "Error log",
       "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "data.business_error",
-                "data.error_type",
-                "data.log",
-                "data.message",
-                "data.name",
-                "data.position",
-                "data.url",
-                "event_name",
-                "session.browser.name",
-                "session.browser.user_agent",
-                "session.browser.version",
-                "session.device.id",
-                "session.device.model",
-                "session.device.type",
-                "session.media.asset_url",
-                "session.media.id",
-                "session.media.metadata_url",
-                "session.media.origin",
-                "session.os.name",
-                "session.os.version",
-                "session.player.name",
-                "session.player.platform",
-                "session.player.version",
-                "session.qoe_timings.asset",
-                "session.qoe_timings.metadata",
-                "session.qoe_timings.total",
-                "session.qos_timings.asset",
-                "session.qos_timings.metadata",
-                "session.robot",
-                "session.screen.height",
-                "session.screen.width",
-                "session_id",
-                "user_ip",
-                "version",
-                "@timestamp"
-              ]
-            }
-          }
-        },
         {
           "id": "organize",
           "options": {
@@ -1896,6 +1857,14 @@
               }
             ],
             "fields": {}
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "[^_].*"
+            }
           }
         },
         {
@@ -2061,5 +2030,5 @@
   "timezone": "browser",
   "title": "Device Id Breakdown",
   "uid": "celn8pqg1yuioe",
-  "version": 26
+  "version": 27
 }

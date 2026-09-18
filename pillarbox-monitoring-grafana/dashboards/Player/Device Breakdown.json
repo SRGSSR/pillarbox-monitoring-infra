@@ -274,7 +274,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -3606,5 +3606,5 @@
   "timezone": "Europe/Zurich",
   "title": "Device Breakdown",
   "uid": "des44th87qarke",
-  "version": 43
+  "version": 44
 }

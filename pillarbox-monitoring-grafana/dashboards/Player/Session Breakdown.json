@@ -517,7 +517,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -1655,16 +1655,19 @@
       "id": 8,
       "options": {
         "dedupStrategy": "none",
+        "detailsMode": "sidebar",
         "enableInfiniteScrolling": false,
         "enableLogDetails": true,
+        "fontSize": "default",
         "prettifyLogMessage": false,
         "showCommonLabels": false,
         "showControls": false,
         "showFieldSelector": false,
         "showLabels": false,
-        "showLevel": true,
+        "showLevel": false,
         "showTime": true,
         "sortOrder": "Ascending",
+        "syntaxHighlighting": false,
         "timestampResolution": "ms",
         "unwrappedColumns": false,
         "wrapLogMessage": false
@@ -1750,14 +1753,14 @@
     "list": [
       {
         "current": {
-          "text": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4",
-          "value": "aa74ec2b-f823-4c17-a0f2-59bf2b4737f4"
+          "text": "8cb3c70f-dac4-4f34-aa3b-2778df9e4ffc",
+          "value": "8cb3c70f-dac4-4f34-aa3b-2778df9e4ffc"
         },
         "description": "The session id.",
         "hide": 0,
         "label": "Session",
         "name": "session_id",
-        "query": "b5963b46-d520-4265-8c74-96f4d754787d",
+        "query": "8cb3c70f-dac4-4f34-aa3b-2778df9e4ffc",
         "skipUrlSync": false,
         "type": "textbox"
       },
@@ -1772,6 +1775,16 @@
         "hide": 0,
         "name": "interval",
         "options": [
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
           {
             "selected": false,
             "text": "1m",
@@ -1830,8 +1843,8 @@
     ]
   },
   "time": {
-    "from": "2025-07-21T07:46:05.579Z",
-    "to": "2025-07-22T07:46:05.579Z"
+    "from": "2026-09-17T08:55:08.014Z",
+    "to": "2026-09-24T08:55:08.014Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1850,5 +1863,5 @@
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 14
+  "version": 16
 }

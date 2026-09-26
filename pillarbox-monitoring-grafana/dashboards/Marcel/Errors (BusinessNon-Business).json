@@ -37,7 +37,6 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "axisSoftMax": 250,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
@@ -66,6 +65,7 @@
               "mode": "off"
             }
           },
+          "max": 250,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -82,148 +82,12 @@
         }
       },
       "gridPos": {
-        "h": 13,
+        "h": 12,
         "w": 8,
         "x": 0,
         "y": 0
       },
-      "id": 1,
-      "options": {
-        "annotations": {
-          "clustering": -1,
-          "multiLane": false
-        },
-        "legend": {
-          "calcs": [
-            "sum"
-          ],
-          "displayMode": "table",
-          "enableFacetedFilter": false,
-          "overflow": "ellipsis",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "13.1.1",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "data.message",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:Android\nAND session.media.id:urn\\:swisstxt\\:video\\:rsi\\:1828080\nAND data.business_error:false",
-          "queryType": "lucene",
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "title": "urn\\:swisstxt\\:video\\:rsi\\:1828080",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "fef4oi750u39cd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 250,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        }
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 8,
-        "x": 8,
-        "y": 0
-      },
-      "id": 2,
+      "id": 4,
       "options": {
         "annotations": {
           "clustering": -1,
@@ -282,13 +146,164 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND session.player.platform:Android\nAND session.media.id:urn\\:srf\\:video\\:c49c1d73-2f70-0001-138a-15e0c4ccd3d0\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND data.business_error:false",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "urn\\:srf\\:video\\:c49c1d73-2f70-0001-138a-15e0c4ccd3d0",
+      "title": "all errors (non business)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "alias": "Business Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:true",
+          "queryType": "lucene",
+          "refId": "Business Errors",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Not Business Errors",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:false",
+          "queryType": "lucene",
+          "refId": "Not Business Errors",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "all errors",
       "type": "timeseries"
     },
     {
@@ -352,7 +367,7 @@
         }
       },
       "gridPos": {
-        "h": 13,
+        "h": 12,
         "w": 8,
         "x": 16,
         "y": 0
@@ -422,7 +437,7 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Media ID 403 Errors",
+      "title": "Android Media ID 403 Errors",
       "type": "timeseries"
     },
     {
@@ -469,7 +484,6 @@
               "mode": "off"
             }
           },
-          "max": 250,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -489,9 +503,9 @@
         "h": 12,
         "w": 8,
         "x": 0,
-        "y": 13
+        "y": 12
       },
-      "id": 4,
+      "id": 8,
       "options": {
         "annotations": {
           "clustering": -1,
@@ -505,7 +519,9 @@
           "enableFacetedFilter": false,
           "overflow": "ellipsis",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -550,19 +566,59 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND (data.message:STARTDATE OR data.message:GEOBLOCK OR data.message:VPNORPROXYDETECTED OR data.message:UNKNOWN)",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
+        },
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "data.message",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:true\nAND NOT (data.message:STARTDATE OR data.message:GEOBLOCK OR data.message:VPNORPROXYDETECTED OR data.message:UNKNOWN)",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
         }
       ],
-      "title": "all errors",
+      "title": "all errors (business)",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "uid": "fef4oi750u39cd"
       },
       "fieldConfig": {
         "defaults": {
@@ -603,7 +659,6 @@
               "mode": "off"
             }
           },
-          "max": 250,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -623,9 +678,9 @@
         "h": 12,
         "w": 8,
         "x": 8,
-        "y": 13
+        "y": 12
       },
-      "id": 6,
+      "id": 9,
       "options": {
         "annotations": {
           "clustering": -1,
@@ -653,36 +708,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND data.business_error:true",
-          "queryType": "lucene",
-          "refId": "true",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "data.business_error",
+              "field": "data.block_reason",
               "id": "3",
               "settings": {
                 "min_doc_count": "1",
@@ -703,7 +729,7 @@
           ],
           "datasource": {
             "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "uid": "fef4oi750u39cd"
           },
           "format": "table",
           "luceneQueryType": "Metric",
@@ -713,13 +739,13 @@
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false",
+          "query": "event_name:ERROR\nAND data.business_error:true",
           "queryType": "lucene",
-          "refId": "false",
+          "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "all errors",
+      "title": "all errors (business) block reason",
       "type": "timeseries"
     },
     {
@@ -785,7 +811,7 @@
         "h": 13,
         "w": 8,
         "x": 0,
-        "y": 25
+        "y": 24
       },
       "id": 3,
       "options": {
@@ -852,7 +878,171 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "all android errors",
+      "title": "all android errors (non business)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 8,
+        "x": 8,
+        "y": 24
+      },
+      "id": 7,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "data.message",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND session.player.platform:Android\nAND data.business_error:true\nAND (data.message:STARTDATE OR data.message:GEOBLOCK OR data.message:VPNORPROXYDETECTED OR data.message:UNKNOWN)",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "java.net.UnknownHostException",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND session.player.platform:Android\nAND data.business_error:true\nAND data.message:*java.net.UnknownHostException*",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "all android errors (business)",
       "type": "timeseries"
     }
   ],
@@ -878,7 +1068,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "New dashboard",
+  "title": "Errors (Business/Non-Business)",
   "uid": "man82vh",
-  "version": 17
+  "version": 29
 }

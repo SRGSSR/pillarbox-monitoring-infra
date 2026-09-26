@@ -74,7 +74,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Sessions",
@@ -198,7 +198,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -360,7 +360,7 @@
             },
             "showPoints": "never",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -468,6 +468,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": false
         },
@@ -477,7 +479,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "datasource": {
@@ -928,7 +930,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [
@@ -1229,6 +1231,7 @@
       "options": {
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -1251,7 +1254,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1324,7 +1327,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -1488,6 +1491,8 @@
             "sum"
           ],
           "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": false
         },
@@ -1497,7 +1502,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "error",
@@ -1773,7 +1778,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -2023,7 +2028,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -2274,7 +2279,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -2510,7 +2515,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -2629,6 +2634,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -2638,7 +2645,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -2759,6 +2766,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -2774,7 +2782,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -2883,6 +2891,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -2893,7 +2903,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Average stall duration",
@@ -3004,6 +3014,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -3014,7 +3026,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Average stall duration",
@@ -3124,6 +3136,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -3134,7 +3148,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "Average stall count",
@@ -3179,8 +3193,8 @@
         "allValue": "*",
         "allowCustomValue": true,
         "current": {
-          "text": "Web",
-          "value": "Web"
+          "text": "All",
+          "value": "$__all"
         },
         "description": "Filter by player platform.",
         "hide": 0,
@@ -3188,23 +3202,7 @@
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": true,
-            "text": "Web",
-            "value": "Web"
-          }
-        ],
+        "options": [],
         "query": "Android, Apple, Web",
         "skipUrlSync": false,
         "type": "custom",
@@ -3214,36 +3212,15 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "rts",
-          "value": "rts"
+          "text": "srf",
+          "value": "srf"
         },
         "hide": 0,
         "includeAll": true,
         "label": "Business Unit",
         "multi": false,
         "name": "bu",
-        "options": [
-          {
-            "selected": false,
-            "text": "srf",
-            "value": "srf"
-          },
-          {
-            "selected": true,
-            "text": "rts",
-            "value": "rts"
-          },
-          {
-            "selected": false,
-            "text": "rsi",
-            "value": "rsi"
-          },
-          {
-            "selected": false,
-            "text": "rtr",
-            "value": "rtr"
-          }
-        ],
+        "options": [],
         "query": "srf, rts, rsi, rtr",
         "skipUrlSync": false,
         "type": "custom",
@@ -3253,7 +3230,7 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "hide": 0,
@@ -3261,18 +3238,7 @@
         "label": "Type",
         "multi": false,
         "name": "type",
-        "options": [
-          {
-            "selected": false,
-            "text": "audio",
-            "value": "audio"
-          },
-          {
-            "selected": false,
-            "text": "video",
-            "value": "video"
-          }
-        ],
+        "options": [],
         "query": "audio, video",
         "skipUrlSync": false,
         "type": "custom",
@@ -3283,8 +3249,8 @@
         "auto_count": 30,
         "auto_min": "5s",
         "current": {
-          "text": "$__auto",
-          "value": "$__auto"
+          "text": "6h",
+          "value": "6h"
         },
         "hide": 0,
         "name": "interval",
@@ -3320,7 +3286,7 @@
             "value": "1h"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "6h",
             "value": "6h"
           },
@@ -3403,8 +3369,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "urn:rts:audio:3262320,urn:rts:audio:3262363,urn:rts:video:3608506,urn:rts:video:8841634,urn:rts:ssatr:audio:rsc-fr,urn:rts:ssatr:audio:rsj,urn:rts:ssatr:audio:rsp,urn:rts:video:3608517,urn:rts:audio:3262364,urn:swisstxt:video:rts:d5b598b31f82456fbd84ec4cc3a77479,urn:rts:audio:3262362,urn:swisstxt:video:rts:247fcc18b7ff412797ad107f36e7a7cd,urn:rts:video:1967124,urn:rts:video:ceadd256-9537-32d3-84cf-dc2d9511e898,urn:rts:video:daff63b8-a038-3764-9669-2cbfe357614b,urn:rts:video:e2a8d148-2a65-34c9-b8cf-05bbc18de3e7,urn:rts:video:87b5963c-0062-310a-ad7f-4da1fbd7d159,urn:rts:scheduled_livestream:video:1b05bf9b-2c5b-4159-be90-0619ce84c795,urn:rts:video:91ed3d9e-1e18-3495-b98b-03a06fe2ce57,urn:rts:scheduled_livestream:video:d5b598b3-1f82-456f-bd84-ec4cc3a77479,urn:rts:scheduled_livestream:video:247fcc18-b7ff-4127-97ad-107f36e7a7cd,urn:rts:video:3f680179-7f28-3f5f-8c03-690e6177e7d9,urn:rts:scheduled_livestream:video:e5027f97-0cf8-4d61-bc73-a33a2683abdf,urn:rts:video:f36d4003-71ed-3dd3-b110-4903cd62901f",
-          "value": "urn:rts:audio:3262320,urn:rts:audio:3262363,urn:rts:video:3608506,urn:rts:video:8841634,urn:rts:ssatr:audio:rsc-fr,urn:rts:ssatr:audio:rsj,urn:rts:ssatr:audio:rsp,urn:rts:video:3608517,urn:rts:audio:3262364,urn:swisstxt:video:rts:d5b598b31f82456fbd84ec4cc3a77479,urn:rts:audio:3262362,urn:swisstxt:video:rts:247fcc18b7ff412797ad107f36e7a7cd,urn:rts:video:1967124,urn:rts:video:ceadd256-9537-32d3-84cf-dc2d9511e898,urn:rts:video:daff63b8-a038-3764-9669-2cbfe357614b,urn:rts:video:e2a8d148-2a65-34c9-b8cf-05bbc18de3e7,urn:rts:video:87b5963c-0062-310a-ad7f-4da1fbd7d159,urn:rts:scheduled_livestream:video:1b05bf9b-2c5b-4159-be90-0619ce84c795,urn:rts:video:91ed3d9e-1e18-3495-b98b-03a06fe2ce57,urn:rts:scheduled_livestream:video:d5b598b3-1f82-456f-bd84-ec4cc3a77479,urn:rts:scheduled_livestream:video:247fcc18-b7ff-4127-97ad-107f36e7a7cd,urn:rts:video:3f680179-7f28-3f5f-8c03-690e6177e7d9,urn:rts:scheduled_livestream:video:e5027f97-0cf8-4d61-bc73-a33a2683abdf,urn:rts:video:f36d4003-71ed-3dd3-b110-4903cd62901f"
+          "text": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f,urn:srf:audio:69e8ac16-4327-4af4-b873-fd5cd6e895a7,urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651,urn:srf:audio:ee1fb348-2b6a-4958-9aac-ec6c87e190da,urn:srf:ssatr:audio:rsc-de,urn:srf:ssatr:audio:rsp,urn:srf:audio:29bf2f8b-87e1-4656-9041-d69827923487,urn:swisstxt:video:srf:1834141,urn:srf:audio:a9c5c070-8899-46c7-ac27-f04f1be902fd,urn:srf:ssatr:audio:rsj,urn:swisstxt:video:srf:1834942,urn:srf:audio:5e266ba0-f769-4d6d-bd41-e01f188dd106,urn:srf:video:c49c1d64-9f60-0001-1c36-43c288c01a10,urn:srf:audio:4f2c4d4a-03d6-4916-9060-412e0abdc88d,urn:srf:audio:56d2f86a-ae7b-463b-a5ad-93fcf9fffb58,urn:srf:audio:aff4aa96-b7bd-431a-8d8d-410afe6e5878,urn:srf:audio:c8537421-c9c5-4461-9c9c-c15816458b46,urn:srf:audio:55afe0fd-1de0-4964-9b13-101e9306617a,urn:swisstxt:video:srf:1844937,urn:swisstxt:video:srf:1854224,urn:swisstxt:video:srf:1834145,urn:swisstxt:video:srf:1842662,urn:swisstxt:video:srf:1849840,urn:srf:audio:8BA4AFF7-1BE6-436E-91B4-C6B77C8DB88F,urn:swisstxt:video:srf:1854225,urn:srf:audio:66815fe2-9008-4853-80a5-f9caaffdf3a9,urn:swisstxt:video:srf:1853034,urn:srf:video:c49c1d73-2f70-0001-138a-15e0c4ccd3d0,urn:swisstxt:video:srf:1838225,urn:swisstxt:video:srf:1847666,urn:swisstxt:video:srf:1854418,urn:swisstxt:video:srf:1849839,urn:swisstxt:video:srf:1842661,urn:swisstxt:video:srf:1854324,urn:srf:scheduled_livestream:video:325bac14-0007-4084-82b7-cc8c626a2a0a,urn:swisstxt:video:srf:1853249,urn:srf:scheduled_livestream:video:e3cdf052-8f74-4a9e-9f47-9f574623f667,urn:srf:scheduled_livestream:video:b43893a3-5dc2-411e-9d0a-76dc86610409,urn:srf:scheduled_livestream:video:f2b2f0a0-6034-4a01-821f-e00a5d379f4e,urn:srf:scheduled_livestream:video:42d5fe15-66c2-4472-86c2-2e580ed68417,urn:swisstxt:video:srf:e3cdf0528f744a9e9f479f574623f667,urn:srf:scheduled_livestream:video:4be60081-58c4-4e16-9da6-b115c157a929,urn:srf:scheduled_livestream:video:cf2c5286-0670-47c8-bf58-1ef4d7d02a41,urn:swisstxt:video:srf:1839621,urn:srf:scheduled_livestream:video:3636456b-5484-4201-b203-97196cdff818",
+          "value": "urn:srf:audio:dd0fa1ba-4ff6-4e1a-ab74-d7e49057d96f,urn:srf:audio:69e8ac16-4327-4af4-b873-fd5cd6e895a7,urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651,urn:srf:audio:ee1fb348-2b6a-4958-9aac-ec6c87e190da,urn:srf:ssatr:audio:rsc-de,urn:srf:ssatr:audio:rsp,urn:srf:audio:29bf2f8b-87e1-4656-9041-d69827923487,urn:swisstxt:video:srf:1834141,urn:srf:audio:a9c5c070-8899-46c7-ac27-f04f1be902fd,urn:srf:ssatr:audio:rsj,urn:swisstxt:video:srf:1834942,urn:srf:audio:5e266ba0-f769-4d6d-bd41-e01f188dd106,urn:srf:video:c49c1d64-9f60-0001-1c36-43c288c01a10,urn:srf:audio:4f2c4d4a-03d6-4916-9060-412e0abdc88d,urn:srf:audio:56d2f86a-ae7b-463b-a5ad-93fcf9fffb58,urn:srf:audio:aff4aa96-b7bd-431a-8d8d-410afe6e5878,urn:srf:audio:c8537421-c9c5-4461-9c9c-c15816458b46,urn:srf:audio:55afe0fd-1de0-4964-9b13-101e9306617a,urn:swisstxt:video:srf:1844937,urn:swisstxt:video:srf:1854224,urn:swisstxt:video:srf:1834145,urn:swisstxt:video:srf:1842662,urn:swisstxt:video:srf:1849840,urn:srf:audio:8BA4AFF7-1BE6-436E-91B4-C6B77C8DB88F,urn:swisstxt:video:srf:1854225,urn:srf:audio:66815fe2-9008-4853-80a5-f9caaffdf3a9,urn:swisstxt:video:srf:1853034,urn:srf:video:c49c1d73-2f70-0001-138a-15e0c4ccd3d0,urn:swisstxt:video:srf:1838225,urn:swisstxt:video:srf:1847666,urn:swisstxt:video:srf:1854418,urn:swisstxt:video:srf:1849839,urn:swisstxt:video:srf:1842661,urn:swisstxt:video:srf:1854324,urn:srf:scheduled_livestream:video:325bac14-0007-4084-82b7-cc8c626a2a0a,urn:swisstxt:video:srf:1853249,urn:srf:scheduled_livestream:video:e3cdf052-8f74-4a9e-9f47-9f574623f667,urn:srf:scheduled_livestream:video:b43893a3-5dc2-411e-9d0a-76dc86610409,urn:srf:scheduled_livestream:video:f2b2f0a0-6034-4a01-821f-e00a5d379f4e,urn:srf:scheduled_livestream:video:42d5fe15-66c2-4472-86c2-2e580ed68417,urn:swisstxt:video:srf:e3cdf0528f744a9e9f479f574623f667,urn:srf:scheduled_livestream:video:4be60081-58c4-4e16-9da6-b115c157a929,urn:srf:scheduled_livestream:video:cf2c5286-0670-47c8-bf58-1ef4d7d02a41,urn:swisstxt:video:srf:1839621,urn:srf:scheduled_livestream:video:3636456b-5484-4201-b203-97196cdff818"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -3450,8 +3416,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "6055.657721881325",
-          "value": "6055.657721881325"
+          "text": "4480.348549552654",
+          "value": "4480.348549552654"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -3498,8 +3464,8 @@
     ]
   },
   "time": {
-    "from": "now-24h",
-    "to": "now"
+    "from": "2026-09-17T09:40:15.115Z",
+    "to": "2026-09-24T09:40:15.115Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -3518,5 +3484,5 @@
   "timezone": "Europe/Zurich",
   "title": "Live Breakdown",
   "uid": "cegsn2q0xrncwb",
-  "version": 47
+  "version": 48
 }

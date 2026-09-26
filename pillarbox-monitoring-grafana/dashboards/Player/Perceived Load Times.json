@@ -41,6 +41,7 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -77,7 +78,8 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "showValues": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -86,7 +88,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -190,9 +191,15 @@
       },
       "id": 5,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -202,7 +209,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -262,9 +269,11 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -305,7 +314,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -423,15 +433,7 @@
       "id": 8,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -440,7 +442,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -461,7 +463,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "session.qoe_timings.total",
@@ -524,13 +525,11 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -604,7 +603,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -652,13 +651,11 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -732,7 +729,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -780,13 +777,11 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -860,7 +855,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -935,7 +930,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -977,6 +971,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -992,7 +987,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1043,9 +1038,11 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1086,7 +1083,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -1204,15 +1202,7 @@
       "id": 14,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -1221,7 +1211,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1242,7 +1232,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "session.qoe_timings.total",
@@ -1304,9 +1293,11 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1330,7 +1321,7 @@
                   {
                     "targetBlank": true,
                     "title": "Application breakdown",
-                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=${interval}&orgId=1&from=${__from}﻿&to=﻿${__to}﻿&var-platform=﻿${platform}﻿﻿﻿&var-application=﻿﻿${__value.text}"
+                    "url": "/d/e457800d-b0d9-4531-9285-5ea745b98122/application-breakdown?var-interval=${interval}&orgId=1&from=${__from}&to=${__to}&var-platform=${platform}&var-application=${__value.text}"
                   }
                 ]
               },
@@ -1347,7 +1338,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -1428,15 +1420,7 @@
       "id": 13,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -1445,7 +1429,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1466,7 +1450,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "session.qoe_timings.total",
@@ -1506,7 +1489,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "session.qoe_timings.total",
@@ -1638,9 +1620,11 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1681,7 +1665,8 @@
             },
             "properties": [
               {
-                "id": "filterable"
+                "id": "filterable",
+                "value": null
               }
             ]
           },
@@ -1762,15 +1747,7 @@
       "id": 15,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -1779,7 +1756,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -1800,7 +1777,6 @@
             "type": "grafana-opensearch-datasource",
             "uid": "deoqp3q289nnkd"
           },
-          "hide": false,
           "metrics": [
             {
               "field": "session.qoe_timings.total",
@@ -1850,7 +1826,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "pillarbox"
   ],
@@ -1858,103 +1834,58 @@
     "list": [
       {
         "allValue": "*",
+        "allowCustomValue": true,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "description": "Filter by player platform.",
+        "hide": 0,
         "includeAll": true,
         "label": "Player Platform",
+        "multi": false,
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": false,
-            "text": "Web",
-            "value": "Web"
-          }
-        ],
+        "options": [],
         "query": "Android, Apple, Web",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Business Unit",
+        "multi": false,
         "name": "bu",
-        "options": [
-          {
-            "selected": false,
-            "text": "srf",
-            "value": "srf"
-          },
-          {
-            "selected": false,
-            "text": "rts",
-            "value": "rts"
-          },
-          {
-            "selected": false,
-            "text": "rsi",
-            "value": "rsi"
-          },
-          {
-            "selected": false,
-            "text": "rtr",
-            "value": "rtr"
-          },
-          {
-            "selected": false,
-            "text": "swi",
-            "value": "swi"
-          },
-          {
-            "selected": false,
-            "text": "playsuisse",
-            "value": "playsuisse"
-          }
-        ],
+        "options": [],
         "query": "srf, rts, rsi, rtr, swi, playsuisse",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
+        "hide": 0,
         "includeAll": true,
         "label": "Type",
+        "multi": false,
         "name": "type",
-        "options": [
-          {
-            "selected": false,
-            "text": "audio",
-            "value": "audio"
-          },
-          {
-            "selected": false,
-            "text": "video",
-            "value": "video"
-          }
-        ],
+        "options": [],
         "query": "audio, video",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "auto": true,
@@ -1964,6 +1895,7 @@
           "text": "10m",
           "value": "10m"
         },
+        "hide": 0,
         "name": "interval",
         "options": [
           {
@@ -2028,36 +1960,24 @@
           }
         ],
         "query": "10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       },
       {
         "allowCustomValue": false,
         "current": {
-          "text": "(true OR false)",
+          "text": "Include SwissTXT",
           "value": "(true OR false)"
         },
         "hide": 1,
+        "includeAll": false,
+        "multi": false,
         "name": "swisstxt",
-        "options": [
-          {
-            "selected": true,
-            "text": "Include SwissTXT",
-            "value": "(true OR false)"
-          },
-          {
-            "selected": false,
-            "text": "Only SwissTXT",
-            "value": "true"
-          },
-          {
-            "selected": false,
-            "text": "Exclude SwissTXT",
-            "value": "false"
-          }
-        ],
+        "options": [],
         "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
-        "type": "custom"
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "allowCustomValue": false,
@@ -2072,6 +1992,7 @@
         "definition": "",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "p95",
         "options": [],
         "query": {
@@ -2101,17 +2022,33 @@
         },
         "refresh": 2,
         "regex": "/\"95\\.0\":([\\d.]+)/",
+        "regexApplyTo": "value",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-7d",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Zurich",
   "title": "Perceived Load Times",
   "uid": "e1b0dfcc-d811-43cf-b25d-0be6e34bb06e",
-  "version": 16
+  "version": 17
 }

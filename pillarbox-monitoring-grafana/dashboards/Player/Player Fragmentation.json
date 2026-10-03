@@ -114,6 +114,7 @@
         "displayLabels": [],
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -136,7 +137,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -373,7 +374,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -478,7 +479,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -560,7 +561,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -695,7 +696,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "playing",
@@ -932,6 +933,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
+          "overflow": "ellipsis",
           "placement": "bottom",
           "showLegend": false
         },
@@ -946,7 +948,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 200
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -1047,6 +1049,7 @@
         "displayLabels": [],
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -1069,7 +1072,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -1314,7 +1317,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [
@@ -1395,190 +1398,72 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
-      "description": "This panel shows the relative distribution of error types for each operating system version.",
+      "description": "Errors of each type per session start for the 5 Pillarbox versions with the most sessions, newest first (business errors excluded). Error types are sorted by total volume. Green below 1%, orange from 1%, red from 5%. Values can exceed 100% when errors occur before playback starts.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 1,
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
             },
-            "lineWidth": 0,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false,
+            "minWidth": 80,
+            "wrapHeaderText": true
           },
-          "noValue": "0",
+          "decimals": 2,
+          "noValue": "–",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "text",
                 "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0.002
+              },
+              {
+                "color": "orange",
+                "value": 0.01
+              },
+              {
+                "color": "red",
+                "value": 0.05
               }
             ]
           },
-          "unit": "short"
+          "unit": "percentunit"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "IL_ERROR"
+              "options": "Error type"
             },
             "properties": [
               {
-                "id": "color",
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.cellOptions",
                 "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
+                  "type": "auto"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_UNSUPPORTED_MEDIA"
-            },
-            "properties": [
+              },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_MEDIA_SOURCE_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DRM_NOT_SUPPORTED"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_NETWORK_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "UNKNOWN_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DRM_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "OS Version"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": "(.*)",
-                      "result": {
-                        "index": 0,
-                        "text": "v$1"
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/CONNECTION_ERROR/"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#5c5c5c",
-                  "mode": "fixed"
-                }
+                "id": "custom.width",
+                "value": 260
               }
             ]
           }
@@ -1592,80 +1477,61 @@
       },
       "id": 57,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.9,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "horizontal",
-        "showValue": "never",
-        "stacking": "percent",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        },
-        "xField": "OS Version",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
+          "columns": [
             {
-              "field": "session.player.version",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "5"
-              },
-              "type": "terms"
+              "selector": "error_type",
+              "text": "error_type",
+              "type": "string"
             },
             {
-              "field": "data.error_type",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "column",
+              "text": "column",
+              "type": "string"
+            },
+            {
+              "selector": "value",
+              "text": "value",
+              "type": "number"
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.player.name:Pillarbox\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false",
-          "refId": "errors",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "(\n  $vkey := function($v) {(\n    $p := $split($v, \".\");\n    $n := function($i) { $exists($p[$i]) and $contains($p[$i], /^[0-9]+$/) ? $number($p[$i]) : 0 };\n    $n(0) * 1000000 + $n(1) * 1000 + $n(2)\n  )};\n  $cols := $sort(aggregations.by_col.buckets, function($a, $b) { $vkey($a.key) < $vkey($b.key) });\n  $totals := $cols.errors.by_type.buckets{ key: $sum(doc_count) };\n  $types := $sort($keys($totals), function($a, $b) { $lookup($totals, $a) < $lookup($totals, $b) });\n  $types.(\n    $t := $;\n    $cols.(\n      $starts := starts.doc_count;\n      {\n        \"error_type\": $t,\n        \"column\": \"v\" & key,\n        \"value\": $starts > 0 ? $sum([errors.by_type.buckets[key = $t].doc_count, 0]) / $starts : null\n      }\n    )\n  )\n)",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.player.platform\": \"${platform}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        {\n          \"term\": {\n            \"session.player.name\": \"Pillarbox\"\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\n              \"ERROR\",\n              \"START\"\n            ]\n          }\n        }\n      ],\n      \"must_not\": []\n    }\n  },\n  \"aggs\": {\n    \"by_col\": {\n      \"terms\": {\n        \"field\": \"session.player.version\",\n        \"size\": 5,\n        \"order\": {\n          \"starts\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"starts\": {\n          \"filter\": {\n            \"term\": {\n              \"event_name\": \"START\"\n            }\n          }\n        },\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                {\n                  \"term\": {\n                    \"event_name\": \"ERROR\"\n                  }\n                },\n                {\n                  \"term\": {\n                    \"data.business_error\": false\n                  }\n                }\n              ]\n            }\n          },\n          \"aggs\": {\n            \"by_type\": {\n              \"terms\": {\n                \"field\": \"data.error_type\",\n                \"size\": 30\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
-      "title": "Error Type Distribution by Player Version (Pillarbox ${platform})",
+      "title": "Error Rate by Type and Player Version (Pillarbox ${platform})",
       "transformations": [
         {
           "id": "groupingToMatrix",
           "options": {
-            "columnField": "data.error_type",
+            "columnField": "column",
             "emptyValue": "zero",
-            "rowField": "session.player.version",
-            "valueField": "Count"
+            "rowField": "error_type",
+            "valueField": "value"
           }
         },
         {
@@ -1675,13 +1541,12 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "session.os.name\\data.error_type": "OS",
-              "session.os.version\\data.error_type": "OS Version"
+              "error_type\\column": "Error type"
             }
           }
         }
       ],
-      "type": "barchart"
+      "type": "table"
     },
     {
       "datasource": {
@@ -1848,7 +1713,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "alias": "",
@@ -2050,6 +1915,7 @@
         "displayLabels": [],
         "legend": {
           "displayMode": "table",
+          "overflow": "ellipsis",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -2072,7 +1938,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
           "columns": [],
@@ -2122,190 +1988,72 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
-      "description": "This panel shows the relative distribution of error types for each operating system version.",
+      "description": "Errors of each type per session start for the 5 Letterbox versions with the most sessions, newest first (business errors excluded). Error types are sorted by total volume. Green below 1%, orange from 1%, red from 5%. Values can exceed 100% when errors occur before playback starts.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 1,
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
             },
-            "lineWidth": 0,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false,
+            "minWidth": 80,
+            "wrapHeaderText": true
           },
-          "noValue": "0",
+          "decimals": 2,
+          "noValue": "–",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "text",
                 "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0.002
+              },
+              {
+                "color": "orange",
+                "value": 0.01
+              },
+              {
+                "color": "red",
+                "value": 0.05
               }
             ]
           },
-          "unit": "short"
+          "unit": "percentunit"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "IL_ERROR"
+              "options": "Error type"
             },
             "properties": [
               {
-                "id": "color",
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.cellOptions",
                 "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
+                  "type": "auto"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_UNSUPPORTED_MEDIA"
-            },
-            "properties": [
+              },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_MEDIA_SOURCE_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DRM_NOT_SUPPORTED"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_NETWORK_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "UNKNOWN_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DRM_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "OS Version"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": "(.*)",
-                      "result": {
-                        "index": 0,
-                        "text": "v$1"
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CONNECTION_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#5c5c5c",
-                  "mode": "fixed"
-                }
+                "id": "custom.width",
+                "value": 260
               }
             ]
           }
@@ -2319,80 +2067,61 @@
       },
       "id": 58,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.9,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "horizontal",
-        "showValue": "never",
-        "stacking": "percent",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        },
-        "xField": "OS Version",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": []
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.1.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
+          "columns": [
             {
-              "field": "session.player.version",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "5"
-              },
-              "type": "terms"
+              "selector": "error_type",
+              "text": "error_type",
+              "type": "string"
             },
             {
-              "field": "data.error_type",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "column",
+              "text": "column",
+              "type": "string"
+            },
+            {
+              "selector": "value",
+              "text": "value",
+              "type": "number"
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:${platform}\nAND session.player.name:Letterbox\nAND session.media.bu:${bu}\nAND session.media.type:${type}\nAND session.media.swisstxt:${swisstxt:raw}\nAND data.business_error:false",
-          "refId": "errors",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "(\n  $vkey := function($v) {(\n    $p := $split($v, \".\");\n    $n := function($i) { $exists($p[$i]) and $contains($p[$i], /^[0-9]+$/) ? $number($p[$i]) : 0 };\n    $n(0) * 1000000 + $n(1) * 1000 + $n(2)\n  )};\n  $cols := $sort(aggregations.by_col.buckets, function($a, $b) { $vkey($a.key) < $vkey($b.key) });\n  $totals := $cols.errors.by_type.buckets{ key: $sum(doc_count) };\n  $types := $sort($keys($totals), function($a, $b) { $lookup($totals, $a) < $lookup($totals, $b) });\n  $types.(\n    $t := $;\n    $cols.(\n      $starts := starts.doc_count;\n      {\n        \"error_type\": $t,\n        \"column\": \"v\" & key,\n        \"value\": $starts > 0 ? $sum([errors.by_type.buckets[key = $t].doc_count, 0]) / $starts : null\n      }\n    )\n  )\n)",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.player.platform\": \"${platform}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.bu\": \"${bu}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.type\": \"${type}\"\n          }\n        },\n        {\n          \"query_string\": {\n            \"query\": \"session.media.swisstxt:${swisstxt:raw}\"\n          }\n        },\n        {\n          \"term\": {\n            \"session.player.name\": \"Letterbox\"\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\n              \"ERROR\",\n              \"START\"\n            ]\n          }\n        }\n      ],\n      \"must_not\": []\n    }\n  },\n  \"aggs\": {\n    \"by_col\": {\n      \"terms\": {\n        \"field\": \"session.player.version\",\n        \"size\": 5,\n        \"order\": {\n          \"starts\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"starts\": {\n          \"filter\": {\n            \"term\": {\n              \"event_name\": \"START\"\n            }\n          }\n        },\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                {\n                  \"term\": {\n                    \"event_name\": \"ERROR\"\n                  }\n                },\n                {\n                  \"term\": {\n                    \"data.business_error\": false\n                  }\n                }\n              ]\n            }\n          },\n          \"aggs\": {\n            \"by_type\": {\n              \"terms\": {\n                \"field\": \"data.error_type\",\n                \"size\": 30\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
-      "title": "Error Type Distribution by Player Version (Letterbox ${platform})",
+      "title": "Error Rate by Type and Player Version (Letterbox ${platform})",
       "transformations": [
         {
           "id": "groupingToMatrix",
           "options": {
-            "columnField": "data.error_type",
+            "columnField": "column",
             "emptyValue": "zero",
-            "rowField": "session.player.version",
-            "valueField": "Count"
+            "rowField": "error_type",
+            "valueField": "value"
           }
         },
         {
@@ -2402,13 +2131,12 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "session.os.name\\data.error_type": "OS",
-              "session.os.version\\data.error_type": "OS Version"
+              "error_type\\column": "Error type"
             }
           }
         }
       ],
-      "type": "barchart"
+      "type": "table"
     }
   ],
   "preload": false,
@@ -2422,7 +2150,7 @@
       {
         "allowCustomValue": true,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "description": "Filter by platform.",
@@ -2431,23 +2159,7 @@
         "label": "Platform",
         "multi": false,
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Web",
-            "value": "Web"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          }
-        ],
+        "options": [],
         "query": "Web, Apple, Android",
         "skipUrlSync": false,
         "type": "custom",
@@ -2457,7 +2169,7 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "hide": 0,
@@ -2465,38 +2177,7 @@
         "label": "Business Unit",
         "multi": false,
         "name": "bu",
-        "options": [
-          {
-            "selected": false,
-            "text": "srf",
-            "value": "srf"
-          },
-          {
-            "selected": false,
-            "text": "rts",
-            "value": "rts"
-          },
-          {
-            "selected": false,
-            "text": "rsi",
-            "value": "rsi"
-          },
-          {
-            "selected": false,
-            "text": "rtr",
-            "value": "rtr"
-          },
-          {
-            "selected": false,
-            "text": "swi",
-            "value": "swi"
-          },
-          {
-            "selected": false,
-            "text": "playsuisse",
-            "value": "playsuisse"
-          }
-        ],
+        "options": [],
         "query": "srf, rts, rsi, rtr, swi, playsuisse",
         "skipUrlSync": false,
         "type": "custom",
@@ -2506,7 +2187,7 @@
         "allValue": "*",
         "allowCustomValue": false,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "hide": 0,
@@ -2514,18 +2195,7 @@
         "label": "Type",
         "multi": false,
         "name": "type",
-        "options": [
-          {
-            "selected": false,
-            "text": "audio",
-            "value": "audio"
-          },
-          {
-            "selected": false,
-            "text": "video",
-            "value": "video"
-          }
-        ],
+        "options": [],
         "query": "audio, video",
         "skipUrlSync": false,
         "type": "custom",
@@ -2536,19 +2206,29 @@
         "auto_count": 30,
         "auto_min": "5s",
         "current": {
-          "text": "10m",
-          "value": "10m"
+          "text": "$__auto",
+          "value": "$__auto"
         },
         "hide": 0,
         "name": "interval",
         "options": [
           {
             "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
+          {
+            "selected": false,
             "text": "1m",
             "value": "1m"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "10m",
             "value": "10m"
           },
@@ -2600,30 +2280,14 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "(true OR false)",
+          "text": "Include SwissTXT",
           "value": "(true OR false)"
         },
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "swisstxt",
-        "options": [
-          {
-            "selected": true,
-            "text": "Include SwissTXT",
-            "value": "(true OR false)"
-          },
-          {
-            "selected": false,
-            "text": "Only SwissTXT",
-            "value": "true"
-          },
-          {
-            "selected": false,
-            "text": "Exclude SwissTXT",
-            "value": "false"
-          }
-        ],
+        "options": [],
         "query": "Include SwissTXT : (true OR false), Only SwissTXT : true, Exclude SwissTXT : false",
         "skipUrlSync": false,
         "type": "custom",
@@ -2632,7 +2296,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -2652,5 +2316,5 @@
   "timezone": "Europe/Zurich",
   "title": "Player Fragmentation",
   "uid": "eessxg1prer5sf",
-  "version": 28
+  "version": 29
 }

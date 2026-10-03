@@ -119,7 +119,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "playing",
@@ -416,7 +416,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -730,7 +730,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -861,7 +861,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Sessions",
@@ -1075,11 +1075,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Sessions"
+            "displayName": "Errors"
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -1310,11 +1310,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Sessions"
+            "displayName": "Errors"
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -1546,11 +1546,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Sessions"
+            "displayName": "Errors"
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -1806,7 +1806,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1879,7 +1879,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -2054,7 +2054,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "error",
@@ -2328,5 +2328,5 @@
   "timezone": "Europe/Zurich",
   "title": "Daily Report",
   "uid": "fe3wlaan74740b",
-  "version": 74
+  "version": 77
 }

@@ -179,7 +179,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -313,7 +313,7 @@
         "sparkline": false,
         "textMode": "value"
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "playing",
@@ -494,7 +494,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -612,7 +612,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -924,7 +924,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1152,7 +1152,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [],
@@ -1255,7 +1255,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Sessions",
@@ -1511,6 +1511,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IL_NOT_FOUND_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1547,7 +1562,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1620,7 +1635,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -1764,6 +1779,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IL_NOT_FOUND_ERROR"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1795,7 +1825,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "error",
@@ -2075,7 +2105,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [],
@@ -2329,7 +2359,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -2610,7 +2640,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -2891,7 +2921,7 @@
           }
         ]
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "columns": [
@@ -3174,7 +3204,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -3414,7 +3444,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -3544,7 +3574,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -3681,7 +3711,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -3802,7 +3832,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Average stall duration",
@@ -3925,7 +3955,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Average stall duration",
@@ -4047,7 +4077,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Average stall count",
@@ -4092,7 +4122,7 @@
         "allValue": "*",
         "allowCustomValue": true,
         "current": {
-          "text": "$__all",
+          "text": "All",
           "value": "$__all"
         },
         "description": "Filter by player platform.",
@@ -4101,23 +4131,7 @@
         "label": "Player Platform",
         "multi": false,
         "name": "platform",
-        "options": [
-          {
-            "selected": false,
-            "text": "Android",
-            "value": "Android"
-          },
-          {
-            "selected": false,
-            "text": "Apple",
-            "value": "Apple"
-          },
-          {
-            "selected": false,
-            "text": "Web",
-            "value": "Web"
-          }
-        ],
+        "options": [],
         "query": "Android, Apple, Web",
         "skipUrlSync": false,
         "type": "custom",
@@ -4128,8 +4142,8 @@
         "auto_count": 30,
         "auto_min": "5s",
         "current": {
-          "text": "1h",
-          "value": "1h"
+          "text": "$__auto",
+          "value": "$__auto"
         },
         "hide": 0,
         "name": "interval",
@@ -4160,7 +4174,7 @@
             "value": "30m"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "1h",
             "value": "1h"
           },
@@ -4201,21 +4215,21 @@
       },
       {
         "current": {
-          "text": "urn:swisstxt:video:srf:1840900",
-          "value": "urn:swisstxt:video:srf:1840900"
+          "text": "urn:swisstxt:video:rsi:1852769",
+          "value": "urn:swisstxt:video:rsi:1852769"
         },
         "hide": 0,
         "label": "Media ID",
         "name": "media_id",
-        "query": "urn:swisstxt:video:srf:1834934",
+        "query": "urn:swisstxt:video:rsi:1852769",
         "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "allowCustomValue": false,
         "current": {
-          "text": "6919",
-          "value": "6919"
+          "text": "10022.88011409109",
+          "value": "10022.88011409109"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -4262,8 +4276,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "urn\\:swisstxt\\:video\\:srf\\:1840900",
-          "value": "urn\\:swisstxt\\:video\\:srf\\:1840900"
+          "text": "urn\\:swisstxt\\:video\\:rsi\\:1852769",
+          "value": "urn\\:swisstxt\\:video\\:rsi\\:1852769"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -4305,8 +4319,8 @@
     ]
   },
   "time": {
-    "from": "2026-04-23T08:04:34.327Z",
-    "to": "2026-04-24T08:04:34.327Z"
+    "from": "2026-09-17T08:55:08.014Z",
+    "to": "2026-09-24T08:55:08.014Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -4325,5 +4339,5 @@
   "timezone": "browser",
   "title": "Error Breakdown by media",
   "uid": "ae4i3rgkvpdkwd",
-  "version": 78
+  "version": 81
 }

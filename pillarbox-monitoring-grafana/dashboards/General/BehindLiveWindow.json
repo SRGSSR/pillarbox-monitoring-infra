@@ -18,8 +18,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 51,
-  "links": [],
+  "id": 55,
+  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -37,35 +37,21 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+              "type": "linear"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -78,43 +64,59 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
+          }
+        }
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
+        "h": 12,
+        "w": 10,
         "x": 0,
         "y": 0
       },
       "id": 1,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "12.1.1",
       "targets": [
         {
-          "alias": "androidx.media3.datasource.HttpDataSource$InvalidResponseCodeException",
+          "alias": "",
           "bucketAggs": [
+            {
+              "field": "session.device.type",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            },
             {
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
+                "interval": "1d"
               },
               "type": "date_histogram"
             }
@@ -124,7 +126,6 @@
             "uid": "fef4oi750u39cd"
           },
           "format": "table",
-          "hide": false,
           "luceneQueryType": "Metric",
           "metrics": [
             {
@@ -132,46 +133,14 @@
               "type": "count"
             }
           ],
-          "query": "data.log:*404* AND NOT data.log:*deprecated* AND data.log:*InvalidResponseCodeException*",
-          "queryType": "lucene",
-          "refId": "C",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "The content cannot be played",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "10m",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "data.log:*404* AND NOT data.log:*deprecated* AND data.log:*The content cannot be played*",
+          "query": "session.media.type:audio\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Errors",
-      "type": "timeseries"
+      "title": "BehindLiveWindow (Devices)",
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -189,35 +158,21 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
-              "log": 2,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+              "type": "linear"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -230,36 +185,123 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
+          }
+        }
       },
       "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 10
+        "h": 12,
+        "w": 9,
+        "x": 10,
+        "y": 0
       },
       "id": 2,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "12.1.1",
       "targets": [
         {
-          "alias": "Unique Sessions",
+          "alias": "",
           "bucketAggs": [
+            {
+              "field": "session.player.version",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "session.media.type:audio\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "BehindLiveWindow (Player Version)",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 3,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "session.browser.version",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "0"
+              },
+              "type": "terms"
+            },
             {
               "field": "@timestamp",
               "id": "2",
@@ -274,100 +316,49 @@
             "uid": "fef4oi750u39cd"
           },
           "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
+          "luceneQueryType": "Logs",
           "metrics": [
             {
-              "field": "session_id",
               "id": "1",
-              "type": "cardinality"
+              "settings": {
+                "size": "10000"
+              },
+              "type": "logs"
             }
           ],
-          "query": "session.media.id:*8ba4aff7-1be6-436e-91b4-c6b77c8db88f*",
+          "query": "session.media.type:audio\nAND (data.url:*audiostreaming* OR session.media.origin:*live*)\nAND data.business_error:false \nAND data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR \nAND data.name:BehindLiveWindowException",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
-        },
-        {
-          "alias": "videojs.plugin() is deprecated and IL HTTP 404",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "10m"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.id:*8ba4aff7-1be6-436e-91b4-c6b77c8db88f* AND data.log:*deprecated* AND data.log:*404*",
-          "queryType": "lucene",
-          "refId": "B",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "IL HTTP Code 404",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "fef4oi750u39cd"
-          },
-          "format": "table",
-          "hide": false,
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "session.media.id:*8ba4aff7-1be6-436e-91b4-c6b77c8db88f* AND data.log:*404* AND NOT data.log:*deprecated*",
-          "queryType": "lucene",
-          "refId": "C",
-          "timeField": "@timestamp"
         }
       ],
-      "title": "Regi GR",
-      "type": "timeseries"
+      "title": "BehindLiveWindow (Player Version)",
+      "type": "logs"
     }
   ],
   "preload": false,
-  "schemaVersion": 41,
-  "tags": [],
-  "templating": {
-    "list": []
-  },
+  "refresh": "",
+  "schemaVersion": 42,
   "time": {
-    "from": "2025-11-25T06:58:21.138Z",
-    "to": "2025-11-26T16:36:03.301Z"
+    "from": "now-2d",
+    "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "browser",
-  "title": "Regi GR HTTP 404 Error",
-  "uid": "33edf5ba-ea71-4086-a1d4-0607500a9d66",
-  "version": 8
+  "title": "BehindLiveWindow",
+  "uid": "a8ff7149-21ca-4626-8504-26f89295ef57",
+  "version": 7
 }

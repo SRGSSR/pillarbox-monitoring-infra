@@ -1,0 +1,346 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3855168362438656,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 17,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "alias": "0 seconds",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND session.media.id:$media_id\nAND data.playback_duration:0",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "up to 10 minutes",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.id:$media_id\nAND data.playback_duration:[1 TO 600000]",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "10 to 60 minutes",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.id:$media_id\nAND data.playback_duration:[600000 TO 3600000]",
+          "queryType": "lucene",
+          "refId": "E",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "1 to 5 hours",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.id:$media_id\nAND data.playback_duration:[3600000 TO 18000000]",
+          "queryType": "lucene",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "5 to 10 hours",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.id:$media_id\nAND data.playback_duration:[18000000 TO 36000000]",
+          "queryType": "lucene",
+          "refId": "F",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "10 to 24 hours",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.id:$media_id\nAND data.playback_duration:[36000000 TO 86400000]",
+          "queryType": "lucene",
+          "refId": "D",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "more than 24 hours",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "5m",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.id:$media_id\nAND data.playback_duration:[86400000 TO *]",
+          "queryType": "lucene",
+          "refId": "G",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "durations of events",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "SRF 1",
+          "value": "urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Media ID",
+        "multi": false,
+        "name": "media_id",
+        "options": [],
+        "query": "[{\"text\":\"SRF 1\",\"value\":\"urn:srf:video:c4927fcf-e1a0-0001-7edd-1ef01d441651\"},\n{\"text\":\"SRF 2\",\"value\":\"urn:srf:video:c49c1d64-9f60-0001-1c36-43c288c01a10\"},\n{\"text\":\"SRF Info\",\"value\":\"urn:srf:video:c49c1d73-2f70-0001-138a-15e0c4ccd3d0\"},\n{\"text\":\"RTR auf SRF 1\",\"value\":\"urn:rtr:video:269e6a58-a9cb-11e3-ac2b-fbf4986f02ad\"},\n{\"text\":\"RTR auf SRF 2\",\"value\":\"urn:rtr:video:79f7a7be-a9d0-11e3-94b5-2bd93f599afb\"},\n{\"text\":\"RTR auf SRF Info\",\"value\":\"urn:rtr:video:3102aa5c-a9d7-11e3-be81-0fe6c5ad887f\"},\n{\"text\":\"RTS 1\",\"value\":\"urn:rts:video:3608506\"},\n{\"text\":\"RTS 2\",\"value\":\"urn:rts:video:3608517\"},\n{\"text\":\"RTS Info\",\"value\":\"urn:rts:video:1967124\"},\n{\"text\":\"RSI 1\",\"value\":\"urn:rsi:video:livestream_La1\"},\n{\"text\":\"RSI 2\",\"value\":\"urn:rsi:video:livestream_La2\"},\n{\"text\":\"Visual Radio SRF Virus\",\"value\":\"urn:srf:video:2a60b590-8a28-4540-bce8-fc4e52b3b5d8\"},\n{\"text\":\"Visual Radio SRF Musikwelle\",\"value\":\"urn:urn:srf:video:973440d3-60a5-4ddf-ae83-2c77815a32a1\"},\n{\"text\":\"Visual Radio SRF 3\",\"value\":\"urn:srf:video:972b2dbd-3958-43b7-8c15-e92f56c8d734\"},\n{\"text\":\"Visual Radio SRF 1\",\"value\":\"urn:srf:video:5b90d1fb-477b-4d98-86a6-82921a4bb0ea\"},\n{\"text\":\"Visual Radio Couleur 3\",\"value\":\"urn:rts:video:8841634\"}]",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "json"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Concurrent Viewers Insight by Stream",
+  "uid": "ma25x29dsf",
+  "version": 11
+}

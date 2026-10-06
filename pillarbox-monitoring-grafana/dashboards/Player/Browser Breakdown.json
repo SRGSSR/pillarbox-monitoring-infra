@@ -29,7 +29,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 55,
+      "id": 56,
       "title": "$browser Breakdown",
       "type": "row"
     },
@@ -920,7 +920,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -1197,6 +1197,219 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Current or newer"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1 version behind"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2 versions behind"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "3+ versions behind"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unknown / other"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#6f6f6f",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 55,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.6,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "overflow": "ellipsis",
+          "placement": "right",
+          "showLegend": false
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": true,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Browser",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "browser",
+              "text": "Browser",
+              "type": "string"
+            },
+            {
+              "selector": "current",
+              "text": "Current or newer",
+              "type": "number"
+            },
+            {
+              "selector": "behind1",
+              "text": "1 version behind",
+              "type": "number"
+            },
+            {
+              "selector": "behind2",
+              "text": "2 versions behind",
+              "type": "number"
+            },
+            {
+              "selector": "behind3",
+              "text": "3+ versions behind",
+              "type": "number"
+            },
+            {
+              "selector": "unknown",
+              "text": "Unknown / other",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "aggregations.by_device.buckets.(\n  $total := doc_count;\n  $byMajor := versions.buckets{ $substringBefore(key, \".\"): $sum(doc_count) };\n  $rows := $each($byMajor, function($v, $k) { {\"major\": $k, \"count\": $v} });\n  $numeric := $filter($rows, function($r) { $contains($r.major, /^[0-9]+$/) });\n  $sorted := $sort($numeric, function($a, $b) { $number($a.major) < $number($b.major) });\n  $ranked := $map($sorted, function($r, $i) { {\"major\": $r.major, \"count\": $r.count, \"i\": $i} });\n  $qual := $filter($ranked, function($r) { $r.count / $total >= 0.05 });\n  $c := $exists($qual) ? $qual[0].i : 0;\n  $curMajor := $ranked[i = $c].major;\n  {\n    \"browser\": $exists($curMajor) ? key & \" (v\" & $curMajor & \")\" : key,\n    \"current\": $sum([$ranked[i <= $c].count, 0]) / $total,\n    \"behind1\": $sum([$ranked[i = $c + 1].count, 0]) / $total,\n    \"behind2\": $sum([$ranked[i = $c + 2].count, 0]) / $total,\n    \"behind3\": $sum([$ranked[i > $c + 2].count, 0]) / $total,\n    \"unknown\": ($total - $sum([$ranked.count, 0])) / $total\n  }\n)",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"term\": {\n            \"session.player.platform\": \"Web\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.browser.name\": \"${browser}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.id\": \"${media_id}\"\n          }\n        },\n        {\n          \"term\": {\n            \"event_name\": \"START\"\n          }\n        }\n      ],\n      \"must_not\": []\n    }\n  },\n  \"aggs\": {\n    \"by_device\": {\n      \"terms\": {\n        \"field\": \"session.browser.name\",\n        \"size\": 1\n      },\n      \"aggs\": {\n        \"versions\": {\n          \"terms\": {\n            \"field\": \"session.browser.version\",\n            \"size\": 200\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "Version Freshness",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "custom": {
@@ -1355,7 +1568,7 @@
         "h": 12,
         "w": 10,
         "x": 0,
-        "y": 20
+        "y": 25
       },
       "id": 52,
       "options": {
@@ -1652,7 +1865,7 @@
         "h": 12,
         "w": 14,
         "x": 10,
-        "y": 20
+        "y": 25
       },
       "id": 54,
       "options": {
@@ -1853,7 +2066,7 @@
         "h": 9,
         "w": 10,
         "x": 0,
-        "y": 32
+        "y": 37
       },
       "id": 35,
       "options": {
@@ -2095,7 +2308,7 @@
         "h": 9,
         "w": 14,
         "x": 10,
-        "y": 32
+        "y": 37
       },
       "id": 53,
       "options": {
@@ -2169,267 +2382,140 @@
     },
     {
       "datasource": {
-        "type": "grafana-opensearch-datasource",
-        "uid": "deoqp3q289nnkd"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cepet3yzpalfke"
       },
-      "description": "This panel shows the relative distribution of error types for each operating system.\nPercentages indicate the share of each error type among total errors for that OS.",
+      "description": "Errors of each type per session start for this browser, on its 5 operating systems with the most sessions (business errors excluded). Error types are sorted by total volume. Green below 1%, orange from 1%, red from 5%. Values can exceed 100% when errors occur before playback starts.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "left",
-            "axisSoftMax": 1,
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+            "align": "left",
+            "cellOptions": {
+              "type": "color-text"
             },
-            "lineWidth": 0,
-            "scaleDistribution": {
-              "type": "linear"
+            "footer": {
+              "reducers": []
             },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "inspect": false,
+            "minWidth": 80,
+            "wrapHeaderText": true
           },
-          "noValue": "0",
+          "decimals": 2,
+          "noValue": "–",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "text",
                 "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0.002
+              },
+              {
+                "color": "orange",
+                "value": 0.01
+              },
+              {
+                "color": "red",
+                "value": 0.05
               }
             ]
           },
-          "unit": "short"
+          "unit": "percentunit"
         },
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/.*/"
-            },
-            "properties": [
-              {
-                "id": "filterable",
-                "value": false
-              }
-            ]
-          },
-          {
-            "matcher": {
               "id": "byName",
-              "options": "IL_ERROR"
+              "options": "Error type"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_UNSUPPORTED_MEDIA"
-            },
-            "properties": [
+                "id": "custom.align",
+                "value": "left"
+              },
               {
-                "id": "color",
+                "id": "custom.cellOptions",
                 "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
+                  "type": "auto"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_MEDIA_SOURCE_ERROR"
-            },
-            "properties": [
+              },
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DRM_NOT_SUPPORTED"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PLAYBACK_NETWORK_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "UNKNOWN_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DRM_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CONNECTION_ERROR"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#5c5c5c",
-                  "mode": "fixed"
-                }
+                "id": "custom.width",
+                "value": 260
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 46
       },
       "id": 46,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.9,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "overflow": "ellipsis",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "horizontal",
-        "showValue": "never",
-        "stacking": "percent",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        },
-        "xField": "session.os.name\\data.error_type",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "13.1.1",
       "targets": [
         {
-          "alias": "",
-          "bucketAggs": [
+          "columns": [
             {
-              "field": "session.os.name",
-              "id": "1",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "error_type",
+              "text": "error_type",
+              "type": "string"
             },
             {
-              "field": "data.error_type",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_count",
-                "size": "0"
-              },
-              "type": "terms"
+              "selector": "column",
+              "text": "column",
+              "type": "string"
+            },
+            {
+              "selector": "value",
+              "text": "value",
+              "type": "number"
             }
           ],
           "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "cepet3yzpalfke"
           },
-          "metrics": [
-            {
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:ERROR\nAND session.player.platform:Web\nAND session.media.id:${media_id_lucene:raw}\nAND session.browser.name:${browser}\nAND data.business_error:false",
-          "refId": "errors",
-          "timeField": "@timestamp"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "(\n  $vkey := function($v) {(\n    $p := $split($v, \".\");\n    $n := function($i) { $exists($p[$i]) and $contains($p[$i], /^[0-9]+$/) ? $number($p[$i]) : 0 };\n    $n(0) * 1000000 + $n(1) * 1000 + $n(2)\n  )};\n  $cols := aggregations.by_col.buckets;\n  $totals := $cols.errors.by_type.buckets{ key: $sum(doc_count) };\n  $types := $sort($keys($totals), function($a, $b) { $lookup($totals, $a) < $lookup($totals, $b) });\n  $types.(\n    $t := $;\n    $cols.(\n      $starts := starts.doc_count;\n      {\n        \"error_type\": $t,\n        \"column\": key,\n        \"value\": $starts > 0 ? $sum([errors.by_type.buckets[key = $t].doc_count, 0]) / $starts : null\n      }\n    )\n  )\n)",
+          "source": "url",
+          "type": "json",
+          "url": "",
+          "url_options": {
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "data": "{\n  \"size\": 0,\n  \"query\": {\n    \"bool\": {\n      \"filter\": [\n        {\n          \"range\": {\n            \"@timestamp\": {\n              \"gte\": \"${__from}\",\n              \"lte\": \"${__to}\"\n            }\n          }\n        },\n        {\n          \"term\": {\n            \"session.player.platform\": \"Web\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.browser.name\": \"${browser}\"\n          }\n        },\n        {\n          \"wildcard\": {\n            \"session.media.id\": \"${media_id}\"\n          }\n        },\n        {\n          \"terms\": {\n            \"event_name\": [\n              \"ERROR\",\n              \"START\"\n            ]\n          }\n        }\n      ],\n      \"must_not\": []\n    }\n  },\n  \"aggs\": {\n    \"by_col\": {\n      \"terms\": {\n        \"field\": \"session.os.name\",\n        \"size\": 5,\n        \"order\": {\n          \"starts\": \"desc\"\n        }\n      },\n      \"aggs\": {\n        \"starts\": {\n          \"filter\": {\n            \"term\": {\n              \"event_name\": \"START\"\n            }\n          }\n        },\n        \"errors\": {\n          \"filter\": {\n            \"bool\": {\n              \"filter\": [\n                {\n                  \"term\": {\n                    \"event_name\": \"ERROR\"\n                  }\n                },\n                {\n                  \"term\": {\n                    \"data.business_error\": false\n                  }\n                }\n              ]\n            }\n          },\n          \"aggs\": {\n            \"by_type\": {\n              \"terms\": {\n                \"field\": \"data.error_type\",\n                \"size\": 30\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+            "method": "POST"
+          }
         }
       ],
-      "title": "Error Type Distribution by Operating System",
+      "title": "Error Rate by Type and Operating System",
       "transformations": [
         {
           "id": "groupingToMatrix",
           "options": {
-            "columnField": "data.error_type",
+            "columnField": "column",
             "emptyValue": "zero",
-            "rowField": "session.os.name",
-            "valueField": "Count"
+            "rowField": "error_type",
+            "valueField": "value"
           }
         },
         {
@@ -2439,12 +2525,12 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "session.os.name\\data.error_type": "OS"
+              "error_type\\column": "Error type"
             }
           }
         }
       ],
-      "type": "barchart"
+      "type": "table"
     },
     {
       "datasource": {
@@ -2621,7 +2707,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 56
       },
       "id": 36,
       "options": {
@@ -2807,9 +2893,9 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 68
       },
-      "id": 56,
+      "id": 57,
       "title": "$browser Metrics",
       "type": "row"
     },
@@ -2849,7 +2935,7 @@
             },
             "showPoints": "auto",
             "showValues": false,
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -2957,7 +3043,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 62
+        "y": 69
       },
       "id": 50,
       "options": {
@@ -3089,7 +3175,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 62
+        "y": 69
       },
       "id": 51,
       "options": {
@@ -3214,7 +3300,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 70
+        "y": 77
       },
       "id": 45,
       "options": {
@@ -3337,7 +3423,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 70
+        "y": 77
       },
       "id": 44,
       "options": {
@@ -3459,7 +3545,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 70
+        "y": 77
       },
       "id": 43,
       "options": {
@@ -3560,8 +3646,8 @@
         "auto_count": 30,
         "auto_min": "5s",
         "current": {
-          "text": "10m",
-          "value": "10m"
+          "text": "6h",
+          "value": "6h"
         },
         "hide": 0,
         "name": "interval",
@@ -3582,7 +3668,7 @@
             "value": "1m"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "10m",
             "value": "10m"
           },
@@ -3597,7 +3683,7 @@
             "value": "1h"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "6h",
             "value": "6h"
           },
@@ -3633,8 +3719,8 @@
       },
       {
         "current": {
-          "text": "*",
-          "value": "*"
+          "text": "*:*:**",
+          "value": "*:*:**"
         },
         "hide": 0,
         "label": "Media ID",
@@ -3646,8 +3732,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "4385",
-          "value": "4385"
+          "text": "6869.342322723025",
+          "value": "6869.342322723025"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -3694,8 +3780,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "*",
-          "value": "*"
+          "text": "*\\:*\\:**",
+          "value": "*\\:*\\:**"
         },
         "datasource": {
           "type": "yesoreyeram-infinity-datasource",
@@ -3737,8 +3823,8 @@
     ]
   },
   "time": {
-    "from": "now-24h",
-    "to": "now"
+    "from": "2026-09-17T09:39:02.453Z",
+    "to": "2026-09-24T09:39:02.453Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -3757,5 +3843,5 @@
   "timezone": "Europe/Zurich",
   "title": "Browser Breakdown",
   "uid": "cerwrzn7ypzwga",
-  "version": 48
+  "version": 52
 }

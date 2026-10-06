@@ -1,0 +1,286 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3883499090796544,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#ad46ff",
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 19,
+        "w": 10,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "alias": "Stall > 0, less than 1 sec wait",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND data.stream_type:Live\nAND data.playback_duration:0\nAND data.stall.duration:[1 TO *]\nAND session.qoe_timings.total:[1 TO 1000]",
+          "queryType": "lucene",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Stall > 0, 1 to 5 sec wait",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND data.stream_type:Live\nAND data.playback_duration:0\nAND data.stall.duration:[1 TO *]\nAND session.qoe_timings.total:[1001 TO 5000]",
+          "queryType": "lucene",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Stall > 0, more than 5 sec",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND data.stream_type:Live\nAND data.playback_duration:0\nAND data.stall.duration:[1 TO *]\nAND session.qoe_timings.total:[5001 TO *]",
+          "queryType": "lucene",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Stall 0, less than 1 sec wait",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND data.stream_type:Live\nAND data.playback_duration:0\nAND data.stall.duration:0\nAND session.qoe_timings.total:[1 TO 1000]",
+          "queryType": "lucene",
+          "refId": "D",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Stall 0, 1 to 5 sec wait",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND data.stream_type:Live\nAND data.playback_duration:0\nAND data.stall.duration:0\nAND session.qoe_timings.total:[1001 TO 5000]",
+          "queryType": "lucene",
+          "refId": "E",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Stall 0, more than 5 sec",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "event_name:STOP\nAND data.stream_type:Live\nAND data.playback_duration:0\nAND data.stall.duration:0\nAND session.qoe_timings.total:[5001 TO *]",
+          "queryType": "lucene",
+          "refId": "F",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "QOE Wait times (Unique Session ID)",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "STOP Events with 0 duration",
+  "uid": "maw6qfb",
+  "version": 6
+}

@@ -59,7 +59,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 5,
+        "w": 4,
         "x": 0,
         "y": 0
       },
@@ -142,6 +142,211 @@
       ],
       "title": "",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "deoqp3q289nnkd"
+      },
+      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 4,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "barShape": "flat",
+        "barWidthFactor": 0.5,
+        "effects": {
+          "barGlow": false,
+          "centerGlow": false,
+          "gradient": false
+        },
+        "endpointMarker": "point",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "segmentCount": 1,
+        "segmentSpacing": 0.3,
+        "shape": "gauge",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "sparkline": false,
+        "textMode": "value"
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "alias": "playing",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval",
+                "min_doc_count": "0",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "id": "3",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:START \nAND user_ip:\"${user_ip}\"",
+          "queryType": "lucene",
+          "refId": "playing",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "error",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "deoqp3q289nnkd"
+          },
+          "format": "table",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND user_ip:\"${user_ip}\"",
+          "queryType": "lucene",
+          "refId": "error",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Success rate",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "rowsToFields",
+          "options": {
+            "mappings": []
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "errorRate",
+            "binary": {
+              "left": "error",
+              "operator": "/",
+              "right": "playing"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Unique Count session_id.keyword 1": true,
+              "Unique Count session_id.keyword 2": true,
+              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": false
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "successRate",
+            "binary": {
+              "left": "1",
+              "operator": "-",
+              "right": "errorRate"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "1 - Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": "Success",
+              "successRate": ""
+            }
+          }
+        }
+      ],
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -306,8 +511,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 19,
-        "x": 5,
+        "w": 15,
+        "x": 9,
         "y": 0
       },
       "id": 9,
@@ -998,8 +1203,8 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 17,
+        "h": 10,
+        "w": 12,
         "x": 0,
         "y": 19
       },
@@ -1067,98 +1272,171 @@
         "type": "grafana-opensearch-datasource",
         "uid": "deoqp3q289nnkd"
       },
-      "description": "The Success Rate measures player reliability as the ratio of START to ERROR events, excluding failures caused by blocked reasons,  unsupported DRM errors or connection errors.",
+      "description": "The median quality of experience loading time, i.e., how long the user perceives the video to load.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "blue",
                 "value": 0
               },
               {
                 "color": "green",
-                "value": 0.95
+                "value": 500
+              },
+              {
+                "color": "#EAB839",
+                "value": 1000
+              },
+              {
+                "color": "orange",
+                "value": 2000
+              },
+              {
+                "color": "red",
+                "value": 5000
               }
             ]
           },
-          "unit": "percentunit"
-        }
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "text"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Sessions"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "p50.0 session.qoe_timings.total"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Median"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 17,
+        "h": 10,
+        "w": 12,
+        "x": 12,
         "y": 19
       },
-      "id": 15,
+      "id": 20,
       "options": {
-        "barShape": "flat",
-        "barWidthFactor": 0.5,
-        "effects": {
-          "barGlow": false,
-          "centerGlow": false,
-          "gradient": false
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
         },
-        "endpointMarker": "point",
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "segmentCount": 1,
-        "segmentSpacing": 0.3,
-        "shape": "gauge",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto",
-        "sparkline": false,
-        "textMode": "value"
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "13.1.1",
       "targets": [
         {
-          "alias": "playing",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "$interval",
-                "min_doc_count": "0",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "datasource": {
-            "type": "grafana-opensearch-datasource",
-            "uid": "deoqp3q289nnkd"
-          },
-          "format": "table",
-          "luceneQueryType": "Metric",
-          "metrics": [
-            {
-              "id": "3",
-              "type": "count"
-            }
-          ],
-          "query": "event_name:START \nAND user_ip:\"${user_ip}\"",
-          "queryType": "lucene",
-          "refId": "playing",
-          "timeField": "@timestamp"
-        },
-        {
-          "alias": "error",
+          "alias": "",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -1176,96 +1454,28 @@
           "format": "table",
           "metrics": [
             {
+              "field": "session.qoe_timings.total",
               "id": "1",
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
+            },
+            {
+              "id": "3",
               "type": "count"
             }
           ],
-          "query": "event_name:ERROR\nAND data.business_error:false\nAND NOT data.error_type:(DRM_NOT_SUPPORTED OR CONNECTION_ERROR)\nAND user_ip:\"${user_ip}\"",
+          "query": "event_name:START\nAND user_ip:${user_ip}",
           "queryType": "lucene",
-          "refId": "error",
+          "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Success rate",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "labelsToFields": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "sum"
-            ]
-          }
-        },
-        {
-          "id": "rowsToFields",
-          "options": {
-            "mappings": []
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "errorRate",
-            "binary": {
-              "left": "error",
-              "operator": "/",
-              "right": "playing"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Unique Count session_id.keyword 1": true,
-              "Unique Count session_id.keyword 2": true,
-              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": false
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {}
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "successRate",
-            "binary": {
-              "left": "1",
-              "operator": "-",
-              "right": "errorRate"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": true
-            },
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "1 - Unique Count session_id.keyword 2 / Unique Count session_id.keyword 1": "Success",
-              "successRate": ""
-            }
-          }
-        }
-      ],
-      "type": "gauge"
+      "title": "Perceived delay",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1276,11 +1486,12 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 8,
       "options": {
         "dedupStrategy": "none",
+        "detailsMode": "sidebar",
         "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
@@ -1288,7 +1499,7 @@
         "showControls": false,
         "showFieldSelector": false,
         "showLabels": false,
-        "showLevel": true,
+        "showLevel": false,
         "showTime": true,
         "sortOrder": "Descending",
         "timestampResolution": "ms",
@@ -1460,6 +1671,369 @@
         }
       ],
       "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 37
+      },
+      "id": 17,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "alias": "Average stall duration",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "field": "data.frame_drops",
+              "id": "1",
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
+            }
+          ],
+          "query": "event_name:(HEARTBEAT OR STOP)\nAND user_ip:${user_ip}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Median Frame Drops",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 37
+      },
+      "id": 18,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "alias": "Average stall duration",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "field": "data.stall.duration",
+              "id": "1",
+              "settings": {
+                "percents": [
+                  "50"
+                ]
+              },
+              "type": "percentiles"
+            }
+          ],
+          "query": "event_name:(HEARTBEAT OR STOP)\nAND user_ip:${user_ip}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Median Stall Duration",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 37
+      },
+      "id": 19,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.1.1",
+      "targets": [
+        {
+          "alias": "Average stall count",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "$interval"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource"
+          },
+          "metrics": [
+            {
+              "field": "data.stall.count",
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "event_name:(HEARTBEAT OR STOP)\nAND user_ip:${user_ip}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Median Stall Count",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -1572,5 +2146,5 @@
   "timezone": "browser",
   "title": "IP Breakdown",
   "uid": "eec91oj0mcirka",
-  "version": 28
+  "version": 32
 }

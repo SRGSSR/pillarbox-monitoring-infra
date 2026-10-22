@@ -6,17 +6,20 @@ resource "aws_security_group" "opensearch_sg" {
   name   = "opensearch-sg"
   vpc_id = data.aws_vpc.main_vpc.id
 
-  # Allow HTTPS from Grafana, Bastion and Data Transfer
+  # Allow HTTPS from Grafana, Quanthea, Bastion and Data Transfer
   ingress {
-    description = "Allow HTTP access from Grafana, Bastion and data transfer service"
+    description = "Allow HTTP access from Grafana, Quanthea, Bastion and data transfer service"
     from_port   = 9200
     to_port     = 9200
     protocol    = "tcp"
-    security_groups = [
-      aws_security_group.transfer_task_sg.id,
-      aws_security_group.grafana_sg.id,
-      aws_security_group.bastion_sg.id
-    ]
+    security_groups = concat(
+      [
+        aws_security_group.transfer_task_sg.id,
+        aws_security_group.grafana_sg.id,
+        data.aws_security_group.bastion_sg.id
+      ],
+      aws_security_group.quanthea_sg[*].id, # Quanthea is only deployed in prod
+    )
   }
 
   # Allow SSH from Bastion
@@ -25,7 +28,7 @@ resource "aws_security_group" "opensearch_sg" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [aws_security_group.bastion_sg.id]
+    security_groups = [data.aws_security_group.bastion_sg.id]
   }
 
   # Egress: allow all outbound

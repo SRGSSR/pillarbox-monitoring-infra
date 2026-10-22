@@ -83,16 +83,16 @@ data "aws_subnets" "private_subnets" {
   }
 }
 
-# Retrieve private route tables based on VPC and tags
-data "aws_route_tables" "private_route_tables" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.main_vpc.id]
-  }
+# Retrieve the shared Bastion security group (12-pillarbox-monitoring-shared)
+data "aws_security_group" "bastion_sg" {
+  name   = "bastion-sg"
+  vpc_id = data.aws_vpc.main_vpc.id
+}
 
-  tags = {
-    Name = "*private*"
-  }
+# Retrieve the shared VPC endpoints security group (12-pillarbox-monitoring-shared)
+data "aws_security_group" "vpc_endpoints_sg" {
+  name   = "vpc-endpoints-sg"
+  vpc_id = data.aws_vpc.main_vpc.id
 }
 
 # -----------------------------------
@@ -120,83 +120,26 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 # -----------------------------------
-# AWS VPC Endpoints Setup
+# Shared VPC Endpoints Access
 # -----------------------------------
 
-# Security Group for VPC Endpoints
-resource "aws_security_group" "vpc_endpoints_sg" {
-  name        = "vpc-endpoints-sg"
-  description = "Associated to ECR/s3 VPC Endpoints"
-  vpc_id      = local.vpc_id
+# Allow the tasks of this stack to reach ECR/Logs/SSM via the shared endpoints
+resource "aws_security_group_rule" "allow_to_shared_endpoints" {
+  for_each = merge(
+    {
+      dispatch = aws_security_group.dispatch_task_sg.id
+      transfer = aws_security_group.transfer_task_sg.id
+    },
+    # Reads its admin password through the SSM endpoint (prod only)
+    { for id in aws_security_group.quanthea_sg[*].id : "quanthea" => id },
+  )
 
-  # Ingress rule to allow access to VPC endpoints
-  ingress {
-    description = "Allow Nodes to pull images from ECR via VPC endpoints"
-    protocol    = "tcp"
-    from_port   = 443
-    to_port     = 443
-    security_groups = [
-      aws_security_group.dispatch_task_sg.id,
-      aws_security_group.transfer_task_sg.id,
-    ]
-  }
+  type        = "ingress"
+  description = "Allow Nodes to pull images from ECR via VPC endpoints"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
 
-  tags = {
-    Name = "vpc-endpoints-sg"
-  }
-}
-
-# VPC Endpoint for ECR API
-resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id              = data.aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = data.aws_subnets.private_subnets.ids
-  security_group_ids  = [aws_security_group.vpc_endpoints_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "vpc-ecr-api-endpoint"
-  }
-}
-
-# VPC Endpoint for ECR DKR
-resource "aws_vpc_endpoint" "ecr_dkr" {
-  vpc_id              = data.aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = data.aws_subnets.private_subnets.ids
-  security_group_ids  = [aws_security_group.vpc_endpoints_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "vpc-ecr-dkr-endpoint"
-  }
-}
-
-# VPC Endpoint for CloudWatch Logs
-resource "aws_vpc_endpoint" "cloudwatch_logs" {
-  vpc_id              = data.aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.logs"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = data.aws_subnets.private_subnets.ids
-  security_group_ids  = [aws_security_group.vpc_endpoints_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "vpc-cloudwatch-logs-endpoint"
-  }
-}
-
-# VPC Endpoint for S3
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id            = data.aws_vpc.main_vpc.id
-  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
-  vpc_endpoint_type = "Gateway"
-
-  route_table_ids = data.aws_route_tables.private_route_tables.ids
-
-  tags = {
-    Name = "vpc-s3-endpoint"
-  }
+  security_group_id        = data.aws_security_group.vpc_endpoints_sg.id
+  source_security_group_id = each.value
 }

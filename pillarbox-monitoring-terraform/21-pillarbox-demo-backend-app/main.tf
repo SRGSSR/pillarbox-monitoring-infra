@@ -105,12 +105,10 @@ resource "aws_ecs_cluster" "demo_backend_ecs_cluster" {
 # AWS VPC Endpoints Setup
 # -----------------------------------
 
-# 1. Find the existing Security Group from the 20-pillarbox-monitoring-app project
+# 1. Find the shared Security Group from the 12-pillarbox-monitoring-shared project
 data "aws_security_group" "shared_vpc_endpoints_sg" {
-  filter {
-    name   = "tag:Name"
-    values = ["vpc-endpoints-sg"]
-  }
+  name   = "vpc-endpoints-sg"
+  vpc_id = data.aws_vpc.main_vpc.id
 }
 
 # 2. Add the new Backend Task SG as an authorized source
@@ -123,18 +121,4 @@ resource "aws_security_group_rule" "allow_backend_to_shared_endpoints" {
 
   security_group_id        = data.aws_security_group.shared_vpc_endpoints_sg.id
   source_security_group_id = aws_security_group.demo_backend_task_sg.id
-}
-
-# VPC Endpoint for SSM API
-resource "aws_vpc_endpoint" "ssm" {
-  vpc_id              = data.aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ssm"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = data.aws_subnets.private_subnets.ids
-  security_group_ids  = [data.aws_security_group.shared_vpc_endpoints_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "vpc-ssm-endpoint"
-  }
 }

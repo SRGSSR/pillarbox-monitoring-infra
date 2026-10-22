@@ -13,7 +13,7 @@ locals {
     instance_type = local.is_prod ? "r7g.xlarge" : "t4g.medium"
     volume = {
       type       = "gp3"
-      size       = local.is_prod ? 750 : 20,
+      size       = local.is_prod ? 1000 : 20,
       iops       = 3000
       throughput = 125
     }
@@ -24,6 +24,13 @@ locals {
     ami           = "ami-0d7c381edfc5ee30e"
     instance_type = "t4g.medium"
     domain_name   = local.is_prod ? "grafana.${var.pillarbox_domain_name}" : "dev.grafana.${var.pillarbox_domain_name}"
+  }
+
+  quanthea = {
+    ami           = "ami-0d7c381edfc5ee30e"
+    instance_type = "t4g.small"
+    image         = "ghcr.io/jboix/quanthea:v0.4.0"
+    domain_name   = "quanthea.${var.pillarbox_domain_name}" # Only deployed in prod
   }
 
   transfer = {
@@ -40,11 +47,6 @@ locals {
       cpu    = local.is_prod ? 1024 : 256
       memory = local.is_prod ? 2048 : 512
     }
-  }
-
-  bastion = {
-    ami           = "ami-0d7c381edfc5ee30e"
-    instance_type = "t4g.nano"
   }
 
   default_tags = {

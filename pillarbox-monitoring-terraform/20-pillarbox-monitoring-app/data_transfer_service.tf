@@ -66,15 +66,15 @@ resource "aws_ecs_task_definition" "transfer_task" {
         # Environment variables for connecting to SSE and OpenSearch services
         environment = [
           {
-            name  = "config__override__dispatcher-client__uri"
+            name  = "DISPATCHERCLIENT_URI"
             value = "http://${aws_service_discovery_service.dispatch_service_discovery.name}.${aws_service_discovery_private_dns_namespace.service_discovery_namespace.name}:8080/events"
           },
           {
-            name  = "config__override__open-search__uri"
+            name  = "OPENSEARCH_URI"
             value = "http://${aws_instance.opensearch.private_ip}:9200"
           },
           {
-            name  = "config__override__dispatcher-client__sse-timeout"
+            name  = "DISPATCHERCLIENT_SSETIMEOUT"
             value = local.transfer.task.sse_timeout
           },
           {

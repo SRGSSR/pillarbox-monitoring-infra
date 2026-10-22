@@ -130,6 +130,10 @@ The project is split into several Terraform configurations:
 - [11-pillarbox-monitoring-ecr][ecr]: This configuration sets up the Amazon Elastic Container
   Registry (ECR). **This is only applicable to the prod environment**, as the ECR repositories for
   the application are managed in the production account.
+- [12-pillarbox-monitoring-shared][shared]: This configuration holds the network resources shared
+  by the application stacks: the Bastion host and the VPC endpoints (ECR, CloudWatch Logs, SSM, S3)
+  with their security group. **This applies to both dev and prod environments** and must be applied
+  before the application stacks, which authorize their own security groups on it.
 - [20-pillarbox-monitoring-app][app]: This is the main configuration that deploys the Pillarbox
   Monitoring infrastructure. **This applies to both dev and prod environments**. You can switch
   between workspaces (as mentioned earlier) to deploy infrastructure in either the dev or prod
@@ -192,5 +196,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 [route-53]: /pillarbox-monitoring-terraform/10-pillarbox-monitoring-route-53
 [ecr]: /pillarbox-monitoring-terraform/11-pillarbox-monitoring-ecr
+[shared]: /pillarbox-monitoring-terraform/12-pillarbox-monitoring-shared
 [app]: /pillarbox-monitoring-terraform/20-pillarbox-monitoring-app
 [cd]: /pillarbox-monitoring-terraform/30-continuous-delivery

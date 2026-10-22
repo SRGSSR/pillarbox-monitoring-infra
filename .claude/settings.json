@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/*.tfvars)",
+      "Read(**/*.tfstate)",
+      "Bash(*tfvars*)",
+      "Bash(*tfstate*)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)"
+    ]
+  }
+}

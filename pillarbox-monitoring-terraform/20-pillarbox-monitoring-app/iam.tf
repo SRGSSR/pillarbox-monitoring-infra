@@ -110,6 +110,58 @@ resource "aws_iam_instance_profile" "grafana_instance_profile" {
   role = aws_iam_role.grafana_ec2_role.name
 }
 
+# -----------------------------------
+# Quanthea Host Policies (prod only)
+# -----------------------------------
+
+resource "aws_iam_role" "quanthea_ec2_role" {
+  count = local.is_prod ? 1 : 0
+
+  name = "quanthea-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "quanthea_ssm_policy" {
+  count = local.is_prod ? 1 : 0
+
+  name        = "quanthea-ssm-policy"
+  description = "Allows EC2 to read Quanthea admin password from SSM Parameter Store"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "ssm:GetParameter",
+        Resource = "arn:aws:ssm:${data.aws_region.current.name}:${local.account_id}:parameter/quanthea/admin_password"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "quanthea_ssm_policy_attach" {
+  count = local.is_prod ? 1 : 0
+
+  role       = aws_iam_role.quanthea_ec2_role[0].name
+  policy_arn = aws_iam_policy.quanthea_ssm_policy[0].arn
+}
+
+resource "aws_iam_instance_profile" "quanthea_instance_profile" {
+  count = local.is_prod ? 1 : 0
+
+  name = "quanthea-instance-profile"
+  role = aws_iam_role.quanthea_ec2_role[0].name
+}
 
 # -----------------------------------
 # Opensearch Host Policies

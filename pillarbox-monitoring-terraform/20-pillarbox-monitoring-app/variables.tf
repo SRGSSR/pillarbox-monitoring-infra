@@ -31,17 +31,12 @@ variable "grafana_default_pwd" {
   type        = string
 }
 
+variable "quanthea_default_pwd" {
+  description = "Quanthea default admin password"
+  type        = string
+}
+
 variable "opensearch_default_pwd" {
   description = "Opensearch default admin password"
   type        = string
-}
-
-variable "bastion_public_key" {
-  description = "Public key for the bastion host"
-  type        = string
-}
-
-variable "bastion_allowed_ips" {
-  description = "The list of ips that are allowed to connect to the bastion"
-  type        = list(string)
 }

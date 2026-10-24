@@ -103,7 +103,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -407,7 +407,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -626,7 +626,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -840,7 +840,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1040,7 +1040,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1263,7 +1263,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1460,7 +1460,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Bitrate",
@@ -1610,7 +1610,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "Bandwidth",
@@ -1647,7 +1647,7 @@
         "type": "grafana-opensearch-datasource"
       },
       "gridPos": {
-        "h": 7,
+        "h": 13,
         "w": 24,
         "x": 0,
         "y": 21
@@ -1672,7 +1672,7 @@
         "unwrappedColumns": false,
         "wrapLogMessage": false
       },
-      "pluginVersion": "13.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1863,5 +1863,5 @@
   "timezone": "browser",
   "title": "Session Breakdown",
   "uid": "bdrf82ou9416ob",
-  "version": 16
+  "version": 17
 }

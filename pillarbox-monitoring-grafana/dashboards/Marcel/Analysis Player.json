@@ -108,7 +108,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -241,7 +241,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -374,7 +374,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -430,6 +430,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -476,7 +477,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -573,7 +574,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "ParserException",
@@ -795,6 +796,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -841,7 +843,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -895,6 +897,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -941,7 +944,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -995,6 +998,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "#73BF69",
             "mode": "palette-classic"
           },
           "custom": {
@@ -1041,7 +1045,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -1149,7 +1153,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Error Rate",
+              "options": "Success Rate",
               "scope": "series"
             },
             "properties": [
@@ -1193,7 +1197,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "PMSE",
@@ -1202,7 +1206,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10s"
+                "interval": "1m"
               },
               "type": "date_histogram"
             }
@@ -1215,8 +1219,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "data.error_type:PLAYBACK_MEDIA_SOURCE_ERROR\nAND session.media.id:$media_id\nAND session.player.name:Letterbox\nAND session.player.version:10.1.0\n",
@@ -1231,7 +1236,7 @@
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "10s"
+                "interval": "1m"
               },
               "type": "date_histogram"
             }
@@ -1244,8 +1249,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:START\nAND session.media.id:$media_id\nAND session.player.name:Letterbox\nAND session.player.version:10.1.0\n",
@@ -1258,7 +1264,7 @@
             "type": "__expr__",
             "uid": "__expr__"
           },
-          "expression": "1- $A/$B",
+          "expression": "$A/$B",
           "refId": "Error Rate",
           "type": "math"
         }
@@ -1372,7 +1378,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "PMSE",
@@ -1551,7 +1557,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "PMSE",
@@ -1730,7 +1736,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "PMSE",
@@ -1909,7 +1915,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "PMSE",
@@ -2088,7 +2094,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "PMSE",
@@ -2207,7 +2213,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -2293,5 +2299,5 @@
   "timezone": "browser",
   "title": "Analysis Player",
   "uid": "ma9rd8s",
-  "version": 58
+  "version": 62
 }

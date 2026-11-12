@@ -306,7 +306,7 @@
           }
         ]
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "alias": "",
@@ -640,7 +640,7 @@
         "allowCustomValue": true,
         "datasource": {
           "type": "grafana-opensearch-datasource",
-          "uid": "fef4oi750u39cd"
+          "uid": "deoqp3q289nnkd"
         },
         "enableGroupBy": false,
         "hide": 0,
@@ -671,5 +671,5 @@
   "timezone": "Europe/Zurich",
   "title": "Latest Errors",
   "uid": "bdq5sq0nz5pmod",
-  "version": 14
+  "version": 15
 }

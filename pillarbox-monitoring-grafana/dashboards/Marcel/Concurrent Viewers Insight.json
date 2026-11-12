@@ -141,7 +141,7 @@
               "type": "cardinality"
             }
           ],
-          "query": "event_name:HEARTBEAT\nAND session.media.bu:$bu\nAND session.media.type:$mediatype",
+          "query": "event_name:HEARTBEAT\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND data.stream_type:$stream_type",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -265,8 +265,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:START\nAND session.media.bu:$bu\nAND session.media.type:$mediatype",
@@ -348,8 +349,7 @@
         "legend": {
           "calcs": [
             "max",
-            "median",
-            "sum"
+            "median"
           ],
           "displayMode": "table",
           "placement": "right",
@@ -394,11 +394,12 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
-          "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype",
+          "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND data.stream_type:$stream_type",
           "queryType": "lucene",
           "refId": "A",
           "timeField": "@timestamp"
@@ -553,7 +554,8 @@
                 "value": 0
               }
             ]
-          }
+          },
+          "unit": "short"
         }
       },
       "gridPos": {
@@ -604,9 +606,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "hide": false,
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND data.playback_duration:0",
@@ -636,9 +638,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "hide": false,
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND NOT data.playback_duration:0\nAND data.playback_duration:[1 TO 60000]",
@@ -668,9 +670,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "hide": false,
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND NOT data.playback_duration:0\nAND data.playback_duration:[60000 TO 600000]",
@@ -700,9 +702,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "hide": false,
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND NOT data.playback_duration:0\nAND data.playback_duration:[600000 TO 3600000]",
@@ -732,9 +734,9 @@
           "luceneQueryType": "Metric",
           "metrics": [
             {
-              "hide": false,
+              "field": "session_id",
               "id": "1",
-              "type": "count"
+              "type": "cardinality"
             }
           ],
           "query": "event_name:STOP\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND NOT data.playback_duration:0\nAND data.playback_duration:[3600000 TO *]",
@@ -975,6 +977,116 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 54
+      },
+      "id": 10,
+      "options": {
+        "combine": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "data.playback_duration",
+              "id": "2",
+              "settings": {
+                "interval": "15",
+                "min_doc_count": "20"
+              },
+              "type": "histogram"
+            }
+          ],
+          "datasource": {
+            "type": "grafana-opensearch-datasource",
+            "uid": "fef4oi750u39cd"
+          },
+          "format": "table",
+          "luceneQueryType": "Metric",
+          "metrics": [
+            {
+              "field": "session_id",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "(event_name:STOP OR event_name:HEARTBEAT)\nAND session.media.bu:$bu\nAND session.media.type:$mediatype\nAND NOT data.playback_duration:0\nAND data.playback_duration:[1 TO 6300000]",
+          "queryType": "lucene",
+          "refId": "D",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "durations of events",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "data.playback_duration"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "grafana-opensearch-datasource",
+        "uid": "fef4oi750u39cd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
@@ -1027,7 +1139,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 63
       },
       "id": 1,
       "options": {
@@ -1134,6 +1246,24 @@
         "skipUrlSync": false,
         "type": "custom",
         "valuesFormat": "csv"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": true,
+        "current": {
+          "text": "Live",
+          "value": "Live"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Stream Type",
+        "multi": false,
+        "name": "stream_type",
+        "options": [],
+        "query": "Live,On-demand",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
       }
     ]
   },
@@ -1158,5 +1288,5 @@
   "timezone": "browser",
   "title": "Concurrent Viewers Insight",
   "uid": "ma25x29",
-  "version": 27
+  "version": 50
 }
